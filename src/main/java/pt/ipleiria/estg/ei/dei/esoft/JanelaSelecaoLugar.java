@@ -101,21 +101,53 @@ public class JanelaSelecaoLugar extends JPanel {
         int filas = sessao.getSala().getLugares().size() / 10; // Assumindo que cada sala tem 10 colunas
         int colunas = 10; // Número padrão de colunas
 
-        // Criar grid de lugares com espaçamento mínimo
-        JPanel gridLugares = new JPanel(new GridLayout(filas, colunas, 2, 2));
-        gridLugares.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        // Criar painel principal com GridBagLayout para adicionar labels de filas e colunas
+        JPanel painelGrid = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        // Criar lugares a partir do objeto Sala
+        // Adicionar labels de colunas (números) no topo
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Espaço em branco no canto superior esquerdo
+        JLabel espacoBranco = new JLabel("");
+        gbc.gridx = 0;
+        painelGrid.add(espacoBranco, gbc);
+
+        // Números de coluna
+        for (int j = 0; j < colunas; j++) {
+            gbc.gridx = j + 1;
+            JLabel colLabel = new JLabel(Integer.toString(j + 1));
+            colLabel.setPreferredSize(new Dimension(35, 20));
+            colLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            painelGrid.add(colLabel, gbc);
+        }
+
+        // Criar grid de lugares com labels de fila
         for (int i = 0; i < filas; i++) {
+            // Label de fila (letra)
+            gbc.gridx = 0;
+            gbc.gridy = i + 1;
+            gbc.anchor = GridBagConstraints.CENTER;
+            char filaLetra = (char)('A' + i);
+            JLabel filaLabel = new JLabel(Character.toString(filaLetra));
+            filaLabel.setPreferredSize(new Dimension(15, 35));
+            filaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            painelGrid.add(filaLabel, gbc);
+
+            // Adicionar lugares
             for (int j = 0; j < colunas; j++) {
+                gbc.gridx = j + 1;
                 JPanel lugar = criarLugar(i, j);
-                gridLugares.add(lugar);
+                painelGrid.add(lugar, gbc);
             }
         }
 
         // Centralizar a grade de lugares
         JPanel painelCentralizador = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        painelCentralizador.add(gridLugares);
+        painelCentralizador.add(painelGrid);
         painelPrincipal.add(painelCentralizador, BorderLayout.CENTER);
 
         return painelPrincipal;
@@ -140,9 +172,11 @@ public class JanelaSelecaoLugar extends JPanel {
         // Aplicar as propriedades visuais de acordo com o objeto Lugar
         painelLugar.setBackground(lugar.getCorFundo());
         painelLugar.setOpaque(true); // Importante para garantir que a cor seja exibida
-
-        // Adicionar label com identificação do lugar
-        JLabel labelLugar = new JLabel(lugar.getFila() + 1 + "" + (lugar.getColuna() + 1));
+        // Adicionar label com identificação do lugar usando número sequencial
+        // Formato: "Letra da fila + Número sequencial na fila" (ex: A1, A2, B1, B2...)
+        char filaLetra = (char)('A' + lugar.getFila()); // Converte número da fila em letra (A, B, C...)
+        int numeroAssentoSequencial = lugar.getColuna() + 1; // Coluna + 1 para números sequenciais
+        JLabel labelLugar = new JLabel(filaLetra + "" + numeroAssentoSequencial);
         labelLugar.setForeground(lugar.getCorTexto());
         labelLugar.setHorizontalAlignment(SwingConstants.CENTER);
         labelLugar.setFont(new Font(labelLugar.getFont().getName(), Font.BOLD, 10));

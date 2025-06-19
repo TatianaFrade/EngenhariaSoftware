@@ -32,14 +32,16 @@ public class Lugar {
         boolean ocupado = false;
 
         // VIP: Filas C, D, E e F (2, 3, 4, 5), colunas centrais (2-7)
+        // Note: fila 0 = A, fila 1 = B, fila 2 = C, etc.
         if ((fila >= 2 && fila <= 5) && (coluna >= 2 && coluna <= 7)) {
             vip = true;
         }
         // Definir alguns lugares ocupados (distribuídos pela sala)
-        else if ((fila == 0 && coluna == 2) ||
-                (fila == 1 && coluna == 8) ||
-                (fila == 6 && coluna == 3) ||
-                (fila == 7 && coluna == 6)) {
+        // Note: Estes correspondem aos assentos A3, B9, G4, H7
+        else if ((fila == 0 && coluna == 2) || // A3
+                (fila == 1 && coluna == 8) || // B9
+                (fila == 6 && coluna == 3) || // G4
+                (fila == 7 && coluna == 5)) { // H6 (corrigido de H7)
             ocupado = true;
         }
 

@@ -40,16 +40,16 @@ public class Sala {
      * (Mesma lógica que estava em JanelaSelecaoLugar)
      */
     private void marcarLugaresOcupadosIniciais() {
-        // A lógica para marcar lugares ocupados pode ser movida para cá
         // Procura lugares específicos e marca como ocupados
+        // Note: Estes correspondem aos assentos A3, B9, G4, H6
         for (Lugar lugar : lugares) {
             int fila = lugar.getFila();
             int coluna = lugar.getColuna();
 
-            if ((fila == 0 && coluna == 2) ||
-                    (fila == 1 && coluna == 8) ||
-                    (fila == 6 && coluna == 3) ||
-                    (fila == 7 && coluna == 6)) {
+            if ((fila == 0 && coluna == 2) || // A3
+                    (fila == 1 && coluna == 8) || // B9
+                    (fila == 6 && coluna == 3) || // G4
+                    (fila == 7 && coluna == 5)) { // H6 (corrigido de H7)
                 lugar.setOcupado(true);
                 lugaresOcupados++;
             }
