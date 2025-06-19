@@ -3,24 +3,23 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JanelaSelecaoLugar extends JPanel {
     private JButton btnProximo;
     private JButton btnVoltar;
     private Sessao sessao;
-    private JPanel lugarSelecionado;
+    private JPanel painelLugarSelecionado;
+    private Lugar lugarSelecionado;
     private static final int FILAS = 8;
     private static final int COLUNAS = 10;
 
-    // Constantes para cores dos lugares
-    private static final Color COR_LUGAR_DISPONIVEL = Color.LIGHT_GRAY;
-    private static final Color COR_LUGAR_VIP = Color.BLACK;
-    private static final Color COR_LUGAR_OCUPADO = Color.RED;
-    private static final Color COR_LUGAR_SELECIONADO = new Color(0, 120, 215);
-    private static final Color COR_TEXTO_VIP = Color.WHITE;
-
+    // Mapa que associa painéis (componentes visuais) aos objetos Lugar
+    private Map<JPanel, Lugar> mapaPainelLugar;
     public JanelaSelecaoLugar(Sessao sessao, ActionListener onVoltar, ActionListener onProximo) {
         this.sessao = sessao;
+        this.mapaPainelLugar = new HashMap<>();
         setLayout(new BorderLayout(10, 10));
 
         // Adicionar título
@@ -82,94 +81,68 @@ public class JanelaSelecaoLugar extends JPanel {
 
         return painelPrincipal;
     }
-
     // Método auxiliar para criar um lugar individual com tipo fixo
     private JPanel criarLugar(int fila, int coluna) {
-        JPanel lugar = new JPanel(new BorderLayout());
-        lugar.setPreferredSize(new Dimension(35, 35)); // Tamanho reduzido para caber melhor
+        // Criar o objeto Lugar usando a fábrica
+        Lugar lugar = Lugar.criarLugarPorPosicao(fila, coluna);
 
-        // Determinar tipo de lugar com base na posição fixa
-        Color corFundo;
-        Color corTexto = Color.BLACK;
-        boolean ocupado = false;
-        boolean vip = false;
+        // Criar o componente visual para representar o lugar
+        JPanel painelLugar = new JPanel(new BorderLayout());
+        painelLugar.setPreferredSize(new Dimension(35, 35)); // Tamanho reduzido para caber melhor
 
-        // Aumentar número de lugares VIP para que sejam mais visíveis
-        // VIP: Filas C, D, E e F (2, 3, 4, 5), colunas centrais (2-7)
-        if ((fila >= 2 && fila <= 5) && (coluna >= 2 && coluna <= 7)) {
-            corFundo = COR_LUGAR_VIP;
-            corTexto = COR_TEXTO_VIP;
-            vip = true;
-        }
-        // Definir alguns lugares ocupados (distribuídos pela sala)
-        else if ((fila == 0 && coluna == 2) ||
-                (fila == 1 && coluna == 8) ||
-                (fila == 6 && coluna == 3) ||
-                (fila == 7 && coluna == 6)) {
-            corFundo = COR_LUGAR_OCUPADO;
-            ocupado = true;
-        }
-        // Restantes são lugares disponíveis normais
-        else {
-            corFundo = COR_LUGAR_DISPONIVEL;
-        }
-
-        // Garantir que a cor de fundo seja aplicada adequadamente
-        lugar.setBackground(corFundo);
-        lugar.setOpaque(true); // Importante para garantir que a cor seja exibida
-        lugar.putClientProperty("ocupado", ocupado);
-        lugar.putClientProperty("vip", vip);
-        lugar.putClientProperty("fila", fila);
-        lugar.putClientProperty("coluna", coluna);
+        // Aplicar as propriedades visuais de acordo com o objeto Lugar
+        painelLugar.setBackground(lugar.getCorFundo());
+        painelLugar.setOpaque(true); // Importante para garantir que a cor seja exibida
 
         // Adicionar label com identificação do lugar
-        char letraFila = (char)('A' + fila);
-        JLabel labelLugar = new JLabel(letraFila + "" + (coluna + 1));
-        labelLugar.setForeground(corTexto);
+        JLabel labelLugar = new JLabel(lugar.getFila() + 1 + "" + (lugar.getColuna() + 1));
+        labelLugar.setForeground(lugar.getCorTexto());
         labelLugar.setHorizontalAlignment(SwingConstants.CENTER);
-        labelLugar.setFont(new Font(labelLugar.getFont().getName(), Font.BOLD, 10)); // Fonte reduzida
-        lugar.add(labelLugar, BorderLayout.CENTER);
+        labelLugar.setFont(new Font(labelLugar.getFont().getName(), Font.BOLD, 10));
+        painelLugar.add(labelLugar, BorderLayout.CENTER);
 
-        lugar.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        painelLugar.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         // Adicionar evento de clique apenas para lugares disponíveis
-        if (!ocupado) {
-            lugar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            lugar.addMouseListener(new MouseAdapter() {
+        if (!lugar.isOcupado()) {
+            painelLugar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            painelLugar.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    selecionarLugar(lugar);
+                    selecionarLugar(painelLugar);
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    if (lugarSelecionado != lugar) {
-                        lugar.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+                    if (painelLugarSelecionado != painelLugar) {
+                        painelLugar.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
                     }
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    if (lugarSelecionado != lugar) {
-                        lugar.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                    if (painelLugarSelecionado != painelLugar) {
+                        painelLugar.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
                     }
                 }
             });
         }
 
-        return lugar;
-    }
+        // Associar o componente visual ao objeto de modelo
+        mapaPainelLugar.put(painelLugar, lugar);
 
+        return painelLugar;
+    }
     private JPanel criarPainelLegenda() {
         JPanel painelLegenda = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
         painelLegenda.setBorder(BorderFactory.createTitledBorder("Legenda"));
 
         // Array com as definições dos itens de legenda: cor, texto, isBorda
         Object[][] legendaItens = {
-                {COR_LUGAR_DISPONIVEL, "Disponível", false},
-                {COR_LUGAR_VIP, "VIP (+2.00 €)", false},
-                {COR_LUGAR_OCUPADO, "Ocupado", false},
-                {COR_LUGAR_DISPONIVEL, "Selecionado", true}
+                {Lugar.COR_LUGAR_DISPONIVEL, "Disponível", false},
+                {Lugar.COR_LUGAR_VIP, "VIP (+2.00 €)", false},
+                {Lugar.COR_LUGAR_OCUPADO, "Ocupado", false},
+                {Lugar.COR_LUGAR_DISPONIVEL, "Selecionado", true}
         };
 
         // Criar cada item da legenda
@@ -180,15 +153,15 @@ public class JanelaSelecaoLugar extends JPanel {
             cor.setOpaque(true);
 
             if ((boolean)item[2]) {
-                cor.setBorder(BorderFactory.createLineBorder(COR_LUGAR_SELECIONADO, 3));
+                cor.setBorder(BorderFactory.createLineBorder(Lugar.COR_LUGAR_SELECIONADO, 3));
             } else {
                 cor.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
             }
 
             // Se for o item VIP, adicionar um texto em branco para ilustrar
-            if (item[0] == COR_LUGAR_VIP) {
+            if (item[0] == Lugar.COR_LUGAR_VIP) {
                 JLabel vipLabel = new JLabel("A1");
-                vipLabel.setForeground(COR_TEXTO_VIP);
+                vipLabel.setForeground(Lugar.COR_TEXTO_VIP);
                 vipLabel.setFont(new Font(vipLabel.getFont().getName(), Font.BOLD, 10));
                 vipLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 cor.setLayout(new BorderLayout());
@@ -215,16 +188,16 @@ public class JanelaSelecaoLugar extends JPanel {
         painelBotoes.add(btnProximo);
         add(painelBotoes, BorderLayout.SOUTH);
     }
-
     private void selecionarLugar(JPanel painel) {
         // Restaurar borda do lugar anteriormente selecionado
-        if (lugarSelecionado != null) {
-            lugarSelecionado.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        if (painelLugarSelecionado != null) {
+            painelLugarSelecionado.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         }
 
         // Atualizar seleção
-        lugarSelecionado = painel;
-        painel.setBorder(BorderFactory.createLineBorder(COR_LUGAR_SELECIONADO, 3));
+        painelLugarSelecionado = painel;
+        lugarSelecionado = mapaPainelLugar.get(painel);
+        painel.setBorder(BorderFactory.createLineBorder(Lugar.COR_LUGAR_SELECIONADO, 3));
 
         // Habilitar botão próximo
         btnProximo.setEnabled(true);
@@ -237,23 +210,11 @@ public class JanelaSelecaoLugar extends JPanel {
 
     public String getLugarSelecionado() {
         if (lugarSelecionado == null) return null;
-
-        int fila = (int) lugarSelecionado.getClientProperty("fila");
-        int coluna = (int) lugarSelecionado.getClientProperty("coluna");
-        boolean vip = (boolean) lugarSelecionado.getClientProperty("vip");
-
-        char letraFila = (char)('A' + fila);
-        return letraFila + "" + (coluna + 1) + (vip ? " (VIP)" : "");
+        return lugarSelecionado.getIdentificacao();
     }
 
     public double getPrecoTotal() {
-        double preco = sessao.getPreco();
-
-        // Adicional para lugares VIP
-        if (lugarSelecionado != null && (boolean) lugarSelecionado.getClientProperty("vip")) {
-            preco += 2.00;
-        }
-
-        return preco;
+        if (lugarSelecionado == null) return sessao.getPreco();
+        return lugarSelecionado.calcularPreco(sessao.getPreco());
     }
 }
