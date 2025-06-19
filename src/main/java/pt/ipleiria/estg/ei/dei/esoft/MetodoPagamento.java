@@ -1,9 +1,12 @@
 package pt.ipleiria.estg.ei.dei.esoft;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa um método de pagamento no sistema
  */
-public class MetodoPagamento {
+public class MetodoPagamento implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String nome;
     private String descricao;
     private boolean requerReferencia;

@@ -1,9 +1,14 @@
 package pt.ipleiria.estg.ei.dei.esoft;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
-public class Sessao {
+public class Sessao implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String id;
     private Filme filme;
     private LocalDateTime dataHora;
     private Sala sala;
@@ -25,9 +30,8 @@ public class Sessao {
      * @param filme Filme exibido na sessão
      * @param dataHora Data e hora da sessão
      * @param sala Sala onde a sessão ocorre
-     * @param preco Preço da sessão
-     */
-    public Sessao(Filme filme, LocalDateTime dataHora, Sala sala, double preco) {
+     * @param preco Preço da sessão     */    public Sessao(Filme filme, LocalDateTime dataHora, Sala sala, double preco) {
+        this.id = UUID.randomUUID().toString();
         this.filme = filme;
         this.dataHora = dataHora;
         this.sala = sala;
@@ -59,10 +63,15 @@ public class Sessao {
      */
     public String getNomeSala() {
         return sala.getNome();
+    }    public double getPreco() {
+        return preco;
     }
 
-    public double getPreco() {
-        return preco;
+    public String getId() {
+        if (id == null) {
+            id = UUID.randomUUID().toString();
+        }
+        return id;
     }
 
     @Override

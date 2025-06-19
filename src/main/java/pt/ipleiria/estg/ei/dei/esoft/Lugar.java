@@ -1,11 +1,13 @@
 package pt.ipleiria.estg.ei.dei.esoft;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Classe que representa um lugar na sala de cinema
  */
-public class Lugar {
+public class Lugar implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int fila;
     private int coluna;
     private boolean vip;

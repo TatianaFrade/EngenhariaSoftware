@@ -79,7 +79,6 @@ public class JanelaSelecaoLugar extends JPanel {
         painelCentral.add(criarPainelLegenda(), BorderLayout.SOUTH);
         add(painelCentral, BorderLayout.CENTER);
     }
-
     private JPanel criarPainelLugares() {
         // Painel principal com borderlayout
         JPanel painelPrincipal = new JPanel(new BorderLayout(0, 10));
@@ -97,9 +96,9 @@ public class JanelaSelecaoLugar extends JPanel {
         painelTela.add(telaCinema);
         painelPrincipal.add(painelTela, BorderLayout.NORTH);
 
-        // Determinar o número de filas e colunas com base na sala
-        int filas = sessao.getSala().getLugares().size() / 10; // Assumindo que cada sala tem 10 colunas
-        int colunas = 10; // Número padrão de colunas
+        // Definir dimensões fixas para todas as salas
+        int filas = 8;
+        int colunas = 10;
 
         // Criar painel principal com GridBagLayout para adicionar labels de filas e colunas
         JPanel painelGrid = new JPanel(new GridBagLayout());
@@ -123,6 +122,22 @@ public class JanelaSelecaoLugar extends JPanel {
             colLabel.setPreferredSize(new Dimension(35, 20));
             colLabel.setHorizontalAlignment(SwingConstants.CENTER);
             painelGrid.add(colLabel, gbc);
+        }
+
+        // Pré-verificar se a sala tem todos os lugares necessários
+        if (sessao != null && sessao.getSala() != null) {
+            Sala sala = sessao.getSala();
+
+            // Garantir que os lugares existem para cada posição
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < colunas; j++) {
+                    if (sala.getLugar(i, j) == null) {
+                        // Criar o lugar se não existir
+                        Lugar novoLugar = Lugar.criarLugarPorPosicao(i, j);
+                        sala.getLugares().add(novoLugar);
+                    }
+                }
+            }
         }
 
         // Criar grid de lugares com labels de fila
@@ -151,18 +166,17 @@ public class JanelaSelecaoLugar extends JPanel {
         painelPrincipal.add(painelCentralizador, BorderLayout.CENTER);
 
         return painelPrincipal;
-    }
-    // Método auxiliar para criar um lugar individual com tipo fixo
+    }    // Método auxiliar para criar um lugar individual
     private JPanel criarLugar(int fila, int coluna) {
         // Obter o objeto Lugar da sala
         Lugar lugar = sessao.getSala().getLugar(fila, coluna);
 
         if (lugar == null) {
-            // Caso o lugar não exista na sala (não deve acontecer, mas como precaução)
-            JPanel panel = new JPanel();
-            panel.setPreferredSize(new Dimension(35, 35));
-            panel.setBackground(Color.WHITE);
-            return panel;
+            // Se o lugar não existir na sala, vamos criar um novo lugar
+            System.out.println("Criando lugar para fila " + fila + ", coluna " + coluna);
+            lugar = Lugar.criarLugarPorPosicao(fila, coluna);
+            // Adicionar o lugar à sala
+            sessao.getSala().getLugares().add(lugar);
         }
 
         // Criar o componente visual para representar o lugar
@@ -172,8 +186,8 @@ public class JanelaSelecaoLugar extends JPanel {
         // Aplicar as propriedades visuais de acordo com o objeto Lugar
         painelLugar.setBackground(lugar.getCorFundo());
         painelLugar.setOpaque(true); // Importante para garantir que a cor seja exibida
-        // Adicionar label com identificação do lugar usando número sequencial
-        // Formato: "Letra da fila + Número sequencial na fila" (ex: A1, A2, B1, B2...)
+
+        // Adicionar label com identificação do lugar
         char filaLetra = (char)('A' + lugar.getFila()); // Converte número da fila em letra (A, B, C...)
         int numeroAssentoSequencial = lugar.getColuna() + 1; // Coluna + 1 para números sequenciais
         JLabel labelLugar = new JLabel(filaLetra + "" + numeroAssentoSequencial);

@@ -1,0 +1,101 @@
+[
+  {
+    "id": "2b846e24-df7e-4055-b4bc-32e1f31bda5e",
+    "dataHora": "Jun 19, 2025, 4:28:39 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "H10",
+    "precoBase": 7.5,
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "215400a4-a650-4625-a8e9-3d5b1b69e5c0",
+    "dataHora": "Jun 19, 2025, 4:28:54 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "G10",
+    "precoBase": 7.5,
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "ee276a24-d08d-4725-bd19-1e9154545055",
+    "dataHora": "Jun 19, 2025, 4:43:34 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "F10",
+    "precoBase": 7.5,
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "02036263-d54e-4113-b290-9b8291a7510e",
+    "dataHora": "Jun 19, 2025, 4:43:45 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "E10",
+    "precoBase": 7.5,
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "a27541d7-a4e5-4061-8650-1331b18736cc",
+    "dataHora": "Jun 19, 2025, 4:49:34 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "F3 (VIP)",
+    "precoBase": 9.5,
+    "itensBar": [],
+    "precoTotal": 9.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "867adc38-1927-4379-a4c4-54a25e40b239",
+    "dataHora": "Jun 19, 2025, 4:50:28 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "F8 (VIP)",
+    "precoBase": 9.5,
+    "itensBar": [],
+    "precoTotal": 9.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "a7212056-a68e-4472-b485-71568cafb10d",
+    "dataHora": "Jun 19, 2025, 4:51:28 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "A1",
+    "precoBase": 7.5,
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "3cb5a431-04d8-4854-8fc0-bb468ed30917",
+    "dataHora": "Jun 19, 2025, 5:00:42 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "A10",
+    "precoBase": 7.5,
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "e1a9f4ab-eeec-410e-bb74-3549c611e52e",
+    "dataHora": "Jun 19, 2025, 5:01:03 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "H1",
+    "precoBase": 7.5,
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  }
+]
