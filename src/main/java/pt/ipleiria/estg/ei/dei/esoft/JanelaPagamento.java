@@ -13,8 +13,7 @@ import java.util.Map;
  * Janela para seleção de método de pagamento
  * Exibe valores e permite escolher entre cartão de crédito e multibanco
  */
-public class JanelaPagamento extends JPanel {
-    private JButton btnProximo;
+public class JanelaPagamento extends JPanel {    private JButton btnPagar;
     private JButton btnVoltar;
 
     private Sessao sessao;
@@ -209,7 +208,7 @@ public class JanelaPagamento extends JPanel {
             // Adicionar listener para habilitar o botão Próximo quando um método for selecionado
             radioButton.addActionListener(e -> {
                 metodoPagamentoSelecionado = metodo;
-                btnProximo.setEnabled(true);
+                btnPagar.setEnabled(true);
             });
 
             // Guardar a associação entre o botão e o método
@@ -246,19 +245,18 @@ public class JanelaPagamento extends JPanel {
     }    private void configurarPainelBotoes(ActionListener actionListenerVoltar, ActionListener actionListenerProximo) {
         // Usar o mesmo layout de JanelaSelecaoLugar
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
         btnVoltar = new JButton("Voltar");
-        btnProximo = new JButton("Próximo");
+        btnPagar = new JButton("Finalizar Pagamento");
 
-        // Desativar o botão Próximo inicialmente - será ativado quando um método de pagamento for selecionado
-        btnProximo.setEnabled(false);
+        // Desativar o botão Pagar inicialmente - será ativado quando um método de pagamento for selecionado
+        btnPagar.setEnabled(false);
 
         // Adicionar listeners
         btnVoltar.addActionListener(actionListenerVoltar);
-        btnProximo.addActionListener(actionListenerProximo);
+        btnPagar.addActionListener(actionListenerProximo);
 
         painelBotoes.add(btnVoltar);
-        painelBotoes.add(btnProximo);
+        painelBotoes.add(btnPagar);
 
         add(painelBotoes, BorderLayout.SOUTH);
     }
@@ -300,14 +298,21 @@ public class JanelaPagamento extends JPanel {
     public double getSubtotal() {
         return subtotal;
     }
-
     // Getters para os botões
     public JButton getBtnProximo() {
-        return btnProximo;
+        return btnPagar;
     }
 
     public JButton getBtnVoltar() {
         return btnVoltar;
+    }
+
+    /**
+     * Obtém uma referência ao botão de pagamento.
+     * @return Botão de finalizar pagamento
+     */
+    public JButton getBtnPagar() {
+        return btnPagar;
     }
 
     /**
