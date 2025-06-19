@@ -2,8 +2,6 @@ package pt.ipleiria.estg.ei.dei.esoft;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,20 +13,15 @@ public class JanelaPrincipal extends JFrame {
     private JButton comprarProdutosButton;
     private JButton verMenusButton;
     private JButton consultarSessoesPorDiaButton;
-    private JButton loginButton;
-
-    private JPanel painelAtual;
-    private List<Filme> filmes;
-    private List<Sessao> sessoes;
-
-    public JanelaPrincipal(String title) {
+    private JButton loginButton;    private List<Filme> filmes;
+    private List<Sessao> sessoes;    public JanelaPrincipal(String title) {
         super(title);
         inicializarDados();
         criarPainelPrincipal();
         setContentPane(painelPrincipal);
-        painelAtual = painelPrincipal;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 400);
+        // Usar o mesmo tamanho padronizado para todas as janelas (900x650)
+        setSize(900, 650);
         setLocationRelativeTo(null);
     }
 
@@ -77,31 +70,53 @@ public class JanelaPrincipal extends JFrame {
 
         // Sessões para La La Land
         sessoes.add(new Sessao(filmes.get(7), LocalDateTime.now().plusDays(4).withHour(17).withMinute(45), sala2, 8.00));
-    }
-
-    private void criarPainelPrincipal() {
+    }    private void criarPainelPrincipal() {
         painelPrincipal = new JPanel();
         painelPrincipal.setLayout(new BorderLayout());
+
+        // Painel superior com título e login
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        // Título para o cinema com estilo neutro
+        JLabel titulo = new JLabel("Cinema e Bar");
+        titulo.setFont(new Font("Arial", Font.BOLD, 24));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        // Botão de login com estilo neutro
         loginButton = new JButton("Login");
+        loginButton.setPreferredSize(new Dimension(100, 30));
+        JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        loginPanel.add(loginButton);
 
-        JPanel topButtonPanel = new JPanel();
-        topButtonPanel.add(loginButton);
-        painelPrincipal.add(topButtonPanel, BorderLayout.NORTH);
-        comprarBilheteButton = new JButton("Comprar Bilhete");
-        comprarProdutosButton = new JButton("Comprar Produtos");
-        verMenusButton = new JButton("Ver Menus");
-        consultarSessoesPorDiaButton = new JButton("Consultar Sessões por Dia");
+        topPanel.add(titulo, BorderLayout.CENTER);
+        topPanel.add(loginPanel, BorderLayout.EAST);
 
-        JPanel centerPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+        // Adiciona o painel superior
+        painelPrincipal.add(topPanel, BorderLayout.NORTH);
+        // Criar botões com estilo neutro
+        comprarBilheteButton = createStyledButton("Comprar Bilhete", null);
+        comprarProdutosButton = createStyledButton("Comprar Produtos", null);
+        verMenusButton = createStyledButton("Ver Menus", null);
+        consultarSessoesPorDiaButton = createStyledButton("Consultar Sessões por Dia", null);
+
+        // Painel central com os botões principais dispostos em grid
+        JPanel centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         centerPanel.add(comprarBilheteButton);
         centerPanel.add(comprarProdutosButton);
         centerPanel.add(verMenusButton);
         centerPanel.add(consultarSessoesPorDiaButton);
 
+        // Adiciona espaçamento ao redor do painel central
         JPanel paddedCenterPanel = new JPanel(new BorderLayout());
         paddedCenterPanel.add(centerPanel, BorderLayout.CENTER);
-        paddedCenterPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        paddedCenterPanel.setBorder(BorderFactory.createEmptyBorder(40, 100, 40, 100));
         painelPrincipal.add(paddedCenterPanel, BorderLayout.CENTER);
+        // Adiciona um rodapé simples
+        JPanel footerPanel = new JPanel(new BorderLayout());
+        JLabel footerLabel = new JLabel("Cinema e Bar");
+        footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        footerPanel.add(footerLabel, BorderLayout.CENTER);
+        footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        painelPrincipal.add(footerPanel, BorderLayout.SOUTH);
 
         comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
     }
@@ -182,7 +197,6 @@ public class JanelaPrincipal extends JFrame {
 
         trocarPainel(painelLugares);
     }
-
     private void mostrarJanelaOpcoesFinal(Sessao sessao, Lugar lugar, double precoTotal) {
         // Criar o painel de opções finais
         JanelaOpcoesFinal painelOpcoes = new JanelaOpcoesFinal(sessao, lugar, precoTotal);
@@ -190,22 +204,17 @@ public class JanelaPrincipal extends JFrame {
         // Configurar os botões
         painelOpcoes.getBtnAdicionarProdutos().addActionListener(e -> {
             // Implementação futura para adicionar produtos do bar
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Funcionalidade de adicionar produtos do bar será implementada em uma versão futura.",
+                    "Em desenvolvimento",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
         });
 
         painelOpcoes.getBtnFinalizarCompra().addActionListener(e -> {
-            // Marcar o lugar como ocupado
-            sessao.getSala().ocuparLugar(lugar.getFila(), lugar.getColuna());
-
-            // Mostrar mensagem de sucesso
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Compra finalizada com sucesso!\nAgradecemos a sua preferência!",
-                    "Compra Finalizada",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-
-            // Voltar para o menu principal
-            voltarParaPainelPrincipal();
+            // Avançar para a tela de pagamento
+            mostrarJanelaPagamento(sessao, lugar, precoTotal);
         });
 
         trocarPainel(painelOpcoes);
@@ -215,18 +224,114 @@ public class JanelaPrincipal extends JFrame {
         trocarPainel(painelPrincipal);
     }    private void trocarPainel(JPanel novoPainel) {
         setContentPane(novoPainel);
-        painelAtual = novoPainel;
 
-        // Ajustar o tamanho da janela para melhor exibir os painéis
-        if (novoPainel instanceof JanelaSelecaoFilme || novoPainel instanceof JanelaSelecaoSessao || novoPainel instanceof JanelaSelecaoLugar) {
-            setSize(900, 600);
-        } else {
-            setSize(600, 400);
-        }
+        // Usar um tamanho consistente para todas as janelas
+        // Um tamanho maior é usado para acomodar todas as telas, incluindo a de pagamento
+        setSize(900, 650);
 
         setLocationRelativeTo(null); // Centraliza novamente após redimensionar
         revalidate();
-        repaint();
+        repaint();    }private void mostrarJanelaPagamento(Sessao sessao, Lugar lugar, double precoTotal) {
+        // Criar o painel de pagamento
+        JanelaPagamento painelPagamento = new JanelaPagamento(
+                sessao,
+                lugar,
+                precoTotal,
+                // ActionListener para o botão Voltar - retorna à tela de opções finais
+                e -> mostrarJanelaOpcoesFinal(sessao, lugar, precoTotal),
+                // ActionListener para o botão Próximo - finaliza o pagamento
+                null // Será configurado após a criação
+        );
+        // Configurar o ActionListener para o botão Próximo separadamente
+        painelPagamento.getBtnProximo().addActionListener(e ->
+                finalizarPagamento(sessao, lugar, precoTotal, painelPagamento.getMetodoPagamentoSelecionado(), painelPagamento)
+        );
+
+        trocarPainel(painelPagamento);
+    }
+    /**
+     * Finaliza o processo de compra e pagamento, exibindo uma mensagem de confirmação
+     * e retornando ao menu principal
+     */
+    private void finalizarPagamento(Sessao sessao, Lugar lugar, double precoTotal, String metodoPagamento, JanelaPagamento painelPagamento) {
+        // Marcar o lugar como ocupado na sala
+        sessao.getSala().ocuparLugar(lugar.getFila(), lugar.getColuna());
+
+        // Mensagem de pagamento concluído com base no método selecionado
+        String mensagem;
+        if (metodoPagamento.equals("Cartão de Crédito")) {
+            // Coletar dados do cartão usando o painel de pagamento fornecido
+            java.util.Map<String, String> dadosCartao = painelPagamento.coletarDadosCartao();
+
+            // Se o usuário cancelou ou houve erro de validação
+            if (dadosCartao == null) {
+                return; // Não continua com o processo
+            }
+
+            // Formato simplificado do número do cartão para exibição (últimos 4 dígitos)
+            String numeroCartao = dadosCartao.get("numeroCartao");
+            String ultimos4Digitos = numeroCartao.length() > 4 ?
+                    numeroCartao.substring(numeroCartao.length() - 4) :
+                    numeroCartao;
+
+            mensagem = "Pagamento realizado com sucesso via " + metodoPagamento + "!\n" +
+                    "Cartão: **** **** **** " + ultimos4Digitos + "\n" +
+                    "Titular: " + dadosCartao.get("nomeTitular") + "\n" +
+                    "Seu bilhete para " + sessao.getFilme().getNome() + " foi emitido.\n" +
+                    "Agradecemos a preferência!";
+        } else {
+            // Multibanco - gerar referência fictícia
+            String referencia = gerarReferenciaMultibanco();
+            mensagem = "Referência Multibanco gerada com sucesso!\n" +
+                    "Referência: " + referencia + "\n" +
+                    "Valor: " + String.format("%.2f €", precoTotal) + "\n" +
+                    "Por favor, efetue o pagamento em 48 horas para validar sua compra.\n" +
+                    "Agradecemos a preferência!";
+        }
+
+        JOptionPane.showMessageDialog(
+                this,
+                mensagem,
+                "Pagamento " + (metodoPagamento.equals("Cartão de Crédito") ? "Finalizado" : "Pendente"),
+                JOptionPane.INFORMATION_MESSAGE
+        );
+
+        // Voltar para o menu principal
+        voltarParaPainelPrincipal();
+    }
+
+    /**
+     * Gera uma referência Multibanco fictícia para demonstração
+     */
+    private String gerarReferenciaMultibanco() {
+        // Gera uma referência no formato XXX XXX XXX
+        StringBuilder ref = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                ref.append((int) (Math.random() * 10));
+            }
+            if (i < 2) ref.append(" ");
+        }
+        return ref.toString();
+    }    /**
+     * Cria um botão estilizado para o menu principal
+     * @param texto Texto do botão
+     * @param cor Cor de fundo do botão (não utilizada para manter estilo neutro)
+     * @return JButton estilizado
+     */
+    private JButton createStyledButton(String texto, Color cor) {
+        JButton button = new JButton(texto);
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+        // Usar estilo padrão do sistema para os botões (neutro)
+        button.setFocusPainted(true);
+        button.setBorderPainted(true);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setPreferredSize(new Dimension(250, 100));
+
+        // Adiciona margem interna ao texto
+        button.setMargin(new Insets(10, 10, 10, 10));
+
+        return button;
     }
 
     public static void main(String[] args) {

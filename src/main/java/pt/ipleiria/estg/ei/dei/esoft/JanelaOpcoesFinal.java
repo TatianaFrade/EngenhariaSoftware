@@ -86,18 +86,11 @@ public class JanelaOpcoesFinal extends JPanel {
                     "Em desenvolvimento",
                     JOptionPane.INFORMATION_MESSAGE);
         });
-
         // Botão para finalizar compra
         btnFinalizarCompra = new JButton("Finalizar Compra");
         btnFinalizarCompra.setFont(new Font(btnFinalizarCompra.getFont().getName(), Font.BOLD, 14));
         btnFinalizarCompra.setPreferredSize(new Dimension(300, 60));
-        btnFinalizarCompra.addActionListener(e -> {
-            // Por enquanto não faz nada
-            JOptionPane.showMessageDialog(this,
-                    "Sua compra foi finalizada com sucesso!\nAgradecemos a preferência!",
-                    "Compra Finalizada",
-                    JOptionPane.INFORMATION_MESSAGE);
-        });
+        // O ActionListener será configurado em JanelaPrincipal
 
         painelCentral.add(btnAdicionarProdutos);
         painelCentral.add(btnFinalizarCompra);
