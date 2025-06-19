@@ -159,8 +159,7 @@ public class JanelaPrincipal extends JFrame {
 
         // Mostrar a janela de seleção de lugar
         mostrarJanelaSelecaoLugar(sessaoSeleccionada);
-    }
-    private void mostrarJanelaSelecaoLugar(Sessao sessaoSeleccionada) {
+    }    private void mostrarJanelaSelecaoLugar(Sessao sessaoSeleccionada) {
         // Criar o painel de seleção de lugar
         JanelaSelecaoLugar painelLugares = new JanelaSelecaoLugar(sessaoSeleccionada, null, null);
 
@@ -170,43 +169,46 @@ public class JanelaPrincipal extends JFrame {
             mostrarJanelaSelecaoSessao(sessaoSeleccionada.getFilme());
         });
 
-        // Adicionar listener para o botão Próximo, mas sem redirecionamento
+        // Adicionar listener para o botão Próximo para ir para a tela de opções finais
         painelLugares.getBtnProximo().addActionListener(e -> {
-            String lugarSelecionado = painelLugares.getLugarSelecionado();
+            Lugar lugarSelecionado = painelLugares.getLugarSelecionadoObjeto();
             if (lugarSelecionado != null) {
-                // Confirmar a compra do bilhete
-                int resposta = JOptionPane.showConfirmDialog(
-                        this,
-                        "Confirmar a compra do bilhete?\nLugar: " + lugarSelecionado + "\n" +
-                                "Preço: " + String.format("%.2f €", painelLugares.getPrecoTotal()),
-                        "Confirmar Compra",
-                        JOptionPane.YES_NO_OPTION
-                );
-
-                if (resposta == JOptionPane.YES_OPTION) {
-                    // Marcar o lugar como ocupado na sala
-                    Lugar lugar = painelLugares.getLugarSelecionadoObjeto();
-                    if (lugar != null) {
-                        sessaoSeleccionada.getSala().ocuparLugar(lugar.getFila(), lugar.getColuna());
-                        JOptionPane.showMessageDialog(
-                                this,
-                                "Compra realizada com sucesso!\n" +
-                                        "Lugar: " + lugarSelecionado + "\n" +
-                                        "Preço: " + String.format("%.2f €", painelLugares.getPrecoTotal()),
-                                "Compra Finalizada",
-                                JOptionPane.INFORMATION_MESSAGE
-                        );
-                        // Voltar para o menu principal após a compra
-                        voltarParaPainelPrincipal();
-                    }
-                }
-                // Se resposta for Não, permanece na tela de seleção de lugar
+                // Mostrar a janela de opções finais
+                mostrarJanelaOpcoesFinal(sessaoSeleccionada, lugarSelecionado, painelLugares.getPrecoTotal());
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, selecione um lugar primeiro.");
             }
         });
 
         trocarPainel(painelLugares);
+    }
+
+    private void mostrarJanelaOpcoesFinal(Sessao sessao, Lugar lugar, double precoTotal) {
+        // Criar o painel de opções finais
+        JanelaOpcoesFinal painelOpcoes = new JanelaOpcoesFinal(sessao, lugar, precoTotal);
+
+        // Configurar os botões
+        painelOpcoes.getBtnAdicionarProdutos().addActionListener(e -> {
+            // Implementação futura para adicionar produtos do bar
+        });
+
+        painelOpcoes.getBtnFinalizarCompra().addActionListener(e -> {
+            // Marcar o lugar como ocupado
+            sessao.getSala().ocuparLugar(lugar.getFila(), lugar.getColuna());
+
+            // Mostrar mensagem de sucesso
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Compra finalizada com sucesso!\nAgradecemos a sua preferência!",
+                    "Compra Finalizada",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Voltar para o menu principal
+            voltarParaPainelPrincipal();
+        });
+
+        trocarPainel(painelOpcoes);
     }
 
     private void voltarParaPainelPrincipal() {
