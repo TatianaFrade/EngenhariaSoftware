@@ -6,10 +6,28 @@ import java.time.format.DateTimeFormatter;
 public class Sessao {
     private Filme filme;
     private LocalDateTime dataHora;
-    private String sala;
+    private Sala sala;
     private double preco;
 
-    public Sessao(Filme filme, LocalDateTime dataHora, String sala, double preco) {
+    /**
+     * Construtor de compatibilidade que cria uma sala padrão
+     * @param filme Filme exibido na sessão
+     * @param dataHora Data e hora da sessão
+     * @param nomeSala Nome da sala
+     * @param preco Preço da sessão
+     */
+    public Sessao(Filme filme, LocalDateTime dataHora, String nomeSala, double preco) {
+        this(filme, dataHora, new Sala(nomeSala, "sim", 8, 10), preco);
+    }
+
+    /**
+     * Construtor completo com objeto Sala
+     * @param filme Filme exibido na sessão
+     * @param dataHora Data e hora da sessão
+     * @param sala Sala onde a sessão ocorre
+     * @param preco Preço da sessão
+     */
+    public Sessao(Filme filme, LocalDateTime dataHora, Sala sala, double preco) {
         this.filme = filme;
         this.dataHora = dataHora;
         this.sala = sala;
@@ -29,8 +47,18 @@ public class Sessao {
         return dataHora.format(formatter);
     }
 
-    public String getSala() {
+    /**
+     * @return Objeto Sala completo
+     */
+    public Sala getSala() {
         return sala;
+    }
+
+    /**
+     * @return Nome da sala (para compatibilidade com código existente)
+     */
+    public String getNomeSala() {
+        return sala.getNome();
     }
 
     public double getPreco() {
@@ -39,6 +67,6 @@ public class Sessao {
 
     @Override
     public String toString() {
-        return filme.getNome() + " - " + getDataHoraFormatada() + " - Sala " + sala;
+        return filme.getNome() + " - " + getDataHoraFormatada() + " - Sala " + sala.getNome();
     }
 }

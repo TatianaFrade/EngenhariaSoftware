@@ -3,6 +3,7 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,8 +13,16 @@ public class JanelaSelecaoSessao extends JPanel {
     private JPanel sessoesPanel;
     private Sessao sessaoSeleccionada;
     private Filme filme;
+    private List<JPanel> cartoes;
 
-    // Getters para os botões
+    // Constantes para a aparência dos cartões
+    private static final Color BORDA_NORMAL = Color.GRAY;
+    private static final Color BORDA_HOVER = new Color(100, 100, 100);
+    private static final Color BORDA_SELECIONADO = new Color(0, 120, 215);
+    private static final int LARGURA_BORDA_NORMAL = 1;
+    private static final int LARGURA_BORDA_HOVER = 2;
+    private static final int LARGURA_BORDA_SELECIONADO = 3;
+
     public JButton getBtnProximo() {
         return btnProximo;
     }
@@ -24,30 +33,67 @@ public class JanelaSelecaoSessao extends JPanel {
 
     public JanelaSelecaoSessao(Filme filme, List<Sessao> todasSessoes, ActionListener onVoltar, ActionListener onProximo) {
         this.filme = filme;
+        this.cartoes = new ArrayList<>();
         setLayout(new BorderLayout());
 
-        // Filtra apenas as sessões do filme selecionado
-        List<Sessao> sessoesFiltradas = todasSessoes.stream()
-                .filter(s -> s.getFilme().getNome().equals(filme.getNome()))
-                .collect(Collectors.toList());
+        // Configurar título
+        configurarTitulo();
 
-        // Título para mostrar qual filme foi selecionado
+        // Configurar painel de sessões
+        configurarPainelSessoes(todasSessoes);
+
+        // Configurar botões de navegação
+        configurarBotoes(onVoltar, onProximo);
+    }
+
+    private void configurarTitulo() {
         JPanel tituloPanel = new JPanel();
         JLabel tituloLabel = new JLabel("Sessões disponíveis para: " + filme.getNome());
         tituloLabel.setFont(new Font(tituloLabel.getFont().getName(), Font.BOLD, 16));
         tituloPanel.add(tituloLabel);
         add(tituloPanel, BorderLayout.NORTH);
+    }
+
+    private void configurarPainelSessoes(List<Sessao> todasSessoes) {
+        // Filtra apenas as sessões do filme selecionado
+        List<Sessao> sessoesFiltradas = todasSessoes.stream()
+                .filter(s -> s.getFilme().getNome().equals(filme.getNome()))
+                .collect(Collectors.toList());
 
         sessoesPanel = new JPanel();
+
         // Usar GridLayout com fileiras dinâmicas e 3 colunas, com margens entre as células
         int rows = (int) Math.ceil(sessoesFiltradas.size() / 3.0);
         sessoesPanel.setLayout(new GridLayout(rows > 0 ? rows : 1, 3, 20, 20));
 
+        // Adicionar cartões para cada sessão
         for (Sessao sessao : sessoesFiltradas) {
-            CartaoSessao cartao = new CartaoSessao(sessao);
+            JPanel cartao = criarCartaoSessao(sessao);
+
             // Adiciona o evento de clique ao cartão
-            cartao.addMouseListener(new SessaoMouseListener(sessao, this));
+            cartao.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    selecionarSessao(sessao);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if (sessaoSeleccionada != sessao) {
+                        cartao.setBorder(BorderFactory.createLineBorder(BORDA_HOVER, LARGURA_BORDA_HOVER));
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (sessaoSeleccionada != sessao) {
+                        cartao.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
+                    }
+                }
+            });
+
             sessoesPanel.add(cartao);
+            cartoes.add(cartao);
         }
 
         // Caso não tenha sessões disponíveis
@@ -67,48 +113,20 @@ public class JanelaSelecaoSessao extends JPanel {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Scroll mais rápido
         add(scrollPane, BorderLayout.CENTER);
-
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnVoltar = new JButton("Voltar");
-        btnProximo = new JButton("Próximo");
-        btnVoltar.addActionListener(onVoltar);
-        btnProximo.addActionListener(onProximo);
-
-        // Desabilita o botão Próximo até que uma sessão seja selecionada
-        btnProximo.setEnabled(false);
-        bottomPanel.add(btnVoltar);
-        bottomPanel.add(btnProximo);
-        add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    // Método para obter a sessão selecionada
-    public Sessao getSessaoSeleccionada() {
-        return sessaoSeleccionada;
-    }
+    /**
+     * Cria um painel que representa visualmente uma sessão como um cartão
+     */
+    private JPanel criarCartaoSessao(Sessao sessao) {
+        JPanel cartao = new JPanel();
+        // Armazenar a sessão associada como uma propriedade do cartão
+        cartao.putClientProperty("sessao", sessao);
 
-    // Método para definir a sessão selecionada
-    public void setSessaoSeleccionada(Sessao sessao) {
-        this.sessaoSeleccionada = sessao;
-        // Habilita o botão Próximo quando uma sessão for selecionada
-        btnProximo.setEnabled(sessao != null);
-    }
-
-    // Método para obter o filme desta seleção
-    public Filme getFilme() {
-        return filme;
-    }
-}
-
-// Classe para o cartão de sessão
-class CartaoSessao extends JPanel {
-    private Sessao sessao;
-
-    public CartaoSessao(Sessao sessao) {
-        this.sessao = sessao;
-        setPreferredSize(new Dimension(250, 150));
-        setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-        setLayout(new BorderLayout(5, 5));
-        setCursor(new Cursor(Cursor.HAND_CURSOR)); // Muda o cursor para indicar que é clicável
+        cartao.setPreferredSize(new Dimension(250, 150));
+        cartao.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
+        cartao.setLayout(new BorderLayout(5, 5));
+        cartao.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Muda o cursor para indicar que é clicável
 
         // Painel central com as informações da sessão
         JPanel infoPanel = new JPanel();
@@ -126,7 +144,8 @@ class CartaoSessao extends JPanel {
         infoPanel.add(Box.createVerticalStrut(10));
 
         // Sala
-        JLabel salaLabel = new JLabel("Sala: " + sessao.getSala());
+        JLabel salaLabel = new JLabel("Sala: " + sessao.getNomeSala() +
+                (sessao.getSala().getAcessibilidade().equals("sim") ? " (Acessível)" : ""));
         salaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoPanel.add(salaLabel);
 
@@ -137,83 +156,66 @@ class CartaoSessao extends JPanel {
         precoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         infoPanel.add(precoLabel);
 
+        // Lugares disponíveis
+        JLabel lugaresLabel = new JLabel(String.format("Lugares: %d disponíveis",
+                sessao.getSala().getLugaresDisponiveis()));
+        lugaresLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        infoPanel.add(lugaresLabel);
+
         // Centraliza o painel de informações
         JPanel centeredPanel = new JPanel(new BorderLayout());
         centeredPanel.add(infoPanel, BorderLayout.CENTER);
 
-        add(centeredPanel, BorderLayout.CENTER);
+        cartao.add(centeredPanel, BorderLayout.CENTER);
+
+        return cartao;
     }
 
-    public Sessao getSessao() {
-        return sessao;
+    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo) {
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnVoltar = new JButton("Voltar");
+        btnProximo = new JButton("Próximo");
+
+        // Adicionar listeners
+        btnVoltar.addActionListener(onVoltar != null ? onVoltar : e -> {});
+        btnProximo.addActionListener(onProximo != null ? onProximo : e -> {});
+
+        // O botão Próximo começa desabilitado até que uma sessão seja selecionada
+        btnProximo.setEnabled(false);
+
+        bottomPanel.add(btnVoltar);
+        bottomPanel.add(btnProximo);
+        add(bottomPanel, BorderLayout.SOUTH);
     }
-}
 
-// Classe para lidar com eventos de mouse nos cartões de sessão
-class SessaoMouseListener extends MouseAdapter {
-    private Sessao sessao;
-    private JanelaSelecaoSessao janela;
-
-    public SessaoMouseListener(Sessao sessao, JanelaSelecaoSessao janela) {
-        this.sessao = sessao;
-        this.janela = janela;
+    public Sessao getSessaoSeleccionada() {
+        return sessaoSeleccionada;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // Define a sessão selecionada na janela
-        janela.setSessaoSeleccionada(sessao);
+    public void setSessaoSeleccionada(Sessao sessao) {
+        this.sessaoSeleccionada = sessao;
+        btnProximo.setEnabled(sessao != null);
+        atualizarSelecao();
+    }
 
-        // Atualiza todos os cartões para mostrar qual está selecionado
-        Component[] components = janela.getComponents();
-        for (Component component : components) {
-            if (component instanceof JScrollPane) {
-                JScrollPane scrollPane = (JScrollPane) component;
-                JViewport viewport = scrollPane.getViewport();
-                Component viewComp = viewport.getView();
-                if (viewComp instanceof JPanel) {
-                    JPanel paddingPanel = (JPanel) viewComp;
-                    for (Component c : paddingPanel.getComponents()) {
-                        if (c instanceof JPanel) {
-                            JPanel sessoesPanel = (JPanel) c;
-                            for (Component cartao : sessoesPanel.getComponents()) {
-                                if (cartao instanceof CartaoSessao) {
-                                    CartaoSessao cs = (CartaoSessao) cartao;
-                                    if (cs.getSessao() == sessao) {
-                                        cs.setBorder(BorderFactory.createLineBorder(new Color(0, 120, 215), 3));
-                                    } else {
-                                        cs.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    private void selecionarSessao(Sessao sessao) {
+        setSessaoSeleccionada(sessao);
+    }
+
+    private void atualizarSelecao() {
+        // Atualiza todos os cartões para refletir a seleção
+        for (JPanel cartao : cartoes) {
+            Sessao sessaoDoCartao = (Sessao) cartao.getClientProperty("sessao");
+            boolean selecionado = sessaoDoCartao == sessaoSeleccionada;
+
+            cartao.setBorder(BorderFactory.createLineBorder(
+                    selecionado ? BORDA_SELECIONADO : BORDA_NORMAL,
+                    selecionado ? LARGURA_BORDA_SELECIONADO : LARGURA_BORDA_NORMAL
+            ));
         }
     }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // Muda a aparência do cartão quando o mouse passa por cima (somente se não for o selecionado)
-        Component component = e.getComponent();
-        if (component instanceof CartaoSessao) {
-            CartaoSessao cartao = (CartaoSessao) component;
-            if (janela.getSessaoSeleccionada() != cartao.getSessao()) {
-                cartao.setBorder(BorderFactory.createLineBorder(new Color(100, 100, 100), 2));
-            }
-        }
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        // Restaura a aparência original quando o mouse sai (somente se não for o selecionado)
-        Component component = e.getComponent();
-        if (component instanceof CartaoSessao) {
-            CartaoSessao cartao = (CartaoSessao) component;
-            if (janela.getSessaoSeleccionada() != cartao.getSessao()) {
-                cartao.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-            }
-        }
+    public Filme getFilme() {
+        return filme;
     }
 }

@@ -2,6 +2,9 @@ package pt.ipleiria.estg.ei.dei.esoft;
 
 import java.awt.Color;
 
+/**
+ * Classe que representa um lugar na sala de cinema
+ */
 public class Lugar {
     private int fila;
     private int coluna;

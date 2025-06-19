@@ -46,32 +46,37 @@ public class JanelaPrincipal extends JFrame {
                 new Filme("Bacurau", false, "2019-08-23", 7.7, null)
         );
 
+        // Criar salas com configurações diferentes
+        Sala sala1 = new Sala("Sala 1", "sim", 8, 10);
+        Sala sala2 = new Sala("Sala 2", "sim", 8, 10);
+        Sala sala3 = new Sala("Sala 3", "nao", 8, 10);
+
         // Criar sessões (vários horários para diferentes filmes)
         sessoes = new ArrayList<>();
 
         // Sessões para Matrix
-        sessoes.add(new Sessao(filmes.get(0), LocalDateTime.now().plusDays(1).withHour(14).withMinute(30), "Sala 1", 7.50));
-        sessoes.add(new Sessao(filmes.get(0), LocalDateTime.now().plusDays(1).withHour(18).withMinute(0), "Sala 1", 9.00));
-        sessoes.add(new Sessao(filmes.get(0), LocalDateTime.now().plusDays(2).withHour(16).withMinute(45), "Sala 3", 7.50));
+        sessoes.add(new Sessao(filmes.get(0), LocalDateTime.now().plusDays(1).withHour(14).withMinute(30), sala1, 7.50));
+        sessoes.add(new Sessao(filmes.get(0), LocalDateTime.now().plusDays(1).withHour(18).withMinute(0), sala1, 9.00));
+        sessoes.add(new Sessao(filmes.get(0), LocalDateTime.now().plusDays(2).withHour(16).withMinute(45), sala3, 7.50));
 
         // Sessões para O Rei Leão
-        sessoes.add(new Sessao(filmes.get(1), LocalDateTime.now().plusDays(1).withHour(15).withMinute(0), "Sala 2", 7.50));
-        sessoes.add(new Sessao(filmes.get(1), LocalDateTime.now().plusDays(2).withHour(14).withMinute(0), "Sala 2", 7.00));
+        sessoes.add(new Sessao(filmes.get(1), LocalDateTime.now().plusDays(1).withHour(15).withMinute(0), sala2, 7.50));
+        sessoes.add(new Sessao(filmes.get(1), LocalDateTime.now().plusDays(2).withHour(14).withMinute(0), sala2, 7.00));
 
         // Sessões para Interestelar
-        sessoes.add(new Sessao(filmes.get(2), LocalDateTime.now().plusDays(1).withHour(20).withMinute(30), "Sala 3", 9.00));
-        sessoes.add(new Sessao(filmes.get(2), LocalDateTime.now().plusDays(3).withHour(19).withMinute(15), "Sala 1", 9.00));
+        sessoes.add(new Sessao(filmes.get(2), LocalDateTime.now().plusDays(1).withHour(20).withMinute(30), sala3, 9.00));
+        sessoes.add(new Sessao(filmes.get(2), LocalDateTime.now().plusDays(3).withHour(19).withMinute(15), sala1, 9.00));
 
         // Sessões para Vingadores
-        sessoes.add(new Sessao(filmes.get(3), LocalDateTime.now().plusDays(2).withHour(15).withMinute(0), "Sala 1", 8.00));
-        sessoes.add(new Sessao(filmes.get(3), LocalDateTime.now().plusDays(2).withHour(21).withMinute(30), "Sala 3", 9.50));
+        sessoes.add(new Sessao(filmes.get(3), LocalDateTime.now().plusDays(2).withHour(15).withMinute(0), sala1, 8.00));
+        sessoes.add(new Sessao(filmes.get(3), LocalDateTime.now().plusDays(2).withHour(21).withMinute(30), sala3, 9.50));
 
         // Sessões para O Auto da Compadecida
-        sessoes.add(new Sessao(filmes.get(5), LocalDateTime.now().plusDays(1).withHour(16).withMinute(0), "Sala 2", 7.50));
-        sessoes.add(new Sessao(filmes.get(5), LocalDateTime.now().plusDays(3).withHour(18).withMinute(30), "Sala 2", 8.50));
+        sessoes.add(new Sessao(filmes.get(5), LocalDateTime.now().plusDays(1).withHour(16).withMinute(0), sala2, 7.50));
+        sessoes.add(new Sessao(filmes.get(5), LocalDateTime.now().plusDays(3).withHour(18).withMinute(30), sala2, 8.50));
 
         // Sessões para La La Land
-        sessoes.add(new Sessao(filmes.get(7), LocalDateTime.now().plusDays(4).withHour(17).withMinute(45), "Sala 2", 8.00));
+        sessoes.add(new Sessao(filmes.get(7), LocalDateTime.now().plusDays(4).withHour(17).withMinute(45), sala2, 8.00));
     }
 
     private void criarPainelPrincipal() {
@@ -155,7 +160,6 @@ public class JanelaPrincipal extends JFrame {
         // Mostrar a janela de seleção de lugar
         mostrarJanelaSelecaoLugar(sessaoSeleccionada);
     }
-
     private void mostrarJanelaSelecaoLugar(Sessao sessaoSeleccionada) {
         // Criar o painel de seleção de lugar
         JanelaSelecaoLugar painelLugares = new JanelaSelecaoLugar(sessaoSeleccionada, null, null);
@@ -170,15 +174,33 @@ public class JanelaPrincipal extends JFrame {
         painelLugares.getBtnProximo().addActionListener(e -> {
             String lugarSelecionado = painelLugares.getLugarSelecionado();
             if (lugarSelecionado != null) {
-                // Apenas mostra uma mensagem sem finalizar a compra
-                JOptionPane.showMessageDialog(
+                // Confirmar a compra do bilhete
+                int resposta = JOptionPane.showConfirmDialog(
                         this,
-                        "Lugar selecionado: " + lugarSelecionado + "\n" +
+                        "Confirmar a compra do bilhete?\nLugar: " + lugarSelecionado + "\n" +
                                 "Preço: " + String.format("%.2f €", painelLugares.getPrecoTotal()),
-                        "Informações do Lugar",
-                        JOptionPane.INFORMATION_MESSAGE
+                        "Confirmar Compra",
+                        JOptionPane.YES_NO_OPTION
                 );
-                // Permanece na tela de seleção de lugar
+
+                if (resposta == JOptionPane.YES_OPTION) {
+                    // Marcar o lugar como ocupado na sala
+                    Lugar lugar = painelLugares.getLugarSelecionadoObjeto();
+                    if (lugar != null) {
+                        sessaoSeleccionada.getSala().ocuparLugar(lugar.getFila(), lugar.getColuna());
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Compra realizada com sucesso!\n" +
+                                        "Lugar: " + lugarSelecionado + "\n" +
+                                        "Preço: " + String.format("%.2f €", painelLugares.getPrecoTotal()),
+                                "Compra Finalizada",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+                        // Voltar para o menu principal após a compra
+                        voltarParaPainelPrincipal();
+                    }
+                }
+                // Se resposta for Não, permanece na tela de seleção de lugar
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, selecione um lugar primeiro.");
             }

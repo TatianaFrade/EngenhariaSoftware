@@ -12,26 +12,64 @@ public class JanelaSelecaoLugar extends JPanel {
     private Sessao sessao;
     private JPanel painelLugarSelecionado;
     private Lugar lugarSelecionado;
-    private static final int FILAS = 8;
-    private static final int COLUNAS = 10;
+
+    // Constantes para a aparência dos lugares
+    private static final Color BORDA_NORMAL = Color.GRAY;
+    private static final Color BORDA_HOVER = Color.BLUE;
+    private static final Color BORDA_SELECIONADO = Lugar.COR_LUGAR_SELECIONADO;
+    private static final int LARGURA_BORDA_NORMAL = 1;
+    private static final int LARGURA_BORDA_HOVER = 2;
+    private static final int LARGURA_BORDA_SELECIONADO = 3;
 
     // Mapa que associa painéis (componentes visuais) aos objetos Lugar
     private Map<JPanel, Lugar> mapaPainelLugar;
+
     public JanelaSelecaoLugar(Sessao sessao, ActionListener onVoltar, ActionListener onProximo) {
         this.sessao = sessao;
         this.mapaPainelLugar = new HashMap<>();
         setLayout(new BorderLayout(10, 10));
 
-        // Adicionar título
+        // Configurar título e informações da sessão
+        configurarPainelTitulo();
+
+        // Configurar painel central com lugares e legenda
+        configurarPainelCentral();
+
+        // Configurar botões de navegação
+        configurarBotoes(onVoltar, onProximo);
+    }
+
+    private void configurarPainelTitulo() {
         JPanel painelTitulo = new JPanel();
+        painelTitulo.setLayout(new BoxLayout(painelTitulo, BoxLayout.Y_AXIS));
+
         JLabel labelTitulo = new JLabel("Selecione um lugar para " + sessao.getFilme().getNome());
         labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.BOLD, 16));
+        labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelTitulo);
-        JLabel labelSala = new JLabel("Sala: " + sessao.getSala() + " - " + sessao.getDataHoraFormatada());
-        painelTitulo.add(labelSala);
-        add(painelTitulo, BorderLayout.NORTH);
 
-        // Criar painel central com lugares e legenda
+        JLabel labelSala = new JLabel("Sala: " + sessao.getNomeSala() + " - " + sessao.getDataHoraFormatada());
+        labelSala.setAlignmentX(Component.CENTER_ALIGNMENT);
+        painelTitulo.add(labelSala);
+
+        // Adicionar informação de acessibilidade da sala
+        String acessibilidade = sessao.getSala().getAcessibilidade().equals("sim") ? "Com acessibilidade" : "Sem acessibilidade";
+        JLabel labelAcessibilidade = new JLabel(acessibilidade);
+        labelAcessibilidade.setAlignmentX(Component.CENTER_ALIGNMENT);
+        painelTitulo.add(labelAcessibilidade);
+
+        // Adicionar informação de ocupação da sala
+        JLabel labelOcupacao = new JLabel(String.format("Lugares disponíveis: %d de %d (%.1f%% livre)",
+                sessao.getSala().getLugaresDisponiveis(),
+                sessao.getSala().getTotalLugares(),
+                100 - sessao.getSala().getPercentualOcupacao()));
+        labelOcupacao.setAlignmentX(Component.CENTER_ALIGNMENT);
+        painelTitulo.add(labelOcupacao);
+
+        add(painelTitulo, BorderLayout.NORTH);
+    }
+
+    private void configurarPainelCentral() {
         JPanel painelCentral = new JPanel(new BorderLayout(10, 10));
         painelCentral.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
@@ -40,9 +78,6 @@ public class JanelaSelecaoLugar extends JPanel {
         painelCentral.add(painelLugaresExterno, BorderLayout.CENTER);
         painelCentral.add(criarPainelLegenda(), BorderLayout.SOUTH);
         add(painelCentral, BorderLayout.CENTER);
-
-        // Configuração dos botões de navegação
-        configurarBotoes(onVoltar, onProximo);
     }
 
     private JPanel criarPainelLugares() {
@@ -62,13 +97,17 @@ public class JanelaSelecaoLugar extends JPanel {
         painelTela.add(telaCinema);
         painelPrincipal.add(painelTela, BorderLayout.NORTH);
 
+        // Determinar o número de filas e colunas com base na sala
+        int filas = sessao.getSala().getLugares().size() / 10; // Assumindo que cada sala tem 10 colunas
+        int colunas = 10; // Número padrão de colunas
+
         // Criar grid de lugares com espaçamento mínimo
-        JPanel gridLugares = new JPanel(new GridLayout(FILAS, COLUNAS, 2, 2));
+        JPanel gridLugares = new JPanel(new GridLayout(filas, colunas, 2, 2));
         gridLugares.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        // Criar lugares
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUNAS; j++) {
+        // Criar lugares a partir do objeto Sala
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < colunas; j++) {
                 JPanel lugar = criarLugar(i, j);
                 gridLugares.add(lugar);
             }
@@ -83,8 +122,16 @@ public class JanelaSelecaoLugar extends JPanel {
     }
     // Método auxiliar para criar um lugar individual com tipo fixo
     private JPanel criarLugar(int fila, int coluna) {
-        // Criar o objeto Lugar usando a fábrica
-        Lugar lugar = Lugar.criarLugarPorPosicao(fila, coluna);
+        // Obter o objeto Lugar da sala
+        Lugar lugar = sessao.getSala().getLugar(fila, coluna);
+
+        if (lugar == null) {
+            // Caso o lugar não exista na sala (não deve acontecer, mas como precaução)
+            JPanel panel = new JPanel();
+            panel.setPreferredSize(new Dimension(35, 35));
+            panel.setBackground(Color.WHITE);
+            return panel;
+        }
 
         // Criar o componente visual para representar o lugar
         JPanel painelLugar = new JPanel(new BorderLayout());
@@ -101,7 +148,7 @@ public class JanelaSelecaoLugar extends JPanel {
         labelLugar.setFont(new Font(labelLugar.getFont().getName(), Font.BOLD, 10));
         painelLugar.add(labelLugar, BorderLayout.CENTER);
 
-        painelLugar.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        painelLugar.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
 
         // Adicionar evento de clique apenas para lugares disponíveis
         if (!lugar.isOcupado()) {
@@ -115,14 +162,14 @@ public class JanelaSelecaoLugar extends JPanel {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     if (painelLugarSelecionado != painelLugar) {
-                        painelLugar.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+                        painelLugar.setBorder(BorderFactory.createLineBorder(BORDA_HOVER, LARGURA_BORDA_HOVER));
                     }
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     if (painelLugarSelecionado != painelLugar) {
-                        painelLugar.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                        painelLugar.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
                     }
                 }
             });
@@ -133,6 +180,7 @@ public class JanelaSelecaoLugar extends JPanel {
 
         return painelLugar;
     }
+
     private JPanel criarPainelLegenda() {
         JPanel painelLegenda = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
         painelLegenda.setBorder(BorderFactory.createTitledBorder("Legenda"));
@@ -153,9 +201,9 @@ public class JanelaSelecaoLugar extends JPanel {
             cor.setOpaque(true);
 
             if ((boolean)item[2]) {
-                cor.setBorder(BorderFactory.createLineBorder(Lugar.COR_LUGAR_SELECIONADO, 3));
+                cor.setBorder(BorderFactory.createLineBorder(BORDA_SELECIONADO, LARGURA_BORDA_SELECIONADO));
             } else {
-                cor.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                cor.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
             }
 
             // Se for o item VIP, adicionar um texto em branco para ilustrar
@@ -188,19 +236,28 @@ public class JanelaSelecaoLugar extends JPanel {
         painelBotoes.add(btnProximo);
         add(painelBotoes, BorderLayout.SOUTH);
     }
+
     private void selecionarLugar(JPanel painel) {
+        setLugarSelecionado(mapaPainelLugar.get(painel));
+        atualizarSelecao(painel);
+    }
+
+    private void atualizarSelecao(JPanel painelSelecionado) {
         // Restaurar borda do lugar anteriormente selecionado
-        if (painelLugarSelecionado != null) {
-            painelLugarSelecionado.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        if (painelLugarSelecionado != null && painelLugarSelecionado != painelSelecionado) {
+            painelLugarSelecionado.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
         }
 
         // Atualizar seleção
-        painelLugarSelecionado = painel;
-        lugarSelecionado = mapaPainelLugar.get(painel);
-        painel.setBorder(BorderFactory.createLineBorder(Lugar.COR_LUGAR_SELECIONADO, 3));
+        painelLugarSelecionado = painelSelecionado;
+        if (painelSelecionado != null) {
+            painelSelecionado.setBorder(BorderFactory.createLineBorder(BORDA_SELECIONADO, LARGURA_BORDA_SELECIONADO));
+        }
+    }
 
-        // Habilitar botão próximo
-        btnProximo.setEnabled(true);
+    public void setLugarSelecionado(Lugar lugar) {
+        this.lugarSelecionado = lugar;
+        btnProximo.setEnabled(lugar != null);
     }
 
     // Getters
@@ -216,5 +273,10 @@ public class JanelaSelecaoLugar extends JPanel {
     public double getPrecoTotal() {
         if (lugarSelecionado == null) return sessao.getPreco();
         return lugarSelecionado.calcularPreco(sessao.getPreco());
+    }
+
+    // Getter para o objeto Lugar selecionado
+    public Lugar getLugarSelecionadoObjeto() {
+        return lugarSelecionado;
     }
 }
