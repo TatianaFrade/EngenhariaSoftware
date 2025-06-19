@@ -1,6 +1,9 @@
 package pt.ipleiria.estg.ei.dei.esoft;
 
-public class Filme {
+import java.io.Serializable;
+
+public class Filme implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String nome;
     private boolean legendado;
     private String dataLancamento;

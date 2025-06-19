@@ -1,0 +1,56 @@
+[
+  {
+    "nome": "Matrix",
+    "legendado": true,
+    "dataLancamento": "1999-03-31",
+    "rate": 8.7
+  },
+  {
+    "nome": "O Rei Leão",
+    "legendado": false,
+    "dataLancamento": "1994-06-24",
+    "rate": 8.5
+  },
+  {
+    "nome": "Interestelar",
+    "legendado": true,
+    "dataLancamento": "2014-11-06",
+    "rate": 8.6
+  },
+  {
+    "nome": "Vingadores: Ultimato",
+    "legendado": false,
+    "dataLancamento": "2019-04-26",
+    "rate": 8.4
+  },
+  {
+    "nome": "Cidade de Deus",
+    "legendado": true,
+    "dataLancamento": "2002-08-30",
+    "rate": 8.6
+  },
+  {
+    "nome": "O Auto da Compadecida",
+    "legendado": false,
+    "dataLancamento": "2000-09-15",
+    "rate": 8.8
+  },
+  {
+    "nome": "Pantera Negra",
+    "legendado": true,
+    "dataLancamento": "2018-02-15",
+    "rate": 7.3
+  },
+  {
+    "nome": "La La Land",
+    "legendado": true,
+    "dataLancamento": "2016-12-16",
+    "rate": 8.0
+  },
+  {
+    "nome": "Bacurau",
+    "legendado": false,
+    "dataLancamento": "2019-08-23",
+    "rate": 7.7
+  }
+]

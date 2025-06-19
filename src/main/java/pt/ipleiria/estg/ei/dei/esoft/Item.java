@@ -1,9 +1,12 @@
 package pt.ipleiria.estg.ei.dei.esoft;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa um item disponível no bar
  */
-public class Item {
+public class Item implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String nome;
     private String descricao;
     private double preco;

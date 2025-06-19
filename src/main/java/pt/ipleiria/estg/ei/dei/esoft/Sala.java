@@ -1,10 +1,11 @@
 package pt.ipleiria.estg.ei.dei.esoft;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Sala {
+public class Sala implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String nome;
     private String acessibilidade; // "sim" ou "nao"
     private int totalLugares;
@@ -125,8 +126,14 @@ public class Sala {
         return totalLugares;
     }
 
+    // Getter para lugares (retorna a lista real para permitir modificações)
     public List<Lugar> getLugares() {
-        return new ArrayList<>(lugares); // Retorna uma cópia para evitar modificações externas
+        return lugares; // Retorna a lista real para permitir adições
+    }
+
+    // Setter para lugares
+    public void setLugares(List<Lugar> lugares) {
+        this.lugares = lugares;
     }
 
     public int getLugaresOcupados() {

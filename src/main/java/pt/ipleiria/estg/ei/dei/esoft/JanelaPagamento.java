@@ -22,11 +22,12 @@ public class JanelaPagamento extends JPanel {
     private double precoTotal;
     private double desconto;
     private double subtotal;
-
     private MetodoPagamento[] metodosDisponiveis;
     private Map<JRadioButton, MetodoPagamento> mapaBotoesPagamento;
     private ButtonGroup grupoMetodosPagamento;
     private MetodoPagamento metodoPagamentoSelecionado;
+
+    private List<Item> itensSelecionados; // Lista de itens do bar
 
     /**
      * Construtor da janela de pagamento
@@ -61,6 +62,22 @@ public class JanelaPagamento extends JPanel {
         // Painel inferior com os botões
         configurarPainelBotoes(actionListenerVoltar, actionListenerProximo);
     }
+    /**
+     * Construtor para pagamento com itens do bar selecionados
+     *
+     * @param sessao Sessão selecionada
+     * @param lugar Lugar selecionado
+     * @param precoTotal Preço total (incluindo lugar VIP se aplicável)
+     * @param itensSelecionados Lista de itens do bar selecionados
+     * @param actionListenerVoltar Listener para o botão voltar
+     * @param actionListenerProximo Listener para o botão próximo
+     */
+    public JanelaPagamento(Sessao sessao, Lugar lugar, double precoTotal, List<Item> itensSelecionados,
+                           ActionListener actionListenerVoltar, ActionListener actionListenerProximo) {
+        this(sessao, lugar, precoTotal, actionListenerVoltar, actionListenerProximo);
+        this.itensSelecionados = itensSelecionados;
+    }
+
     /**
      * Calcula o desconto baseado em alguma regra de negócio
      * (Por especificação, o desconto deve ser sempre 0)
@@ -291,6 +308,13 @@ public class JanelaPagamento extends JPanel {
 
     public JButton getBtnVoltar() {
         return btnVoltar;
+    }
+
+    /**
+     * @return Lista de itens selecionados do bar
+     */
+    public List<Item> getItensSelecionados() {
+        return itensSelecionados;
     }
     /**
      * Exibe um diálogo para coletar informações do cartão de crédito
