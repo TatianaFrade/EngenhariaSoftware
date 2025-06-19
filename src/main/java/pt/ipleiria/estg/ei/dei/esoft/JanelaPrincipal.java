@@ -196,20 +196,14 @@ public class JanelaPrincipal extends JFrame {
         });
 
         trocarPainel(painelLugares);
-    }
-    private void mostrarJanelaOpcoesFinal(Sessao sessao, Lugar lugar, double precoTotal) {
+    }      private void mostrarJanelaOpcoesFinal(Sessao sessao, Lugar lugar, double precoTotal) {
         // Criar o painel de opções finais
         JanelaOpcoesFinal painelOpcoes = new JanelaOpcoesFinal(sessao, lugar, precoTotal);
 
         // Configurar os botões
         painelOpcoes.getBtnAdicionarProdutos().addActionListener(e -> {
-            // Implementação futura para adicionar produtos do bar
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Funcionalidade de adicionar produtos do bar será implementada em uma versão futura.",
-                    "Em desenvolvimento",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+            // Abrir a janela de seleção de itens do bar
+            mostrarJanelaSelecaoItensBar(sessao, lugar, precoTotal);
         });
 
         painelOpcoes.getBtnFinalizarCompra().addActionListener(e -> {
@@ -332,6 +326,146 @@ public class JanelaPrincipal extends JFrame {
         button.setMargin(new Insets(10, 10, 10, 10));
 
         return button;
+    }    /**
+     * Mostra a janela de seleção de itens do bar
+     *
+     * @param sessao A sessão selecionada
+     * @param lugar O lugar selecionado
+     * @param precoBase O preço do bilhete (sem itens do bar)
+     */
+    private void mostrarJanelaSelecaoItensBar(Sessao sessao, Lugar lugar, double precoBase) {
+        // Criar o painel de seleção de itens do bar
+        final JanelaSelecaoItensBar painelItensBar = new JanelaSelecaoItensBar(
+                sessao,
+                lugar,
+                precoBase,
+                // ActionListener para o botão Voltar - retorna à tela de opções finais
+                e -> mostrarJanelaOpcoesFinal(sessao, lugar, precoBase),
+                null // O listener para Próximo será configurado abaixo
+        );
+
+        // Configurar o ActionListener para o botão Próximo separadamente
+        painelItensBar.getBtnProximo().addActionListener(e -> {
+            // Calcular o preço total (bilhete + itens do bar)
+            double precoTotal = painelItensBar.getPrecoTotal();
+
+            // Avançar para a tela de pagamento com o valor atualizado
+            mostrarJanelaPagamentoComItens(sessao, lugar, precoTotal, painelItensBar.getItensSelecionados());
+        });
+
+        trocarPainel(painelItensBar);
+    }    /**
+     * Mostra a janela de pagamento incluindo itens do bar
+     *
+     * @param sessao A sessão selecionada
+     * @param lugar O lugar selecionado
+     * @param precoTotal O preço total (bilhete + itens do bar)
+     * @param itensSelecionados Lista de itens selecionados do bar
+     */
+    private void mostrarJanelaPagamentoComItens(Sessao sessao, Lugar lugar, double precoTotal, List<Item> itensSelecionados) {
+        // Calcular o valor dos itens do bar
+        double valorItensBar = 0.0;
+        for (Item item : itensSelecionados) {
+            valorItensBar += item.getPreco();
+        }
+
+        // Criar o painel de pagamento
+        JanelaPagamento painelPagamento = new JanelaPagamento(
+                sessao,
+                lugar,
+                precoTotal,
+                // ActionListener para o botão Voltar - retorna à tela de seleção de itens
+                e -> mostrarJanelaSelecaoItensBar(sessao, lugar, lugar.calcularPreco(sessao.getPreco())),
+                // ActionListener para o botão Próximo - finaliza o pagamento
+                null // Será configurado após a criação
+        );
+
+        // Adicionar os detalhes dos itens do bar ao painel de pagamento
+        painelPagamento.adicionarDetalhesItensBar(itensSelecionados, valorItensBar);
+
+        // Configurar o ActionListener para o botão Próximo separadamente
+        painelPagamento.getBtnProximo().addActionListener(e ->
+                finalizarPagamentoComItens(sessao, lugar, precoTotal, painelPagamento.getMetodoPagamentoSelecionado(),
+                        painelPagamento, itensSelecionados)
+        );
+
+        trocarPainel(painelPagamento);
+    }
+
+    /**
+     * Finaliza o processo de compra e pagamento incluindo itens do bar
+     *
+     * @param sessao A sessão selecionada
+     * @param lugar O lugar selecionado
+     * @param precoTotal O preço total (bilhete + itens do bar)
+     * @param metodoPagamento O método de pagamento selecionado
+     * @param painelPagamento Referência ao painel de pagamento
+     * @param itensSelecionados Lista de itens selecionados do bar
+     */
+    private void finalizarPagamentoComItens(Sessao sessao, Lugar lugar, double precoTotal,
+                                            String metodoPagamento, JanelaPagamento painelPagamento,
+                                            List<Item> itensSelecionados) {
+        // Marcar o lugar como ocupado na sala
+        sessao.getSala().ocuparLugar(lugar.getFila(), lugar.getColuna());
+
+        // Calcular o valor dos itens do bar
+        double valorItensBar = 0.0;
+        StringBuilder itensStr = new StringBuilder();
+
+        for (Item item : itensSelecionados) {
+            valorItensBar += item.getPreco();
+            itensStr.append("- ").append(item.getNome()).append(": ").append(String.format("%.2f €", item.getPreco())).append("\n");
+        }
+
+        // Mensagem de pagamento concluído com base no método selecionado
+        String mensagem;
+        if (metodoPagamento.equals("Cartão de Crédito")) {
+            // Coletar dados do cartão usando o painel de pagamento fornecido
+            java.util.Map<String, String> dadosCartao = painelPagamento.coletarDadosCartao();
+
+            // Se o usuário cancelou ou houve erro de validação
+            if (dadosCartao == null) {
+                return; // Não continua com o processo
+            }
+
+            // Formato simplificado do número do cartão para exibição (últimos 4 dígitos)
+            String numeroCartao = dadosCartao.get("numeroCartao");
+            String ultimos4Digitos = numeroCartao.length() > 4 ?
+                    numeroCartao.substring(numeroCartao.length() - 4) :
+                    numeroCartao;
+
+            mensagem = "Pagamento realizado com sucesso via " + metodoPagamento + "!\n" +
+                    "Cartão: **** **** **** " + ultimos4Digitos + "\n" +
+                    "Titular: " + dadosCartao.get("nomeTitular") + "\n\n" +
+                    "Seu bilhete para " + sessao.getFilme().getNome() + " foi emitido.\n\n" +
+                    (itensSelecionados.isEmpty() ? "" : "Itens do Bar:\n" + itensStr.toString() + "\n") +
+                    "Subtotal bilhete: " + String.format("%.2f €", precoTotal - valorItensBar) + "\n" +
+                    "Subtotal itens: " + String.format("%.2f €", valorItensBar) + "\n" +
+                    "TOTAL: " + String.format("%.2f €", precoTotal) + "\n\n" +
+                    "Agradecemos a preferência!";
+        } else {
+            // Multibanco - gerar referência fictícia
+            String referencia = gerarReferenciaMultibanco();
+            mensagem = "Referência Multibanco gerada com sucesso!\n" +
+                    "Referência: " + referencia + "\n" +
+                    "Valor: " + String.format("%.2f €", precoTotal) + "\n\n" +
+                    (itensSelecionados.isEmpty() ? "" : "Itens do Bar:\n" + itensStr.toString() + "\n") +
+                    "Subtotal bilhete: " + String.format("%.2f €", precoTotal - valorItensBar) + "\n" +
+                    "Subtotal itens: " + String.format("%.2f €", valorItensBar) + "\n" +
+                    "TOTAL: " + String.format("%.2f €", precoTotal) + "\n\n" +
+                    "Por favor, efetue o pagamento em 48 horas para validar sua compra.\n" +
+                    "Agradecemos a preferência!";
+        }
+
+        JOptionPane.showMessageDialog(
+                this,
+                mensagem,
+                "Pagamento " + (metodoPagamento.equals("Cartão de Crédito") ? "Finalizado" : "Pendente"),
+                JOptionPane.INFORMATION_MESSAGE
+        );
+
+        // Voltar para o menu principal
+        voltarParaPainelPrincipal();
     }
 
     public static void main(String[] args) {

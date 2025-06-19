@@ -74,18 +74,11 @@ public class JanelaOpcoesFinal extends JPanel {
         JPanel painelCentral = new JPanel();
         painelCentral.setLayout(new GridLayout(2, 1, 10, 30));
         painelCentral.setBorder(BorderFactory.createEmptyBorder(30, 100, 30, 100));
-
         // Botão para adicionar produtos do bar
         btnAdicionarProdutos = new JButton("Adicionar Produtos do Bar");
         btnAdicionarProdutos.setFont(new Font(btnAdicionarProdutos.getFont().getName(), Font.BOLD, 14));
         btnAdicionarProdutos.setPreferredSize(new Dimension(300, 60));
-        btnAdicionarProdutos.addActionListener(e -> {
-            // Por enquanto não faz nada
-            JOptionPane.showMessageDialog(this,
-                    "Funcionalidade de adicionar produtos do bar será implementada em uma versão futura.",
-                    "Em desenvolvimento",
-                    JOptionPane.INFORMATION_MESSAGE);
-        });
+        // O ActionListener será configurado na JanelaPrincipal
         // Botão para finalizar compra
         btnFinalizarCompra = new JButton("Finalizar Compra");
         btnFinalizarCompra.setFont(new Font(btnFinalizarCompra.getFont().getName(), Font.BOLD, 14));

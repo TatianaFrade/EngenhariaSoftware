@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -442,5 +443,51 @@ public class JanelaPagamento extends JPanel {
         }
 
         return null;
+    }
+    /**
+     * Adiciona detalhes sobre itens do bar ao painel de título
+     *
+     * @param itens Lista de itens do bar selecionados
+     * @param valorItensBar Valor total dos itens do bar
+     */
+    public void adicionarDetalhesItensBar(List<Item> itens, double valorItensBar) {
+        if (itens == null || itens.isEmpty()) {
+            return;
+        }
+
+        // Criar um painel para os itens do bar
+        JPanel painelItensBar = new JPanel();
+        painelItensBar.setLayout(new BoxLayout(painelItensBar, BoxLayout.Y_AXIS));
+        painelItensBar.setBorder(BorderFactory.createTitledBorder("Itens do Bar"));
+
+        // Adicionar cada item à lista
+        for (Item item : itens) {
+            JLabel labelItem = new JLabel(String.format("%s - %.2f €", item.getNome(), item.getPreco()));
+            labelItem.setAlignmentX(Component.LEFT_ALIGNMENT);
+            painelItensBar.add(labelItem);
+        }
+
+        // Adicionar o total dos itens
+        JLabel labelTotal = new JLabel(String.format("Total itens: %.2f €", valorItensBar));
+        labelTotal.setFont(new Font(labelTotal.getFont().getName(), Font.BOLD, 12));
+        labelTotal.setAlignmentX(Component.LEFT_ALIGNMENT);
+        painelItensBar.add(labelTotal);
+
+        // Adicionar o painel ao painel de título
+        // Como o painel de título está no NORTH do BorderLayout, precisamos adicioná-lo no fim
+        // do componente que já está lá, que é o painelTitulo
+        Component[] components = getComponents();
+        for (Component comp : components) {
+            if (comp instanceof JPanel && comp == getComponent(0)) { // O primeiro componente é o painel de título
+                JPanel painelTitulo = (JPanel) comp;
+                painelTitulo.add(Box.createVerticalStrut(15));
+                painelTitulo.add(painelItensBar);
+                break;
+            }
+        }
+
+        // Atualizar a interface
+        revalidate();
+        repaint();
     }
 }
