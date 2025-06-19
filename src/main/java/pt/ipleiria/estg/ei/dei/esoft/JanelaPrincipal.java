@@ -2,23 +2,28 @@ package pt.ipleiria.estg.ei.dei.esoft;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
 public class JanelaPrincipal extends JFrame {
-    private JPanel painelPrincipal;
-    private JButton comprarBilheteButton;
+    private JPanel painelPrincipal;    private JButton comprarBilheteButton;
     private JButton comprarProdutosButton;
     private JButton verMenusButton;
     private JButton consultarSessoesPorDiaButton;
-    private JButton loginButton;    private List<Filme> filmes;
-    private List<Sessao> sessoes;    public JanelaPrincipal(String title) {
+    private JButton loginButton;
+    private JButton perfilButton;
+    private JLabel usuarioLabel; // Rótulo para mostrar o nome do usuário
+    private Usuario usuarioLogado; // Usuário atualmente logado
+
+    private List<Filme> filmes;
+    private List<Sessao> sessoes;
+
+    public JanelaPrincipal(String title) {
         super(title);
         inicializarDados();
         criarPainelPrincipal();
@@ -133,40 +138,10 @@ public class JanelaPrincipal extends JFrame {
 
         } catch (Exception e) {
             System.out.println("Erro ao carregar dados: " + e.getMessage());
-            e.printStackTrace();
-
-            // Em caso de erro, inicializar com dados padrão
+            e.printStackTrace();            // Em caso de erro, inicializar com dados padrão
             inicializarDadosPadrao();
         }
     }
-    /**
-     * Método auxiliar para adicionar uma sessão preservando o ID se já existia
-     */
-    private void adicionarSessaoComIdConsistente(List<Sessao> listaSessoes, Map<String, String> mapaIdsAntigos,
-                                                 Filme filme, LocalDateTime dataHora, Sala sala, double preco) {
-        // Criar a nova sessão
-        Sessao novaSessao = new Sessao(filme, dataHora, sala, preco);
-
-        // Tentar encontrar um ID correspondente no mapa
-        String chave = filme.getNome() + "_" + sala.getNome() + "_" + dataHora.toString();
-        String idAntigo = mapaIdsAntigos.get(chave);
-
-        if (idAntigo != null) {
-            // Se encontrou um ID correspondente, manter o ID antigo
-            try {
-                // Usar reflection para modificar o ID privado
-                java.lang.reflect.Field field = Sessao.class.getDeclaredField("id");
-                field.setAccessible(true);
-                field.set(novaSessao, idAntigo);
-            } catch (Exception e) {
-                System.err.println("Erro ao preservar ID da sessão: " + e.getMessage());
-            }
-        }
-
-        // Adicionar à lista
-        listaSessoes.add(novaSessao);
-    }
-
     private void criarPainelPrincipal() {
         painelPrincipal = new JPanel();
         painelPrincipal.setLayout(new BorderLayout());
@@ -174,14 +149,37 @@ public class JanelaPrincipal extends JFrame {
         // Painel superior com título e login
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+
         // Título para o cinema com estilo neutro
         JLabel titulo = new JLabel("Cinema e Bar");
         titulo.setFont(new Font("Arial", Font.BOLD, 24));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
-        // Botão de login com estilo neutro
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);        // Botão de login/logout com estilo neutro
         loginButton = new JButton("Login");
-        loginButton.setPreferredSize(new Dimension(100, 30));
-        JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        loginButton.setPreferredSize(new Dimension(80, 30));
+        loginButton.addActionListener(e -> {
+            if (usuarioLogado != null) {
+                // Se estiver logado, faz logout
+                realizarLogout();
+            } else {
+                // Se não estiver logado, mostra tela de login
+                mostrarJanelaLogin();
+            }
+        });
+        // Rótulo para mostrar o nome do usuário (inicialmente vazio)
+        usuarioLabel = new JLabel("");
+        usuarioLabel.setPreferredSize(new Dimension(150, 30));
+        usuarioLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        usuarioLabel.setFont(new Font("Arial", Font.BOLD, 12));
+
+        // Botão de perfil (inicialmente invisível)
+        perfilButton = new JButton("Meu Perfil");
+        perfilButton.setPreferredSize(new Dimension(100, 30));
+        perfilButton.setVisible(false); // Só fica visível quando o usuário está logado
+        perfilButton.addActionListener(e -> mostrarJanelaEditarPerfil());
+
+        JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        loginPanel.add(usuarioLabel);
+        loginPanel.add(perfilButton);
         loginPanel.add(loginButton);
 
         topPanel.add(titulo, BorderLayout.CENTER);
@@ -189,13 +187,12 @@ public class JanelaPrincipal extends JFrame {
 
         // Adiciona o painel superior
         painelPrincipal.add(topPanel, BorderLayout.NORTH);
+
         // Criar botões com estilo neutro
         comprarBilheteButton = createStyledButton("Comprar Bilhete", null);
         comprarProdutosButton = createStyledButton("Comprar Produtos", null);
         verMenusButton = createStyledButton("Ver Menus", null);
-        consultarSessoesPorDiaButton = createStyledButton("Consultar Sessões por Dia", null);
-
-        // Painel central com os botões principais dispostos em grid
+        consultarSessoesPorDiaButton = createStyledButton("Consultar Sessões por Dia", null);        // Painel central com os botões principais dispostos em grid
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         centerPanel.add(comprarBilheteButton);
         centerPanel.add(comprarProdutosButton);
@@ -207,15 +204,14 @@ public class JanelaPrincipal extends JFrame {
         paddedCenterPanel.add(centerPanel, BorderLayout.CENTER);
         paddedCenterPanel.setBorder(BorderFactory.createEmptyBorder(40, 100, 40, 100));
         painelPrincipal.add(paddedCenterPanel, BorderLayout.CENTER);
+
         // Adiciona um rodapé simples
         JPanel footerPanel = new JPanel(new BorderLayout());
         JLabel footerLabel = new JLabel("Cinema e Bar");
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footerPanel.add(footerLabel, BorderLayout.CENTER);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        painelPrincipal.add(footerPanel, BorderLayout.SOUTH);
-
-        comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
+        painelPrincipal.add(footerPanel, BorderLayout.SOUTH);        comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
     }
 
     private void mostrarJanelaSelecaoFilme() {
@@ -332,8 +328,8 @@ public class JanelaPrincipal extends JFrame {
                 e -> mostrarJanelaOpcoesFinal(sessao, lugar, precoTotal),
                 // ActionListener para o botão Próximo - finaliza o pagamento
                 null // Será configurado após a criação
-        );        // Configurar o ActionListener para o botão Próximo separadamente
-        painelPagamento.getBtnProximo().addActionListener(e -> {
+        );        // Configurar o ActionListener para o botão Finalizar Pagamento separadamente
+        painelPagamento.getBtnPagar().addActionListener(e -> {
             String metodoPagamento = painelPagamento.getMetodoPagamentoSelecionado();
             if (metodoPagamento == null || metodoPagamento.isEmpty()) {
                 JOptionPane.showMessageDialog(painelPagamento,
@@ -521,9 +517,8 @@ public class JanelaPrincipal extends JFrame {
 
         // Adicionar os detalhes dos itens do bar ao painel de pagamento
         painelPagamento.adicionarDetalhesItensBar(itensSelecionados, valorItensBar);
-
-        // Configurar o ActionListener para o botão Próximo separadamente
-        painelPagamento.getBtnProximo().addActionListener(e ->
+        // Configurar o ActionListener para o botão Finalizar Pagamento separadamente
+        painelPagamento.getBtnPagar().addActionListener(e ->
                 finalizarPagamentoComItens(sessao, lugar, precoTotal, painelPagamento.getMetodoPagamentoSelecionado(),
                         painelPagamento, itensSelecionados)
         );
@@ -713,11 +708,360 @@ public class JanelaPrincipal extends JFrame {
         }
 
         System.out.println("Total de lugares restaurados: " + lugaresRestaurados);
+    }    /**
+     * Mostra a janela de login.
+     */
+    private void mostrarJanelaLogin() {
+        // Criar o ouvinte para o botão Login
+        ActionListener loginListener = e -> {
+            // Obter uma referência ao componente de origem do evento
+            JButton sourceButton = (JButton) e.getSource();
+            // Obter o painel pai (que é a JanelaLogin)
+            JanelaLogin painel = (JanelaLogin) sourceButton.getParent().getParent();
+
+            // Obtendo os dados do formulário de login
+            String usuario = painel.getUsuario();
+            char[] senha = painel.getSenha();
+
+            // Tentativa de autenticação via serviço
+            Usuario usuarioAutenticado = UsuarioService.autenticarUsuario(usuario, new String(senha));
+
+            // Limpar senha por segurança após uso
+            for (int i = 0; i < senha.length; i++) {
+                senha[i] = 0;
+            }              if (usuarioAutenticado != null) {
+                // Autenticação bem-sucedida
+                usuarioLogado = usuarioAutenticado;
+                // Atualizar botão de login para mostrar apenas "Logout"
+                loginButton.setText("Logout");
+
+                // Atualizar o rótulo com o nome do usuário
+                usuarioLabel.setText("Olá, " + usuarioAutenticado.getNome());
+
+                // Mostrar botão de perfil
+                perfilButton.setVisible(true);
+
+                // Atualizar título da janela
+                atualizarTituloJanela();
+
+                // Mostrar mensagem de sucesso e voltar para o painel principal
+                JOptionPane.showMessageDialog(this,
+                        "Login realizado com sucesso! Bem-vindo, " + usuarioAutenticado.getNome() + "!");
+                voltarParaPainelPrincipal();
+            } else {
+                // Autenticação falhou
+                JOptionPane.showMessageDialog(this,
+                        "Usuário ou senha incorretos.",
+                        "Erro de Autenticação",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        };
+
+        // Criar painel de login com ações para os botões
+        JanelaLogin painelLogin = new JanelaLogin(
+                // Botão Voltar
+                e -> voltarParaPainelPrincipal(),
+
+                // Botão Login (autenticação)
+                loginListener,
+
+                // Botão Criar Conta - redireciona para a tela de criação
+                e -> mostrarJanelaCriarConta()
+        );
+
+        // Mostrar o painel de login
+        trocarPainel(painelLogin);
+    }    /**
+     * Mostra a janela de criação de conta.
+     */
+    private void mostrarJanelaCriarConta() {
+        // Criar o ouvinte para o botão Criar Conta
+        ActionListener criarContaListener = e -> {
+            // Obter uma referência ao componente de origem do evento
+            JButton sourceButton = (JButton) e.getSource();
+            // Obter o painel pai (que é a JanelaCriarConta)
+            JanelaCriarConta painel = (JanelaCriarConta) sourceButton.getParent().getParent();
+
+            // Primeiro validar o formulário de criação de conta
+            if (painel.validarFormulario()) {
+                // Coletar dados do formulário
+                String nome = painel.getNome();
+                String nomeUsuario = painel.getUsuario();
+                String email = painel.getEmail();
+                String senha = new String(painel.getSenha());
+
+                // Criar objeto usuário
+                Usuario novoUsuario = new Usuario(nome, nomeUsuario, email, senha);
+
+                // Tentar salvar o usuário
+                boolean sucesso = UsuarioService.salvarUsuario(novoUsuario);
+
+                if (sucesso) {
+                    // Usuário criado com sucesso
+                    JOptionPane.showMessageDialog(this,
+                            "Conta criada com sucesso! Por favor, faça login.");
+                    mostrarJanelaLogin();
+                } else {
+                    // Falha ao criar usuário (nome já existe)
+                    JOptionPane.showMessageDialog(this,
+                            "Erro ao criar conta. O nome de usuário já existe.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        // Criar instância da janela de criação de conta
+        JanelaCriarConta painelCriarConta = new JanelaCriarConta(
+                // Ação para o botão Voltar: retornar à tela de login
+                e -> mostrarJanelaLogin(),
+
+                // Ação para o botão Criar Conta
+                criarContaListener
+        );
+
+        // Exibir a janela de criação de conta
+        trocarPainel(painelCriarConta);
+    }
+
+    /**
+     * Mostra a janela de edição de perfil do usuário logado.
+     */    private void mostrarJanelaEditarPerfil() {
+        if (usuarioLogado == null) {
+            JOptionPane.showMessageDialog(this,
+                    "É necessário estar logado para editar o perfil.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        System.out.println("Abrindo janela de edição de perfil para usuário: " + usuarioLogado.getNomeUsuario());
+        UsuarioService.listarUsuariosRegistrados();
+
+        // Criar os listeners para os botões da janela de edição
+        ActionListener voltarListener = e -> voltarParaPainelPrincipal();
+        ActionListener salvarListener = e -> {
+            // Obter o painel de edição - precisa encontrar o componente JanelaEditarPerfil
+            // que pode estar em vários níveis na hierarquia de containers
+            JButton sourceButton = (JButton) e.getSource();
+            Container container = sourceButton.getParent();
+            JanelaEditarPerfil painelEdicao = null;
+
+            // Procurar pelo componente JanelaEditarPerfil na hierarquia
+            while (container != null) {
+                if (container instanceof JanelaEditarPerfil) {
+                    painelEdicao = (JanelaEditarPerfil) container;
+                    break;
+                }
+                container = container.getParent();
+            }
+
+            if (painelEdicao == null) {
+                System.err.println("ERRO: Não foi possível encontrar o painel de edição de perfil.");
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao processar alterações. Tente novamente.",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            System.out.println("Formulário de edição encontrado, validando...");
+            // Validar o formulário antes de continuar
+            if (painelEdicao.validarFormulario()) {
+                System.out.println("Formulário validado com sucesso.");
+                // Obter os dados atualizados
+                Usuario usuarioAtualizado = painelEdicao.getDadosAtualizados();
+
+                System.out.println("Dados obtidos do formulário: Nome=" + usuarioAtualizado.getNome() +
+                        ", Email=" + usuarioAtualizado.getEmail() +
+                        ", Usuario=" + usuarioAtualizado.getUsuario());
+                System.out.println("Iniciando processo de atualização de usuário...");
+                System.out.println("Usuário atual logado: " + usuarioLogado.getNomeUsuario());
+
+                // Mostrar usuários antes da atualização
+                UsuarioService.listarUsuariosRegistrados();
+
+                // Atualizar o usuário via serviço
+                boolean sucesso = UsuarioService.atualizarUsuario(usuarioLogado.getNomeUsuario(), usuarioAtualizado);
+                if (sucesso) {
+                    System.out.println("Atualização do usuário retornou sucesso!");
+
+                    // Mostrar usuários após a atualização
+                    UsuarioService.listarUsuariosRegistrados();
+
+                    // Atualizar o usuário logado com os novos dados
+                    usuarioLogado = usuarioAtualizado;
+
+                    // Atualizar a interface (rótulo de usuário e título da janela)
+                    usuarioLabel.setText("Olá, " + usuarioLogado.getNome());
+                    atualizarTituloJanela();
+
+                    // Mostrar mensagem de sucesso
+                    JOptionPane.showMessageDialog(this,
+                            "Perfil atualizado com sucesso!");
+
+                    // Voltar para a tela principal
+                    voltarParaPainelPrincipal();
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "Erro ao atualizar perfil. Tente novamente.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        ActionListener excluirListener = e -> {
+            // Confirmação antes de excluir a conta
+            int confirmar = JOptionPane.showConfirmDialog(this,
+                    "Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.",
+                    "Confirmar Exclusão",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+            if (confirmar == JOptionPane.YES_OPTION) {
+                // Obter o painel de edição - precisa encontrar o componente JanelaEditarPerfil
+                // que pode estar em vários níveis na hierarquia de containers
+                JButton sourceButton = (JButton) e.getSource();
+                Container container = sourceButton.getParent();
+                JanelaEditarPerfil painelEdicao = null;
+
+                // Procurar pelo componente JanelaEditarPerfil na hierarquia
+                while (container != null) {
+                    if (container instanceof JanelaEditarPerfil) {
+                        painelEdicao = (JanelaEditarPerfil) container;
+                        break;
+                    }
+                    container = container.getParent();
+                }
+
+                if (painelEdicao == null) {
+                    System.err.println("ERRO: Não foi possível encontrar o painel de edição de perfil.");
+                    JOptionPane.showMessageDialog(this,
+                            "Erro ao processar exclusão da conta. Tente novamente.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                System.out.println("Formulário de edição encontrado, procedendo com exclusão...");
+
+                // Verificar a senha para confirmar a exclusão
+                char[] senhaAtual = painelEdicao.getSenhaAtual();
+                if (senhaAtual == null || senhaAtual.length == 0) {
+                    JOptionPane.showMessageDialog(this,
+                            "É necessário inserir sua senha atual para confirmar a exclusão da conta.",
+                            "Senha Necessária",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                // Verificar se a senha está correta
+                String senhaAtualStr = new String(senhaAtual);
+                System.out.println("Verificando senha atual: " + (senhaAtualStr.isEmpty() ? "vazia" : "preenchida"));
+                System.out.println("Senha registrada para o usuário: " + (usuarioLogado.getSenha() != null ? "definida" : "null"));
+
+                if (!usuarioLogado.verificarSenha(senhaAtualStr)) {
+                    System.out.println("ERRO: Verificação de senha falhou");
+                    JOptionPane.showMessageDialog(this,
+                            "A senha inserida está incorreta.",
+                            "Senha Incorreta",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                System.out.println("Senha verificada com sucesso!");
+                System.out.println("Iniciando processo de exclusão de conta...");
+                System.out.println("Usuário a ser excluído: " + usuarioLogado.getNomeUsuario() + " (" + usuarioLogado.getNome() + ")");
+
+                // Mostrar usuários antes da exclusão
+                UsuarioService.listarUsuariosRegistrados();
+
+                // Excluir o usuário via serviço
+                boolean sucesso = UsuarioService.excluirUsuario(usuarioLogado.getNomeUsuario());
+
+                if (sucesso) {
+                    System.out.println("Exclusão de usuário retornou sucesso!");
+
+                    // Mostrar usuários após a exclusão
+                    UsuarioService.listarUsuariosRegistrados();
+
+                    // Realizar logout após exclusão bem-sucedida
+                    JOptionPane.showMessageDialog(this,
+                            "Sua conta foi excluída com sucesso.",
+                            "Conta Excluída",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    // Fazer logout e voltar para a tela principal
+                    realizarLogout();
+                } else {
+                    System.out.println("ERRO: Falha na exclusão da conta de usuário.");
+                    JOptionPane.showMessageDialog(this,
+                            "Erro ao excluir conta. Tente novamente.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        // Criar e exibir a janela de edição de perfil
+        JanelaEditarPerfil painelEditarPerfil = new JanelaEditarPerfil(
+                usuarioLogado,
+                voltarListener,
+                salvarListener,
+                excluirListener
+        );
+
+        trocarPainel(painelEditarPerfil);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new JanelaPrincipal("Cinema e Bar").setVisible(true);
         });
+    }
+
+    public Usuario getUsuarioLogado() {
+        return usuarioLogado;
+    }    /**
+     * Realiza o logout do usuário atual e retorna para a página inicial.
+     */    private void realizarLogout() {
+        // Limpar o usuário logado
+        usuarioLogado = null;
+
+        // Atualizar o botão para mostrar "Login" novamente
+        loginButton.setText("Login");
+
+        // Limpar o rótulo do nome do usuário
+        usuarioLabel.setText("");
+
+        // Esconder botão de perfil
+        perfilButton.setVisible(false);
+
+        // Atualizar título da janela
+        atualizarTituloJanela();
+
+        // Mostrar mensagem de logout com sucesso
+        JOptionPane.showMessageDialog(this,
+                "Logout realizado com sucesso!",
+                "Logout",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // Voltar diretamente para a página principal usando trocarPainel
+        setContentPane(painelPrincipal);
+        // Usar um tamanho consistente para todas as janelas
+        setSize(900, 650);
+        setLocationRelativeTo(null);
+        validate();
+        repaint();
+    }
+
+    /**
+     * Atualiza o título da janela para refletir o estado de login.
+     */
+    private void atualizarTituloJanela() {
+        if (usuarioLogado != null) {
+            setTitle("Cinema e Bar - " + usuarioLogado.getNome());
+        } else {
+            setTitle("Cinema e Bar");
+        }
     }
 }
