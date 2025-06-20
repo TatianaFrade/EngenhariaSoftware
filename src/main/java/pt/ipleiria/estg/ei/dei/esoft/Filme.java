@@ -23,4 +23,25 @@ public class Filme implements Serializable {
     public String getDataLancamento() { return dataLancamento; }
     public double getRate() { return rate; }
     public String getImagemPath() { return imagemPath; }
+
+    public void atualizar(String nome, boolean legendado, String dataLancamento, double rate, String imagemPath) {
+        this.nome = nome;
+        this.legendado = legendado;
+        this.dataLancamento = dataLancamento;
+        this.rate = rate;
+        this.imagemPath = imagemPath;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Filme filme = (Filme) obj;
+        return nome.equals(filme.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return nome.hashCode();
+    }
 }

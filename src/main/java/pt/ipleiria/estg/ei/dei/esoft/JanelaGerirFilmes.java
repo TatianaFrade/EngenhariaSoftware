@@ -3,8 +3,9 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class JanelaGerirFilmes extends JPanel {
     private JButton btnAdicionarFilme;
@@ -27,17 +28,17 @@ public class JanelaGerirFilmes extends JPanel {
         return btnVoltar;
     }
 
-    public JanelaGerirFilmes(List<Filme> filmes, ActionListener onVoltar, ActionListener onProximo) {
+    public JanelaGerirFilmes(List<Filme> filmes, ActionListener onVoltar, ActionListener onProximo, Consumer<Filme> onAdicionarEditarFilme) {
         setLayout(new BorderLayout());
 
         // Configuração do painel de filmes com layout em grade
-        configurarPainelFilmes(filmes);
+        configurarPainelFilmes(filmes, onAdicionarEditarFilme);
 
         // Configuração dos botões de navegação
         configurarBotoes(onVoltar, onProximo);
     }
 
-    private void configurarPainelFilmes(List<Filme> filmes) {
+    private void configurarPainelFilmes(List<Filme> filmes, Consumer<Filme> onAdicionarEditarFilme) {
         filmesPanel = new JPanel();
 
         // Usar GridLayout com fileiras dinâmicas e 3 colunas
@@ -52,7 +53,7 @@ public class JanelaGerirFilmes extends JPanel {
             cartao.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-
+                    onAdicionarEditarFilme.accept(filme);
                 }
             });
 
