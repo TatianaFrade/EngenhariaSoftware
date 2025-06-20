@@ -47,41 +47,44 @@ public class JanelaSelecaoItensBar extends JPanel {
 
         // Configurar o painel de título
         configurarPainelTitulo(sessao, lugar);
-
-        // Configuração do painel de itens com layout em grade
-        configurarPainelItens(Item.getItensPadrao());
+        // Carregar itens do arquivo JSON e configurar o painel
+        List<Item> itensDisponiveis = PersistenciaService.carregarItens();
+        configurarPainelItens(itensDisponiveis.toArray(new Item[0]));
 
         // Configuração do painel com valor total
         configurarPainelValorTotal();
         // Configuração dos botões de navegação
         configurarBotoes(onVoltar, onProximo, onCancelar);
     }
-
     private void configurarPainelTitulo(Sessao sessao, Lugar lugar) {
         JPanel painelTitulo = new JPanel();
         painelTitulo.setLayout(new BoxLayout(painelTitulo, BoxLayout.Y_AXIS));
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        JLabel labelTitulo = new JLabel("Adicionar Itens do Bar");
+        // Título diferente dependendo se é compra direta ou adicional ao bilhete
+        String titulo = (sessao == null) ? "Compra de Itens do Bar" : "Adicionar Itens do Bar";
+        JLabel labelTitulo = new JLabel(titulo);
         labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.BOLD, 18));
         labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelTitulo);
 
-        JLabel labelSubtitulo = new JLabel("Selecione os produtos que deseja adicionar à sua compra");
+        JLabel labelSubtitulo = new JLabel("Selecione os itens que deseja " +
+                ((sessao == null) ? "comprar" : "adicionar à sua compra"));
         labelSubtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelSubtitulo);
 
         painelTitulo.add(Box.createVerticalStrut(10));
 
-        // Informações do filme e lugar
-        JLabel labelDetalhes = new JLabel(String.format(
-                "Filme: %s | Sessão: %s | Lugar: %s",
-                sessao.getFilme().getNome(),
-                sessao.getDataHoraFormatada(),
-                lugar.getIdentificacao()
-        ));
-        labelDetalhes.setAlignmentX(Component.CENTER_ALIGNMENT);
-        painelTitulo.add(labelDetalhes);
+        // Informações do filme e lugar apenas se estiverem disponíveis
+        if (sessao != null && lugar != null) {
+            JLabel labelDetalhes = new JLabel(String.format(
+                    "Filme: %s | Sessão: %s | Lugar: %s",
+                    sessao.getFilme().getNome(),
+                    sessao.getDataHoraFormatada(),
+                    lugar.getIdentificacao()
+            ));
+            labelDetalhes.setAlignmentX(Component.CENTER_ALIGNMENT);
+            painelTitulo.add(labelDetalhes);
+        }
 
         // Instrução para seleção múltipla
         JLabel labelInstrucao = new JLabel("Clique nos itens para selecioná-los. Você pode selecionar múltiplos itens.");

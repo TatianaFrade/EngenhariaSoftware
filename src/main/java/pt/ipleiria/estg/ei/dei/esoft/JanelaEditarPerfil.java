@@ -174,10 +174,9 @@ public class JanelaEditarPerfil extends JPanel {
 
         // Configurar o renderizador da lista para exibir detalhes da compra
         listaCompras.setCellRenderer(new CompraListCellRenderer());
-
         // Adicionar a lista em um painel com scroll
         JScrollPane scrollPane = new JScrollPane(listaCompras);
-        scrollPane.setPreferredSize(new Dimension(600, 200)); // Aumentado tamanho para melhor visualização
+        scrollPane.setPreferredSize(new Dimension(650, 300)); // Tamanho aumentado para melhor visualização
 
         // Criar painel para o histórico com título
         JPanel painelHistorico = new JPanel(new BorderLayout());
@@ -206,8 +205,7 @@ public class JanelaEditarPerfil extends JPanel {
 
     /**
      * Classe para renderizar cada item da lista de compras
-     */
-    private class CompraListCellRenderer extends JPanel implements ListCellRenderer<Compra> {
+     */    private class CompraListCellRenderer extends JPanel implements ListCellRenderer<Compra> {
         private JLabel labelData = new JLabel();
         private JLabel labelFilme = new JLabel();
         private JLabel labelLugar = new JLabel();
@@ -215,9 +213,17 @@ public class JanelaEditarPerfil extends JPanel {
         private JLabel labelItensBar = new JLabel();
         private JLabel labelStatus = new JLabel();
 
+        // Painel flexível para organizar os componentes
+        private JPanel contentPanel = new JPanel();
+
         public CompraListCellRenderer() {
-            setLayout(new GridLayout(0, 1, 2, 2));
+            setLayout(new BorderLayout());
             setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+
+            // Usar BoxLayout para mais flexibilidade na exibição
+            contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+            contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            add(contentPanel, BorderLayout.CENTER);
 
             // Estilizar os labels
             Font labelFont = new Font("Arial", Font.PLAIN, 12);
@@ -230,14 +236,9 @@ public class JanelaEditarPerfil extends JPanel {
             labelItensBar.setFont(labelFont);
             labelStatus.setFont(labelFont);
 
-            add(labelData);
-            add(labelFilme);
-            add(labelLugar);
-            add(labelPreco);
-            add(labelItensBar);
-            add(labelStatus);
+            // Adicionamos os componentes ao painel de conteúdo diretamente no getListCellRendererComponent
+            // para poder reorganizá-los dependendo do tipo de compra
         }
-
         @Override
         public Component getListCellRendererComponent(
                 JList<? extends Compra> list, Compra compra, int index,
@@ -247,56 +248,112 @@ public class JanelaEditarPerfil extends JPanel {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             String dataFormatada = sdf.format(compra.getDataHora());
 
-            // Buscar informações da sessão
-            String infoFilme = "Sessão desconhecida";
-            String infoSala = "";
-
-            // Tentar obter detalhes do filme e sala para esta sessão
-            List<Sessao> sessoes = PersistenciaService.carregarSessoes();
-            for (Sessao sessao : sessoes) {
-                if (sessao.getId().equals(compra.getIdSessao())) {
-                    infoFilme = sessao.getFilme().getNome();
-                    infoSala = "Sala " + sessao.getNomeSala();
-                    break;
-                }
-            }
+            // Verificar se é uma compra apenas de itens do bar
+            boolean compraApenasItensBar = compra.getIdSessao() == null;
 
             // Preencher informações da compra com estilo colorido para destacar
             labelData.setText("📅 " + dataFormatada);
-            labelFilme.setText("🎬 Filme: " + infoFilme + " - " + infoSala);
-            labelLugar.setText("💺 Lugar: " + compra.getIdLugar());
 
-            // Formatar preço com cores diferentes para destacar
-            labelPreco.setText(String.format("💰 Preço: %.2f € (Bilhete: %.2f € | Bar: %.2f €)",
-                    compra.getPrecoTotal(),
-                    compra.getPrecoBase(),
-                    compra.getValorItensBar()));
+            if (compraApenasItensBar) {
+                // Para compras apenas com itens do bar
+                labelFilme.setText("🛒 Tipo: Compra de Itens do Bar");
+                labelLugar.setVisible(false); // Oculta o campo lugar que não se aplica
 
-            // Itens de bar
-            labelItensBar.setText("🍿 " + compra.getResumoItensBar());
+                // Formatar preço específico para compras do bar
+                labelPreco.setText(String.format("💰 Total: %.2f €", compra.getPrecoTotal()));
+                labelPreco.setFont(new Font(labelPreco.getFont().getName(), Font.BOLD, 13));
+                labelPreco.setForeground(new Color(0, 100, 0)); // Verde escuro para destacar
 
+                // Destacar os itens de bar já que são o foco da compra
+                labelItensBar.setText("🍿 Itens: " + compra.getResumoItensBar());
+                labelItensBar.setFont(new Font(labelItensBar.getFont().getName(), Font.BOLD, 13));
+            } else {
+                // Compra normal com bilhete e possivelmente itens do bar
+                // Buscar informações da sessão
+                String infoFilme = "Sessão desconhecida";
+                String infoSala = "";
+
+                // Tentar obter detalhes do filme e sala para esta sessão
+                List<Sessao> sessoes = PersistenciaService.carregarSessoes();
+                for (Sessao sessao : sessoes) {
+                    if (sessao.getId().equals(compra.getIdSessao())) {
+                        infoFilme = sessao.getFilme().getNome();
+                        infoSala = "Sala " + sessao.getNomeSala();
+                        break;
+                    }
+                }
+
+                labelFilme.setText("🎬 Filme: " + infoFilme + " - " + infoSala);
+                labelLugar.setVisible(true);
+                labelLugar.setText("💺 Lugar: " + compra.getIdLugar());
+
+                // Formatar preço com detalhamento
+                labelPreco.setText(String.format("💰 Preço: %.2f € (Bilhete: %.2f € | Bar: %.2f €)",
+                        compra.getPrecoTotal(),
+                        compra.getPrecoBase(),
+                        compra.getValorItensBar()));
+
+                // Itens de bar (se houver)
+                labelItensBar.setText("🍿 " + compra.getResumoItensBar());
+            }
             // Status da compra com ícone
             String statusIcon = compra.isConfirmada() ? "✅" : "⏳";
             labelStatus.setText(statusIcon + " Status: " + (compra.isConfirmada() ? "Confirmado" : "Pendente") +
                     " | Método: " + compra.getMetodoPagamento());
 
-            // Configurar cores para seleção
+            // Limpar o painel de conteúdo antes de adicionar os componentes
+            contentPanel.removeAll();
+
+            // Adicionar cada componente com espaçamento
+            contentPanel.add(labelData);
+            contentPanel.add(Box.createVerticalStrut(2));
+            contentPanel.add(labelFilme);
+            contentPanel.add(Box.createVerticalStrut(2));
+
+            if (!compraApenasItensBar) {
+                contentPanel.add(labelLugar);
+                contentPanel.add(Box.createVerticalStrut(2));
+            }
+
+            contentPanel.add(labelPreco);
+            contentPanel.add(Box.createVerticalStrut(2));
+            contentPanel.add(labelItensBar);
+            contentPanel.add(Box.createVerticalStrut(2));
+            contentPanel.add(labelStatus);
+
+            // Configurar cores para seleção com um esquema visual mais atraente
+            Color corFundo;
             if (isSelected) {
-                setBackground(new Color(230, 240, 250)); // Azul claro para selecionado
+                // Cor de seleção mais atraente
+                corFundo = new Color(230, 240, 250); // Azul claro para selecionado
                 setForeground(list.getSelectionForeground());
                 setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(1, 3, 1, 1, new Color(65, 105, 225)), // Borda azul à esquerda para destacar item selecionado
-                        BorderFactory.createEmptyBorder(8, 8, 8, 8)
+                        BorderFactory.createMatteBorder(1, 4, 1, 1, new Color(65, 105, 225)), // Borda azul à esquerda mais grossa
+                        BorderFactory.createEmptyBorder(8, 10, 8, 8)
                 ));
             } else {
-                setBackground(index % 2 == 0 ? Color.WHITE : new Color(248, 248, 248)); // Alternância de cores para facilitar leitura
+                // Cores alternadas para facilitar a leitura
+                corFundo = index % 2 == 0 ? Color.WHITE : new Color(248, 248, 252); // Alternância de cores com um tom ligeiramente azulado
                 setForeground(list.getForeground());
-                // Adicionar uma linha divisória entre itens
-                setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY),
-                        BorderFactory.createEmptyBorder(8, 8, 8, 8)
-                ));
+
+                // Bordas diferentes para compras de apenas itens vs. compras com bilhete
+                if (compraApenasItensBar) {
+                    // Usar uma cor diferente para as bordas de compras de itens do bar
+                    setBorder(BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(0, 4, 1, 0, new Color(0, 150, 136)), // Verde-azulado na borda esquerda
+                            BorderFactory.createEmptyBorder(8, 10, 8, 8)
+                    ));
+                } else {
+                    // Borda normal para compras com bilhete
+                    setBorder(BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY),
+                            BorderFactory.createEmptyBorder(8, 14, 8, 8) // Alinhamento com a borda colorida
+                    ));
+                }
             }
+
+            setBackground(corFundo);
+            contentPanel.setBackground(corFundo);
 
             return this;
         }

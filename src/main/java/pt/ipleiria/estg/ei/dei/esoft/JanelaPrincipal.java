@@ -9,8 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class JanelaPrincipal extends JFrame {
-    private JPanel painelPrincipal;    private JButton comprarBilheteButton;
-    private JButton comprarProdutosButton;
+    private JPanel painelPrincipal;
+    private JButton comprarBilheteButton;
+    private JButton comprarItensButton;
     private JButton verMenusButton;
     private JButton consultarSessoesPorDiaButton;
     private JButton loginButton;
@@ -26,11 +27,12 @@ public class JanelaPrincipal extends JFrame {
         inicializarDados();
         criarPainelPrincipal();
         setContentPane(painelPrincipal);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        // Usar o mesmo tamanho padronizado para todas as janelas (900x650)
+        setDefaultCloseOperation(EXIT_ON_CLOSE);        // Usar o mesmo tamanho padronizado para todas as janelas (900x650)
         setSize(900, 650);
         setLocationRelativeTo(null);
-    }    /**
+    }
+
+    /**
      * Inicializa os dados da aplicação, garantindo persistência dos lugares ocupados.
      *
      * Fluxo de persistência:
@@ -43,11 +45,13 @@ public class JanelaPrincipal extends JFrame {
     private void inicializarDados() {
         try {
             System.out.println("Inicializando dados da aplicação...");
-
             // Tentar carregar dados salvos dos arquivos JSON
             filmes = PersistenciaService.carregarFilmes();
             List<Sala> salas = PersistenciaService.carregarSalas();
             List<Compra> compras = PersistenciaService.carregarCompras();
+
+            // Carregar itens do bar - se não existirem, serão criados os itens padrão
+            List<Item> itens = PersistenciaService.carregarItens();
 
             // Se não existirem dados salvos, criar dados padrão
             if (filmes == null || filmes.isEmpty()) {
@@ -138,8 +142,8 @@ public class JanelaPrincipal extends JFrame {
             System.out.println("Erro ao carregar dados: " + e.getMessage());
             e.printStackTrace();            // Em caso de erro, inicializar com dados padrão
             inicializarDadosPadrao();
-        }
-    }
+        }    }
+
     private void criarPainelPrincipal() {
         painelPrincipal = new JPanel();
         painelPrincipal.setLayout(new BorderLayout());
@@ -147,11 +151,12 @@ public class JanelaPrincipal extends JFrame {
         // Painel superior com título e login
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
-
         // Título para o cinema com estilo neutro
         JLabel titulo = new JLabel("Cinema e Bar");
         titulo.setFont(new Font("Arial", Font.BOLD, 24));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);        // Botão de login/logout com estilo neutro
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Botão de login/logout com estilo neutro
         loginButton = new JButton("Login");
         loginButton.setPreferredSize(new Dimension(80, 30));
         loginButton.addActionListener(e -> {
@@ -160,9 +165,9 @@ public class JanelaPrincipal extends JFrame {
                 realizarLogout();
             } else {
                 // Se não estiver logado, mostra tela de login
-                mostrarJanelaLogin();
-            }
+                mostrarJanelaLogin();            }
         });
+
         // Rótulo para mostrar o nome do usuário (inicialmente vazio)
         usuarioLabel = new JLabel("");
         usuarioLabel.setPreferredSize(new Dimension(150, 30));
@@ -185,15 +190,16 @@ public class JanelaPrincipal extends JFrame {
 
         // Adiciona o painel superior
         painelPrincipal.add(topPanel, BorderLayout.NORTH);
-
         // Criar botões com estilo neutro
         comprarBilheteButton = createStyledButton("Comprar Bilhete", null);
-        comprarProdutosButton = createStyledButton("Comprar Produtos", null);
+        comprarItensButton = createStyledButton("Comprar Itens do Bar", null);
         verMenusButton = createStyledButton("Ver Menus", null);
-        consultarSessoesPorDiaButton = createStyledButton("Consultar Sessões por Dia", null);        // Painel central com os botões principais dispostos em grid
+        consultarSessoesPorDiaButton = createStyledButton("Consultar Sessões por Dia", null);
+
+        // Painel central com os botões principais dispostos em grid
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         centerPanel.add(comprarBilheteButton);
-        centerPanel.add(comprarProdutosButton);
+        centerPanel.add(comprarItensButton);
         centerPanel.add(verMenusButton);
         centerPanel.add(consultarSessoesPorDiaButton);
 
@@ -209,8 +215,12 @@ public class JanelaPrincipal extends JFrame {
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footerPanel.add(footerLabel, BorderLayout.CENTER);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        painelPrincipal.add(footerPanel, BorderLayout.SOUTH);        comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
-    }    private void mostrarJanelaSelecaoFilme() {
+        painelPrincipal.add(footerPanel, BorderLayout.SOUTH);
+        comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
+        comprarItensButton.addActionListener(e -> mostrarJanelaSelecaoItensBar());
+    }
+
+    private void mostrarJanelaSelecaoFilme() {
         // Criar o painel de seleção de filme com cancelar e voltar
         JanelaSelecaoFilme painelFilmes = new JanelaSelecaoFilme(
                 filmes,
@@ -235,8 +245,8 @@ public class JanelaPrincipal extends JFrame {
     private void mostrarJanelaSelecaoSessao(Filme filmeSeleccionado) {
         if (filmeSeleccionado == null) {
             JOptionPane.showMessageDialog(this, "Por favor, selecione um filme primeiro.");
-            return;
-        }
+            return;        }
+
         // Criar o painel de seleção de sessão
         JanelaSelecaoSessao painelSessoes = new JanelaSelecaoSessao(
                 filmeSeleccionado,
@@ -267,7 +277,9 @@ public class JanelaPrincipal extends JFrame {
 
         // Mostrar a janela de seleção de lugar
         mostrarJanelaSelecaoLugar(sessaoSeleccionada);
-    }    private void mostrarJanelaSelecaoLugar(Sessao sessaoSeleccionada) {
+    }
+
+    private void mostrarJanelaSelecaoLugar(Sessao sessaoSeleccionada) {
         // Criar o painel de seleção de lugar
         JanelaSelecaoLugar painelLugares = new JanelaSelecaoLugar(
                 sessaoSeleccionada,
@@ -288,7 +300,9 @@ public class JanelaPrincipal extends JFrame {
         });
 
         trocarPainel(painelLugares);
-    }      private void mostrarJanelaOpcoesFinal(Sessao sessao, Lugar lugar, double precoTotal) {
+    }
+
+    private void mostrarJanelaOpcoesFinal(Sessao sessao, Lugar lugar, double precoTotal) {
         // Criar o painel de opções finais com ActionListeners para os botões de navegação
         JanelaOpcoesFinal painelOpcoes = new JanelaOpcoesFinal(
                 sessao,
@@ -301,7 +315,7 @@ public class JanelaPrincipal extends JFrame {
         );
 
         // Configurar os botões
-        painelOpcoes.getBtnAdicionarProdutos().addActionListener(e -> {
+        painelOpcoes.getBtnAdicionarItens().addActionListener(e -> {
             // Abrir a janela de seleção de itens do bar
             mostrarJanelaSelecaoItensBar(sessao, lugar, precoTotal);
         });
@@ -312,9 +326,13 @@ public class JanelaPrincipal extends JFrame {
         });
 
         trocarPainel(painelOpcoes);
-    }    public void voltarParaPainelPrincipal() {
+    }
+
+    public void voltarParaPainelPrincipal() {
         trocarPainel(painelPrincipal);
-    }private void trocarPainel(JPanel novoPainel) {
+    }
+
+    private void trocarPainel(JPanel novoPainel) {
         setContentPane(novoPainel);
 
         // Usar um tamanho consistente para todas as janelas
@@ -323,7 +341,10 @@ public class JanelaPrincipal extends JFrame {
 
         setLocationRelativeTo(null); // Centraliza novamente após redimensionar
         revalidate();
-        repaint();    }private void mostrarJanelaPagamento(Sessao sessao, Lugar lugar, double precoTotal) {
+        repaint();
+    }
+
+    private void mostrarJanelaPagamento(Sessao sessao, Lugar lugar, double precoTotal) {
         // Criar o painel de pagamento
         JanelaPagamento painelPagamento = new JanelaPagamento(
                 sessao,
@@ -345,9 +366,10 @@ public class JanelaPrincipal extends JFrame {
             }
             finalizarPagamento(sessao, lugar, precoTotal, metodoPagamento, painelPagamento);
         });
-
         trocarPainel(painelPagamento);
-    }    /**
+    }
+
+    /**
      * Finaliza o processo de compra e pagamento, exibindo uma mensagem de confirmação
      * e retornando ao menu principal.
      *
@@ -355,9 +377,9 @@ public class JanelaPrincipal extends JFrame {
      * 1. Marcação do lugar como ocupado na sala da sessão
      * 2. Criação e salvamento de um objeto Compra no arquivo compras.json
      * 3. Atualização e salvamento do arquivo sessoes.json com o lugar ocupado
-     *
-     * Assim, mesmo quando a aplicação é reiniciada, os lugares ocupados permanecem assim.
-     */      private void finalizarPagamento(Sessao sessao, Lugar lugar, double precoTotal, String metodoPagamento, JanelaPagamento painelPagamento) {
+     *     * Assim, mesmo quando a aplicação é reiniciada, os lugares ocupados permanecem assim.
+     */
+    private void finalizarPagamento(Sessao sessao, Lugar lugar, double precoTotal, String metodoPagamento, JanelaPagamento painelPagamento) {
         System.out.println("[DEBUG] Finalizando pagamento...");
         System.out.println("[DEBUG] Sessão: " + sessao.getFilme().getNome() + ", Lugar: " + lugar.getIdentificacao());
         System.out.println("[DEBUG] Preço: " + precoTotal + "€, Método: " + metodoPagamento);
@@ -394,9 +416,10 @@ public class JanelaPrincipal extends JFrame {
                 ref.append((int) (Math.random() * 10));
             }
             if (i < 2) ref.append(" ");
-        }
-        return ref.toString();
-    }    /**
+        }        return ref.toString();
+    }
+
+    /**
      * Cria um botão estilizado para o menu principal
      * @param texto Texto do botão
      * @param cor Cor de fundo do botão (não utilizada para manter estilo neutro)
@@ -413,9 +436,10 @@ public class JanelaPrincipal extends JFrame {
 
         // Adiciona margem interna ao texto
         button.setMargin(new Insets(10, 10, 10, 10));
-
         return button;
-    }    /**
+    }
+
+    /**
      * Mostra a janela de seleção de itens do bar
      *
      * @param sessao A sessão selecionada
@@ -429,21 +453,34 @@ public class JanelaPrincipal extends JFrame {
                 precoBase,
                 // ActionListener para o botão Voltar - retorna à tela de opções finais
                 e -> mostrarJanelaOpcoesFinal(sessao, lugar, precoBase),
-                null, // O listener para Próximo será configurado abaixo
-                e -> voltarParaPainelPrincipal() // Cancelar - volta para o menu principal
+                // ActionListener para o botão Próximo - será configurado abaixo
+                null,
+                // ActionListener para o botão Cancelar - volta para o menu principal
+                e -> voltarParaPainelPrincipal()
         );
-
         // Configurar o ActionListener para o botão Próximo separadamente
         painelItensBar.getBtnProximo().addActionListener(e -> {
+            // Se nada foi selecionado, mostrar aviso
+            if (painelItensBar.getItensSelecionados().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Selecione pelo menos um item para continuar.",
+                        "Nenhum item selecionado",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
             // Calcular o preço total (bilhete + itens do bar)
             double precoTotal = painelItensBar.getPrecoTotal();
 
             // Avançar para a tela de pagamento com o valor atualizado
             mostrarJanelaPagamentoComItens(sessao, lugar, precoTotal, painelItensBar.getItensSelecionados());
         });
-
         trocarPainel(painelItensBar);
-    }    /**
+    }
+
+    /**
      * Mostra a janela de pagamento incluindo itens do bar
      *
      * @param sessao A sessão selecionada
@@ -665,7 +702,9 @@ public class JanelaPrincipal extends JFrame {
 
         // Mostrar o painel de login
         trocarPainel(painelLogin);
-    }    /**
+    }
+
+    /**
      * Mostra a janela de criação de conta.
      */
     private void mostrarJanelaCriarConta() {
@@ -1042,5 +1081,107 @@ public class JanelaPrincipal extends JFrame {
         // Salvar as sessões recém-criadas
         PersistenciaService.salvarSessoes(sessoes);
         System.out.println("Dados padrão inicializados com sucesso.");
+    }
+    /**
+     * Mostra a janela de seleção de itens do bar para compra direta,
+     * sem necessidade de estar comprando um bilhete.
+     */
+    private void mostrarJanelaSelecaoItensBar() {
+        // Criar o painel de seleção de itens do bar para compra direta
+        final JanelaSelecaoItensBar painelItensBar = new JanelaSelecaoItensBar(
+                null,  // Sem sessão associada
+                null,  // Sem lugar associado
+                0.0,   // Preço inicial é zero (só itens do bar)
+                e -> voltarParaPainelPrincipal(),  // Voltar - volta para o menu principal
+                null,  // O listener para Próximo será configurado abaixo
+                e -> voltarParaPainelPrincipal()   // Cancelar - volta para o menu principal
+        );
+
+        // Configurar o ActionListener para o botão Próximo separadamente
+        painelItensBar.getBtnProximo().addActionListener(e -> {
+            // Calcular o preço total dos itens do bar
+            double precoTotal = painelItensBar.getPrecoTotal();
+
+            // Se nada foi selecionado, mostrar aviso
+            if (painelItensBar.getItensSelecionados().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Selecione pelo menos um item para continuar.",
+                        "Nenhum item selecionado",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;            }
+
+            // Avançar para a tela de pagamento apenas com os itens do bar
+            mostrarJanelaPagamentoSomenteItens(precoTotal, painelItensBar.getItensSelecionados());
+        });
+
+        trocarPainel(painelItensBar);
+    }
+
+    /**
+     * Mostra a janela para finalizar a compra de itens do bar
+     * @param precoTotal O preço total dos itens selecionados
+     * @param itensSelecionados Lista de itens selecionados do bar
+     */
+    private void mostrarJanelaPagamentoSomenteItens(double precoTotal, List<Item> itensSelecionados) {
+        // Usar a classe JanelaPagamento com null para sessão e lugar (compra apenas de itens do bar)
+        JanelaPagamento painelPagamento = new JanelaPagamento(
+                null,  // Sem sessão associada
+                null,  // Sem lugar associado
+                precoTotal,
+                itensSelecionados,
+                // ActionListener para o botão Voltar - retorna à tela de seleção de itens
+                e -> mostrarJanelaSelecaoItensBar(),
+                // ActionListener para o botão Próximo - finaliza o pagamento
+                null // Será configurado após a criação
+        );
+
+        // Adicionar os detalhes dos itens do bar ao painel de pagamento
+        double valorItensBar = 0.0;
+        for (Item item : itensSelecionados) {
+            valorItensBar += item.getPreco();
+        }
+        painelPagamento.adicionarDetalhesItensBar(itensSelecionados, valorItensBar);        // Configurar o ActionListener para o botão Finalizar Pagamento
+        painelPagamento.getBtnPagar().addActionListener(e -> {
+            // Obter o método de pagamento selecionado
+            MetodoPagamento metodo = painelPagamento.getMetodoPagamento();
+            String metodoPagamento = metodo.getNome();
+
+            // Criar uma compra apenas com itens do bar (sem bilhete)
+            Compra compra = new Compra(
+                    null,  // Sem sessão
+                    null,  // Sem lugar
+                    itensSelecionados,
+                    precoTotal,
+                    metodoPagamento,
+                    usuarioLogado != null ? usuarioLogado.getNomeUsuario() : null
+            );
+
+            // Salvar a compra
+            PersistenciaService.salvarCompra(compra);
+
+            // Mostrar mensagem de confirmação
+            String mensagem = "Compra realizada com sucesso!\n\n" +
+                    "Itens: " + compra.getResumoItensBar() + "\n" +
+                    "Total: " + String.format("%.2f €", precoTotal) + "\n" +
+                    "Forma de pagamento: " + metodoPagamento;
+
+            if (metodoPagamento.equals("Multibanco")) {
+                mensagem += "\n\nEntidade: 12345\nReferência: 123 456 789\nValor: " +
+                        String.format("%.2f €", precoTotal);
+            }
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    mensagem,
+                    "Compra Finalizada",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            voltarParaPainelPrincipal();
+        });
+
+        trocarPainel(painelPagamento);
     }
 }

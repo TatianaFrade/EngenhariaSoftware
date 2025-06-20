@@ -1,6 +1,8 @@
 package pt.ipleiria.estg.ei.dei.esoft;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe que representa um item disponível no bar
@@ -71,31 +73,33 @@ public class Item implements Serializable {
      */
     public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
-    }
-
-    /**
-     * Cria uma lista de itens pré-definidos para o bar
-     * @return Array com itens disponíveis no bar
+    }    /**
+     * Retorna uma lista vazia pois os itens agora são carregados do arquivo itens.json
+     * @return Lista vazia (os itens são gerenciados pelo PersistenciaService)
      */
-    public static Item[] getItensPadrao() {
-        return new Item[] {
-                new Item("Pipoca Pequena", "Pipoca salgada tamanho pequeno", 3.50, "Comida", true),
-                new Item("Pipoca Média", "Pipoca salgada tamanho médio", 4.50, "Comida", true),
-                new Item("Pipoca Grande", "Pipoca salgada tamanho grande", 5.50, "Comida", true),
-                new Item("Pipoca Caramelizada", "Pipoca doce com caramelo", 6.00, "Comida", true),
-                new Item("Refrigerante 300ml", "Refrigerante em lata", 3.00, "Bebida", true),
-                new Item("Refrigerante 500ml", "Refrigerante em garrafa", 4.00, "Bebida", true),
-                new Item("Água Mineral 500ml", "Água mineral sem gás", 2.50, "Bebida", true),
-                new Item("Combo 1", "Pipoca média + Refrigerante 300ml", 6.50, "Combo", true),
-                new Item("Combo 2", "Pipoca grande + 2 Refrigerantes 300ml", 10.00, "Combo", true),
-                new Item("Chocolate", "Barra de chocolate 80g", 4.00, "Comida", true),
-                new Item("Nachos com Queijo", "Porção de nachos com molho de queijo", 7.50, "Comida", true),
-                new Item("Hot Dog", "Hot dog tradicional", 6.00, "Comida", true)
-        };
+    public static List<Item> getItensPadrao() {
+        return new ArrayList<>();
     }
 
     @Override
     public String toString() {
         return nome + " - " + String.format("%.2f €", preco);
+    }
+
+    // Setters para permitir atualização dos itens
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }

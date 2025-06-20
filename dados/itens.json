@@ -1,0 +1,86 @@
+[
+  {
+    "nome": "Pipoca Pequena",
+    "descricao": "Pipoca salgada tamanho pequeno",
+    "preco": 3.50,
+    "categoria": "Comida",
+    "disponivel": true
+  },
+  {
+    "nome": "Pipoca Média",
+    "descricao": "Pipoca salgada tamanho médio",
+    "preco": 4.50,
+    "categoria": "Comida",
+    "disponivel": true
+  },
+  {
+    "nome": "Pipoca Grande",
+    "descricao": "Pipoca salgada tamanho grande",
+    "preco": 5.50,
+    "categoria": "Comida",
+    "disponivel": true
+  },
+  {
+    "nome": "Pipoca Caramelizada",
+    "descricao": "Pipoca doce com caramelo",
+    "preco": 6.00,
+    "categoria": "Comida",
+    "disponivel": true
+  },
+  {
+    "nome": "Chocolate",
+    "descricao": "Barra de chocolate 80g",
+    "preco": 4.00,
+    "categoria": "Comida",
+    "disponivel": true
+  },
+  {
+    "nome": "Nachos com Queijo",
+    "descricao": "Porção de nachos com molho de queijo",
+    "preco": 7.50,
+    "categoria": "Comida",
+    "disponivel": true
+  },
+  {
+    "nome": "Hot Dog",
+    "descricao": "Hot dog tradicional",
+    "preco": 6.00,
+    "categoria": "Comida",
+    "disponivel": true
+  },
+  {
+    "nome": "Refrigerante 300ml",
+    "descricao": "Refrigerante em lata",
+    "preco": 3.00,
+    "categoria": "Bebida",
+    "disponivel": true
+  },
+  {
+    "nome": "Refrigerante 500ml",
+    "descricao": "Refrigerante em garrafa",
+    "preco": 4.00,
+    "categoria": "Bebida",
+    "disponivel": true
+  },
+  {
+    "nome": "Água Mineral 500ml",
+    "descricao": "Água mineral sem gás",
+    "preco": 2.50,
+    "categoria": "Bebida",
+    "disponivel": true
+  },
+  {
+    "nome": "Combo 1",
+    "descricao": "Pipoca média + Refrigerante 300ml",
+    "preco": 6.50,
+    "categoria": "Combo",
+    "disponivel": true
+  },
+  {
+    "nome": "Combo 2",
+    "descricao": "Pipoca grande + 2 Refrigerantes 300ml",
+    "preco": 10.00,
+    "categoria": "Combo",
+    "disponivel": true
+  }
+]
