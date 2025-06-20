@@ -9,6 +9,7 @@ import java.util.Map;
 public class JanelaSelecaoLugar extends JPanel {
     private JButton btnProximo;
     private JButton btnVoltar;
+    private JButton btnCancelar;
     private Sessao sessao;
     private JPanel painelLugarSelecionado;
     private Lugar lugarSelecionado;
@@ -23,8 +24,7 @@ public class JanelaSelecaoLugar extends JPanel {
 
     // Mapa que associa painéis (componentes visuais) aos objetos Lugar
     private Map<JPanel, Lugar> mapaPainelLugar;
-
-    public JanelaSelecaoLugar(Sessao sessao, ActionListener onVoltar, ActionListener onProximo) {
+    public JanelaSelecaoLugar(Sessao sessao, ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
         this.sessao = sessao;
         this.mapaPainelLugar = new HashMap<>();
         setLayout(new BorderLayout(10, 10));
@@ -36,7 +36,7 @@ public class JanelaSelecaoLugar extends JPanel {
         configurarPainelCentral();
 
         // Configurar botões de navegação
-        configurarBotoes(onVoltar, onProximo);
+        configurarBotoes(onVoltar, onProximo, onCancelar);
     }
 
     private void configurarPainelTitulo() {
@@ -270,9 +270,12 @@ public class JanelaSelecaoLugar extends JPanel {
 
         return painelLegenda;
     }
+    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
+        // Botão Cancelar à esquerda
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.addActionListener(onCancelar != null ? onCancelar : e -> {});
 
-    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo) {
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Botões de navegação à direita
         btnVoltar = new JButton("Voltar");
         btnProximo = new JButton("Próximo");
 
@@ -280,9 +283,20 @@ public class JanelaSelecaoLugar extends JPanel {
         btnProximo.addActionListener(onProximo != null ? onProximo : e -> {});
         btnProximo.setEnabled(false); // Desabilitado até que um lugar seja selecionado
 
-        painelBotoes.add(btnVoltar);
-        painelBotoes.add(btnProximo);
-        add(painelBotoes, BorderLayout.SOUTH);
+        // Layout para posicionar botões (Cancelar à esquerda, Voltar e Próximo à direita)
+        JPanel leftButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftButtonPanel.add(btnCancelar);
+
+        JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightButtonPanel.add(btnVoltar);
+        rightButtonPanel.add(btnProximo);
+
+        // Painel para organizar os dois grupos de botões
+        JPanel navigationPanel = new JPanel(new BorderLayout());
+        navigationPanel.add(leftButtonPanel, BorderLayout.WEST);
+        navigationPanel.add(rightButtonPanel, BorderLayout.EAST);
+
+        add(navigationPanel, BorderLayout.SOUTH);
     }
 
     private void selecionarLugar(JPanel painel) {
@@ -307,10 +321,10 @@ public class JanelaSelecaoLugar extends JPanel {
         this.lugarSelecionado = lugar;
         btnProximo.setEnabled(lugar != null);
     }
-
     // Getters
     public JButton getBtnProximo() { return btnProximo; }
     public JButton getBtnVoltar() { return btnVoltar; }
+    public JButton getBtnCancelar() { return btnCancelar; }
     public Sessao getSessao() { return sessao; }
 
     public String getLugarSelecionado() {

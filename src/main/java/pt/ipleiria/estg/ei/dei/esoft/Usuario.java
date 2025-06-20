@@ -81,13 +81,15 @@ public class Usuario implements Serializable {
     public boolean verificarSenha(String senhaFornecida) {
         return this.senha != null && this.senha.equals(senhaFornecida);
     }
-
     // Método para compatibilidade com nome usado em algumas classes (alias para getNomeUsuario)
     public String getUsuario() {
-        return getNomeUsuario();
+        String nome = getNomeUsuario();
+        System.out.println("[DEBUG] getUsuario chamado, retornando: " + nome);
+        return nome;
     }
     // Método para compatibilidade com nome usado em algumas classes (alias para setNomeUsuario)
     public void setUsuario(String usuario) {
+        System.out.println("[DEBUG] setUsuario chamado com: " + usuario);
         setNomeUsuario(usuario);
     }
 

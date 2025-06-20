@@ -9,6 +9,7 @@ import java.util.List;
 public class JanelaSelecaoFilme extends JPanel {
     private JButton btnProximo;
     private JButton btnVoltar;
+    private JButton btnCancelar;
     private JPanel filmesPanel;
     private Filme filmeSeleccionado;
     private List<JPanel> cartoes;
@@ -24,20 +25,22 @@ public class JanelaSelecaoFilme extends JPanel {
     public JButton getBtnProximo() {
         return btnProximo;
     }
-
     public JButton getBtnVoltar() {
         return btnVoltar;
     }
 
-    public JanelaSelecaoFilme(List<Filme> filmes, ActionListener onVoltar, ActionListener onProximo) {
+    public JButton getBtnCancelar() {
+        return btnCancelar;
+    }
+
+    public JanelaSelecaoFilme(List<Filme> filmes, ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
         setLayout(new BorderLayout());
         cartoes = new ArrayList<>();
-
         // Configuração do painel de filmes com layout em grade
         configurarPainelFilmes(filmes);
 
         // Configuração dos botões de navegação
-        configurarBotoes(onVoltar, onProximo);
+        configurarBotoes(onVoltar, onProximo, onCancelar);
     }
 
     private void configurarPainelFilmes(List<Filme> filmes) {
@@ -129,10 +132,12 @@ public class JanelaSelecaoFilme extends JPanel {
         cartao.add(infoPanel, BorderLayout.CENTER);
 
         return cartao;
-    }
+    }    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
+        // Botão Cancelar à esquerda
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.addActionListener(onCancelar != null ? onCancelar : e -> {});
 
-    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo) {
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Botões de navegação à direita
         btnVoltar = new JButton("Voltar");
         btnProximo = new JButton("Próximo");
 
@@ -143,9 +148,20 @@ public class JanelaSelecaoFilme extends JPanel {
         // O botão Próximo começa desabilitado até que um filme seja selecionado
         btnProximo.setEnabled(false);
 
-        bottomPanel.add(btnVoltar);
-        bottomPanel.add(btnProximo);
-        add(bottomPanel, BorderLayout.SOUTH);
+        // Layout para posicionar botões (Cancelar à esquerda, Voltar e Próximo à direita)
+        JPanel leftButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftButtonPanel.add(btnCancelar);
+
+        JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightButtonPanel.add(btnVoltar);
+        rightButtonPanel.add(btnProximo);
+
+        // Painel para organizar os dois grupos de botões
+        JPanel navigationPanel = new JPanel(new BorderLayout());
+        navigationPanel.add(leftButtonPanel, BorderLayout.WEST);
+        navigationPanel.add(rightButtonPanel, BorderLayout.EAST);
+
+        add(navigationPanel, BorderLayout.SOUTH);
     }
 
     public Filme getFilmeSeleccionado() {
