@@ -15,44 +15,80 @@ public class Compra implements Serializable {
     private static final long serialVersionUID = 1L;
     private String id;
     private Date dataHora;
-    private String idSessao;
-    private String idLugar;
-    private double precoBase;
+    private List<Bilhete> bilhetes;
     private List<Item> itensBar;
     private double precoTotal;
     private String metodoPagamento;
     private boolean confirmada;
     private String idUsuario; // ID do usuário que fez a compra
+
     /**
-     * Construtor para compra apenas de itens do bar (sem bilhete)
+     * Construtor para compra com bilhetes e/ou itens do bar
+     */
+    public Compra(List<Bilhete> bilhetes, List<Item> itensBar, String metodoPagamento, String idUsuario) {
+        this.id = UUID.randomUUID().toString();
+        this.dataHora = new Date();
+        this.bilhetes = bilhetes != null ? bilhetes : new ArrayList<>();
+        this.itensBar = itensBar != null ? itensBar : new ArrayList<>();
+        this.metodoPagamento = metodoPagamento;
+        this.idUsuario = idUsuario;
+        this.confirmada = metodoPagamento.equals("Cartão de Crédito"); // Pré-confirmada se for cartão
+
+        // Calcular preço total
+        this.precoTotal = calcularPrecoTotal();
+    }
+
+    /**
+     * Construtor para compatibilidade com versão anterior
      */
     public Compra(Sessao sessao, Lugar lugar, List<Item> itensBar, double precoTotal, String metodoPagamento, String idUsuario) {
         this.id = UUID.randomUUID().toString();
         this.dataHora = new Date();
+        this.bilhetes = new ArrayList<>();
 
-        // Caso seja uma compra apenas de itens do bar (sem bilhete)
-        if (sessao == null || lugar == null) {
-            this.idSessao = null;
-            this.idLugar = null;
-            this.precoBase = 0.0;
-        } else {
-            this.idSessao = sessao.getId();
-            this.idLugar = lugar.getIdentificacao();
-            this.precoBase = lugar.calcularPreco(sessao.getPreco());
+        // Se sessão e lugar não forem nulos, criar um bilhete
+        if (sessao != null && lugar != null) {
+            this.bilhetes.add(new Bilhete(sessao, lugar));
         }
 
-        this.itensBar = itensBar;
+        this.itensBar = itensBar != null ? itensBar : new ArrayList<>();
         this.precoTotal = precoTotal;
         this.metodoPagamento = metodoPagamento;
         this.confirmada = metodoPagamento.equals("Cartão de Crédito"); // Pré-confirmada se for cartão
         this.idUsuario = idUsuario;
     }
-
     /**
      * Construtor para versões anteriores (compatibilidade)
      */
     public Compra(Sessao sessao, Lugar lugar, List<Item> itensBar, double precoTotal, String metodoPagamento) {
         this(sessao, lugar, itensBar, precoTotal, metodoPagamento, null);
+    }
+
+    /**
+     * Calcula o preço total da compra (bilhetes + itens do bar)
+     */
+    private double calcularPrecoTotal() {
+        double total = 0.0;
+
+        // Somar preço de todos os bilhetes
+        if (bilhetes != null) {
+            for (Bilhete bilhete : bilhetes) {
+                if (bilhete != null) {
+                    total += bilhete.getPreco();
+                }
+            }
+        }
+
+        // Somar preço de todos os itens do bar
+        if (itensBar != null) {
+            for (Item item : itensBar) {
+                if (item != null) {
+                    total += item.getPreco();
+                }
+            }
+        }
+
+        return total;
     }
 
     // Getters
@@ -64,16 +100,41 @@ public class Compra implements Serializable {
         return dataHora;
     }
 
+    public List<Bilhete> getBilhetes() {
+        return bilhetes;
+    }
+
+    /**
+     * Método de compatibilidade para versões anteriores
+     * @return ID da primeira sessão se houver bilhetes, null caso contrário
+     */
     public String getIdSessao() {
-        return idSessao;
+        if (bilhetes != null && !bilhetes.isEmpty() && bilhetes.get(0) != null) {
+            return bilhetes.get(0).getIdSessao();
+        }
+        return null;
     }
 
+    /**
+     * Método de compatibilidade para versões anteriores
+     * @return ID do primeiro lugar se houver bilhetes, null caso contrário
+     */
     public String getIdLugar() {
-        return idLugar;
+        if (bilhetes != null && !bilhetes.isEmpty() && bilhetes.get(0) != null) {
+            return bilhetes.get(0).getIdLugar();
+        }
+        return null;
     }
 
+    /**
+     * Método de compatibilidade para versões anteriores
+     * @return Preço do primeiro bilhete se houver bilhetes, 0.0 caso contrário
+     */
     public double getPrecoBase() {
-        return precoBase;
+        if (bilhetes != null && !bilhetes.isEmpty() && bilhetes.get(0) != null) {
+            return bilhetes.get(0).getPreco();
+        }
+        return 0.0;
     }
 
     public List<Item> getItensBar() {
@@ -132,9 +193,8 @@ public class Compra implements Serializable {
             categorias.put(item.getNome(), item.getCategoria()); // Guardar categoria do item
             precoUnitario.put(item.getNome(), item.getPreco()); // Guardar preço unitário
         }
-
-        // Verificar se é uma compra apenas de itens do bar
-        boolean compraApenasItensBar = (idSessao == null);
+        // Verificar se é uma compra apenas de itens do bar (sem bilhetes)
+        boolean compraApenasItensBar = (bilhetes == null || bilhetes.isEmpty());
 
         // Criar resumo
         StringBuilder resumo = new StringBuilder();

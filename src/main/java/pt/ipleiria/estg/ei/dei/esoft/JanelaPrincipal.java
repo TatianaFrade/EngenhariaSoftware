@@ -594,15 +594,22 @@ public class JanelaPrincipal extends JFrame {
 
         // Só salvamos a compra se o pagamento foi processado com sucesso
         if (pagamentoOK) {
-            System.out.println("[DEBUG] Pagamento processado com sucesso. Salvando compra...");
-
-            // Criar compra com informações do usuário logado, se disponível
+            System.out.println("[DEBUG] Pagamento processado com sucesso. Salvando compra...");            // Criar compra com informações do usuário logado, se disponível
             Compra compra;
+            // Criar lista de bilhetes (apenas um para esta compra)
+            List<pt.ipleiria.estg.ei.dei.esoft.Bilhete> bilhetes = new ArrayList<>();
+            if (sessao != null && lugar != null) {
+                bilhetes.add(new pt.ipleiria.estg.ei.dei.esoft.Bilhete(sessao, lugar));
+            }
+
+            String idUsuario = usuarioLogado != null ? usuarioLogado.getNomeUsuario() : null;
+
+            // Criar a compra com a lista de bilhetes e itens
+            compra = new Compra(bilhetes, itensSelecionados, metodoPagamento, idUsuario);
+
             if (usuarioLogado != null) {
-                compra = new Compra(sessao, lugar, itensSelecionados, precoTotal, metodoPagamento, usuarioLogado.getNomeUsuario());
                 System.out.println("[DEBUG] Criando compra associada ao usuário: " + usuarioLogado.getNomeUsuario());
             } else {
-                compra = new Compra(sessao, lugar, itensSelecionados, precoTotal, metodoPagamento);
                 System.out.println("[DEBUG] Criando compra sem usuário associado (compra anônima)");
             }
 
@@ -1148,16 +1155,15 @@ public class JanelaPrincipal extends JFrame {
         painelPagamento.getBtnPagar().addActionListener(e -> {
             // Obter o método de pagamento selecionado
             MetodoPagamento metodo = painelPagamento.getMetodoPagamento();
-            String metodoPagamento = metodo.getNome();
+            String metodoPagamento = metodo.getNome();            // Criar uma compra apenas com itens do bar (sem bilhete)
+            List<pt.ipleiria.estg.ei.dei.esoft.Bilhete> bilhetesVazios = new ArrayList<>(); // Lista vazia para compra de apenas itens
+            String idUsuario = usuarioLogado != null ? usuarioLogado.getNomeUsuario() : null;
 
-            // Criar uma compra apenas com itens do bar (sem bilhete)
             Compra compra = new Compra(
-                    null,  // Sem sessão
-                    null,  // Sem lugar
-                    itensSelecionados,
-                    precoTotal,
-                    metodoPagamento,
-                    usuarioLogado != null ? usuarioLogado.getNomeUsuario() : null
+                    bilhetesVazios,      // Lista vazia de bilhetes
+                    itensSelecionados,   // Itens do bar selecionados
+                    metodoPagamento,     // Método de pagamento
+                    idUsuario            // ID do usuário logado ou null
             );
 
             // Salvar a compra

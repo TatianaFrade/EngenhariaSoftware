@@ -263,7 +263,7 @@
           "fila": 4,
           "coluna": 1,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -365,7 +365,7 @@
           "fila": 5,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 5,
@@ -383,7 +383,7 @@
           "fila": 6,
           "coluna": 1,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 6,
@@ -425,7 +425,7 @@
           "fila": 6,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 6,
@@ -494,7 +494,7 @@
           "ocupado": true
         }
       ],
-      "lugaresOcupados": 15
+      "lugaresOcupados": 19
     },
     "preco": 7.5
   },
