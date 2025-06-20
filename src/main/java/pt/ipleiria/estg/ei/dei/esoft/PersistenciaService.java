@@ -256,4 +256,43 @@ public class PersistenciaService {
             return new ArrayList<>();
         }
     }
+
+    /**
+     * Retorna todas as datas únicas que têm sessões agendadas
+     * @return Set de LocalDateTime com as datas únicas
+     */
+    public static Set<LocalDateTime> getDatasSessoes() {
+        List<Sessao> sessoes = carregarSessoes();
+        Set<LocalDateTime> datas = new TreeSet<>(); // TreeSet para manter ordenado
+        for (Sessao sessao : sessoes) {
+            // Removendo a parte do tempo para comparar apenas as datas
+            LocalDateTime dataApenasDia = sessao.getDataHora()
+                    .withHour(0)
+                    .withMinute(0)
+                    .withSecond(0)
+                    .withNano(0);
+            datas.add(dataApenasDia);
+        }
+        return datas;
+    }
+
+    /**
+     * Retorna todas as sessões para uma data específica
+     * @param data A data para filtrar as sessões
+     * @return Lista de sessões na data especificada
+     */
+    public static List<Sessao> getSessoesPorData(LocalDateTime data) {
+        List<Sessao> todasSessoes = carregarSessoes();
+        List<Sessao> sessoesNaData = new ArrayList<>();
+
+        for (Sessao sessao : todasSessoes) {
+            if (sessao.getDataHora().toLocalDate().equals(data.toLocalDate())) {
+                sessoesNaData.add(sessao);
+            }
+        }
+
+        // Ordenar por hora
+        sessoesNaData.sort(Comparator.comparing(Sessao::getDataHora));
+        return sessoesNaData;
+    }
 }

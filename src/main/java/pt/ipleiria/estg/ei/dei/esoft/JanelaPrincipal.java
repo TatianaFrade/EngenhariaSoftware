@@ -2,11 +2,15 @@ package pt.ipleiria.estg.ei.dei.esoft;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class JanelaPrincipal extends JFrame {
     private JPanel painelPrincipal;
@@ -51,7 +55,8 @@ public class JanelaPrincipal extends JFrame {
             List<Compra> compras = PersistenciaService.carregarCompras();
 
             // Carregar itens do bar - se não existirem, serão criados os itens padrão
-            List<Item> itens = PersistenciaService.carregarItens();
+            // Carregar itens do bar
+            PersistenciaService.carregarItens();
 
             // Se não existirem dados salvos, criar dados padrão
             if (filmes == null || filmes.isEmpty()) {
@@ -151,24 +156,24 @@ public class JanelaPrincipal extends JFrame {
         // Painel superior com título e login
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
-        // Título para o cinema com estilo neutro
+
+        // Título para o cinema
         JLabel titulo = new JLabel("Cinema e Bar");
         titulo.setFont(new Font("Arial", Font.BOLD, 24));
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Botão de login/logout com estilo neutro
+        // Botão de login/logout
         loginButton = new JButton("Login");
         loginButton.setPreferredSize(new Dimension(80, 30));
         loginButton.addActionListener(e -> {
             if (usuarioLogado != null) {
-                // Se estiver logado, faz logout
                 realizarLogout();
             } else {
-                // Se não estiver logado, mostra tela de login
-                mostrarJanelaLogin();            }
+                mostrarJanelaLogin();
+            }
         });
 
-        // Rótulo para mostrar o nome do usuário (inicialmente vazio)
+        // Rótulo para mostrar o nome do usuário
         usuarioLabel = new JLabel("");
         usuarioLabel.setPreferredSize(new Dimension(150, 30));
         usuarioLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -177,7 +182,7 @@ public class JanelaPrincipal extends JFrame {
         // Botão de perfil (inicialmente invisível)
         perfilButton = new JButton("Meu Perfil");
         perfilButton.setPreferredSize(new Dimension(100, 30));
-        perfilButton.setVisible(false); // Só fica visível quando o usuário está logado
+        perfilButton.setVisible(false);
         perfilButton.addActionListener(e -> mostrarJanelaEditarPerfil());
 
         JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
@@ -190,34 +195,50 @@ public class JanelaPrincipal extends JFrame {
 
         // Adiciona o painel superior
         painelPrincipal.add(topPanel, BorderLayout.NORTH);
-        // Criar botões com estilo neutro
-        comprarBilheteButton = createStyledButton("Comprar Bilhete", null);
-        comprarItensButton = createStyledButton("Comprar Itens do Bar", null);
-        verMenusButton = createStyledButton("Ver Menus", null);
-        consultarSessoesPorDiaButton = createStyledButton("Consultar Sessões por Dia", null);
 
-        // Painel central com os botões principais dispostos em grid
+        // Criar botões principais
+        comprarBilheteButton = new JButton("Comprar Bilhete");
+        comprarItensButton = new JButton("Comprar Itens do Bar");
+        verMenusButton = new JButton("Ver Menus");
+        consultarSessoesPorDiaButton = new JButton("Consultar Sessões por Dia");
+
+        // Configurar estilo dos botões
+        Font buttonFont = new Font("Arial", Font.BOLD, 16);
+        Dimension buttonSize = new Dimension(250, 100);
+        Insets buttonMargin = new Insets(10, 10, 10, 10);
+
+        for (JButton btn : new JButton[]{comprarBilheteButton, comprarItensButton,
+                verMenusButton, consultarSessoesPorDiaButton}) {
+            btn.setFont(buttonFont);
+            btn.setPreferredSize(buttonSize);
+            btn.setMargin(buttonMargin);
+            btn.setFocusPainted(true);
+            btn.setBorderPainted(true);
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+
+        // Painel central com os botões principais em grid 2x2
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(40, 100, 40, 100));
         centerPanel.add(comprarBilheteButton);
         centerPanel.add(comprarItensButton);
-        centerPanel.add(verMenusButton);
         centerPanel.add(consultarSessoesPorDiaButton);
+        centerPanel.add(verMenusButton);
 
-        // Adiciona espaçamento ao redor do painel central
-        JPanel paddedCenterPanel = new JPanel(new BorderLayout());
-        paddedCenterPanel.add(centerPanel, BorderLayout.CENTER);
-        paddedCenterPanel.setBorder(BorderFactory.createEmptyBorder(40, 100, 40, 100));
-        painelPrincipal.add(paddedCenterPanel, BorderLayout.CENTER);
+        // Adicionar action listeners aos botões
+        comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
+        comprarItensButton.addActionListener(e -> mostrarJanelaSelecaoItensBar());
+        consultarSessoesPorDiaButton.addActionListener(e -> consultarSessoesPorDia());
 
-        // Adiciona um rodapé simples
+        painelPrincipal.add(centerPanel, BorderLayout.CENTER);
+
+        // Rodapé
         JPanel footerPanel = new JPanel(new BorderLayout());
         JLabel footerLabel = new JLabel("Cinema e Bar");
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         footerPanel.add(footerLabel, BorderLayout.CENTER);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         painelPrincipal.add(footerPanel, BorderLayout.SOUTH);
-        comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
-        comprarItensButton.addActionListener(e -> mostrarJanelaSelecaoItensBar());
     }
 
     private void mostrarJanelaSelecaoFilme() {
@@ -419,25 +440,6 @@ public class JanelaPrincipal extends JFrame {
         }        return ref.toString();
     }
 
-    /**
-     * Cria um botão estilizado para o menu principal
-     * @param texto Texto do botão
-     * @param cor Cor de fundo do botão (não utilizada para manter estilo neutro)
-     * @return JButton estilizado
-     */
-    private JButton createStyledButton(String texto, Color cor) {
-        JButton button = new JButton(texto);
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        // Usar estilo padrão do sistema para os botões (neutro)
-        button.setFocusPainted(true);
-        button.setBorderPainted(true);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.setPreferredSize(new Dimension(250, 100));
-
-        // Adiciona margem interna ao texto
-        button.setMargin(new Insets(10, 10, 10, 10));
-        return button;
-    }
 
     /**
      * Mostra a janela de seleção de itens do bar
@@ -1128,7 +1130,7 @@ public class JanelaPrincipal extends JFrame {
         // Usar a classe JanelaPagamento com null para sessão e lugar (compra apenas de itens do bar)
         JanelaPagamento painelPagamento = new JanelaPagamento(
                 null,  // Sem sessão associada
-                null,  // Sem lugar associado
+                null,  // Sem lugar associada
                 precoTotal,
                 itensSelecionados,
                 // ActionListener para o botão Voltar - retorna à tela de seleção de itens
@@ -1183,5 +1185,101 @@ public class JanelaPrincipal extends JFrame {
         });
 
         trocarPainel(painelPagamento);
+    }
+
+    /**
+     * Consulta sessões disponíveis por dia.
+     */    private void consultarSessoesPorDia() {
+        // Criar um diálogo para mostrar as sessões
+        JDialog dialog = new JDialog(this, "Consultar Sessões por Dia", true);
+        dialog.setLayout(new BorderLayout(10, 10));
+        dialog.setSize(800, 600);
+        dialog.setLocationRelativeTo(this);
+
+        // Painel superior com título e seletor de data
+        JPanel painelSuperior = new JPanel(new BorderLayout(10, 10));
+        painelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Título
+        JLabel titulo = new JLabel("Consulta de Sessões por Dia");
+        titulo.setFont(new Font("Arial", Font.BOLD, 20));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        painelSuperior.add(titulo, BorderLayout.NORTH);
+
+        // ComboBox para seleção de data
+        JPanel painelData = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel labelData = new JLabel("Data: ");
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+
+        // Adicionar datas das sessões ao modelo
+        sessoes.stream()
+                .map(s -> s.getDataHora().toLocalDate().toString())
+                .distinct()
+                .sorted()
+                .forEach(model::addElement);
+
+        JComboBox<String> comboData = new JComboBox<>(model);
+        painelData.add(labelData);
+        painelData.add(comboData);
+        painelSuperior.add(painelData, BorderLayout.CENTER);
+
+        // Painel central para lista de sessões
+        JPanel painelSessoes = new JPanel();
+        painelSessoes.setLayout(new BoxLayout(painelSessoes, BoxLayout.Y_AXIS));
+        JScrollPane scrollPane = new JScrollPane(painelSessoes);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        // Atualizar sessões quando uma data é selecionada
+        comboData.addActionListener(e -> {
+            painelSessoes.removeAll();
+            String dataSelecionada = (String)comboData.getSelectedItem();
+            if (dataSelecionada != null) {
+                sessoes.stream()
+                        .filter(s -> s.getDataHora().toLocalDate().toString().equals(dataSelecionada))
+                        .sorted((s1, s2) -> s1.getDataHora().compareTo(s2.getDataHora()))
+                        .forEach(s -> {
+                            JPanel painelSessao = new JPanel();
+                            painelSessao.setLayout(new BoxLayout(painelSessao, BoxLayout.Y_AXIS));
+                            painelSessao.setBorder(BorderFactory.createCompoundBorder(
+                                    BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+                                    BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                            ));
+                            painelSessao.setBackground(Color.WHITE);
+                            painelSessao.add(new JLabel("Hora: " + s.getDataHora().toLocalTime()));
+                            painelSessao.add(Box.createVerticalStrut(5));
+                            painelSessao.add(new JLabel("Filme: " + s.getFilme().getNome()));
+                            painelSessao.add(Box.createVerticalStrut(5));
+                            painelSessao.add(new JLabel("Sala: " + s.getSala().getNome()));
+                            painelSessao.add(Box.createVerticalStrut(5));                           painelSessao.add(new JLabel("Lugares disponíveis: " +
+                                    s.getSala().getLugares().stream().filter(l -> !l.isOcupado()).count()));
+                            painelSessoes.add(painelSessao);
+                            painelSessoes.add(Box.createVerticalStrut(10));
+                        });
+            }
+            painelSessoes.revalidate();
+            painelSessoes.repaint();
+        });
+
+        // Botão Fechar
+        JButton btnFechar = new JButton("Fechar");
+        btnFechar.addActionListener(e -> dialog.dispose());
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        painelBotoes.add(btnFechar);
+
+        // Montar o diálogo
+        dialog.add(painelSuperior, BorderLayout.NORTH);
+        dialog.add(scrollPane, BorderLayout.CENTER);
+        dialog.add(painelBotoes, BorderLayout.SOUTH);
+
+        // Mostrar o diálogo
+        if (model.getSize() > 0) {
+            comboData.setSelectedIndex(0);
+            dialog.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Não há sessões disponíveis no momento.",
+                    "Aviso",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }
