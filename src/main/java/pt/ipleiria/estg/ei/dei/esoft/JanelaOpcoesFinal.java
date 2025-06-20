@@ -5,10 +5,10 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * Janela final após seleção do lugar, com opções para adicionar produtos ou finalizar a compra
+ * Janela final após seleção do lugar, com opções para adicionar itens ou finalizar a compra
  */
 public class JanelaOpcoesFinal extends JPanel {
-    private JButton btnAdicionarProdutos;
+    private JButton btnAdicionarItens;
     private JButton btnFinalizarCompra;
     private JButton btnVoltar;
     private JButton btnCancelar;
@@ -96,10 +96,10 @@ public class JanelaOpcoesFinal extends JPanel {
         painelCentral.setLayout(new GridLayout(2, 1, 10, 30));
         painelCentral.setBorder(BorderFactory.createEmptyBorder(30, 100, 30, 100));
 
-        // Botão para adicionar produtos do bar
-        btnAdicionarProdutos = new JButton("Adicionar Produtos do Bar");
-        btnAdicionarProdutos.setFont(new Font(btnAdicionarProdutos.getFont().getName(), Font.BOLD, 14));
-        btnAdicionarProdutos.setPreferredSize(new Dimension(300, 60));
+        // Botão para adicionar itens do bar
+        btnAdicionarItens = new JButton("Adicionar Itens do Bar");
+        btnAdicionarItens.setFont(new Font(btnAdicionarItens.getFont().getName(), Font.BOLD, 14));
+        btnAdicionarItens.setPreferredSize(new Dimension(300, 60));
         // O ActionListener será configurado na JanelaPrincipal
 
         // Botão para finalizar compra
@@ -108,7 +108,7 @@ public class JanelaOpcoesFinal extends JPanel {
         btnFinalizarCompra.setPreferredSize(new Dimension(300, 60));
         // O ActionListener será configurado em JanelaPrincipal
 
-        painelCentral.add(btnAdicionarProdutos);
+        painelCentral.add(btnAdicionarItens);
         painelCentral.add(btnFinalizarCompra);
 
         // Centralizar os botões
@@ -176,8 +176,8 @@ public class JanelaOpcoesFinal extends JPanel {
     }
 
     // Getters para os botões
-    public JButton getBtnAdicionarProdutos() {
-        return btnAdicionarProdutos;
+    public JButton getBtnAdicionarItens() {
+        return btnAdicionarItens;
     }
 
     public JButton getBtnFinalizarCompra() {

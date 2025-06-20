@@ -87,34 +87,45 @@ public class JanelaPagamento extends JPanel {
         // Conforme requisito, o desconto deve ser sempre 0
         return 0.0;
     }
-
     private void configurarPainelTitulo() {
         JPanel painelTitulo = new JPanel();
         painelTitulo.setLayout(new BoxLayout(painelTitulo, BoxLayout.Y_AXIS));
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
-        JLabel labelTitulo = new JLabel("Finalizar Pagamento");
+        // Título principal
+        String tituloTexto = (sessao == null) ? "Finalizar Pagamento - Itens do Bar" : "Finalizar Pagamento";
+        JLabel labelTitulo = new JLabel(tituloTexto);
         labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.BOLD, 18));
         labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelTitulo);
 
         painelTitulo.add(Box.createVerticalStrut(20));
 
-        // Informações do filme
-        JLabel labelFilme = new JLabel("Filme: " + sessao.getFilme().getNome());
-        labelFilme.setAlignmentX(Component.CENTER_ALIGNMENT);
-        painelTitulo.add(labelFilme);
+        // Adicionar informações do filme e sessão apenas se existirem
+        if (sessao != null) {
+            // Informações do filme
+            JLabel labelFilme = new JLabel("Filme: " + sessao.getFilme().getNome());
+            labelFilme.setAlignmentX(Component.CENTER_ALIGNMENT);
+            painelTitulo.add(labelFilme);
 
-        // Informações da sessão
-        JLabel labelSessao = new JLabel("Sessão: " + sessao.getDataHoraFormatada() +
-                " - Sala " + sessao.getNomeSala());
-        labelSessao.setAlignmentX(Component.CENTER_ALIGNMENT);
-        painelTitulo.add(labelSessao);
+            // Informações da sessão
+            JLabel labelSessao = new JLabel("Sessão: " + sessao.getDataHoraFormatada() +
+                    " - Sala " + sessao.getNomeSala());
+            labelSessao.setAlignmentX(Component.CENTER_ALIGNMENT);
+            painelTitulo.add(labelSessao);
 
-        // Informações do lugar
-        JLabel labelLugar = new JLabel("Lugar: " + lugar.getIdentificacao());
-        labelLugar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        painelTitulo.add(labelLugar);
+            // Informações do lugar
+            if (lugar != null) {
+                JLabel labelLugar = new JLabel("Lugar: " + lugar.getIdentificacao());
+                labelLugar.setAlignmentX(Component.CENTER_ALIGNMENT);
+                painelTitulo.add(labelLugar);
+            }
+        } else {
+            // Caso seja apenas compra de itens do bar
+            JLabel labelCompraBar = new JLabel("Compra de Itens do Bar");
+            labelCompraBar.setAlignmentX(Component.CENTER_ALIGNMENT);
+            painelTitulo.add(labelCompraBar);
+        }
 
         painelTitulo.add(Box.createVerticalStrut(30));
 

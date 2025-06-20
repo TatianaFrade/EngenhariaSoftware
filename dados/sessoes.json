@@ -437,7 +437,7 @@
           "fila": 7,
           "coluna": 0,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 7,
@@ -494,7 +494,7 @@
           "ocupado": true
         }
       ],
-      "lugaresOcupados": 15
+      "lugaresOcupados": 16
     },
     "preco": 7.5
   },

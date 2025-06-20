@@ -170,38 +170,50 @@ public class PersistenciaService {
         }
     }
 
-    // Métodos para Itens do Bar
+    /**
+     * Salva a lista de itens do bar no arquivo JSON
+     * @param itens Lista de itens para salvar
+     */
     public static void salvarItens(List<Item> itens) {
         try {
-            File arquivo = new File(ARQUIVO_ITENS);
-            if (!arquivo.getParentFile().exists()) {
-                arquivo.getParentFile().mkdirs();
+            // Criar diretório se não existir
+            File diretorio = new File(DIRETORIO_DADOS);
+            if (!diretorio.exists()) {
+                diretorio.mkdirs();
             }
 
+            // Salvar itens no arquivo JSON
+            File arquivo = new File(ARQUIVO_ITENS);
             try (Writer writer = new FileWriter(arquivo)) {
                 gson.toJson(itens, writer);
-                System.out.println("Itens salvos com sucesso: " + itens.size());
             }
+            System.out.println("Itens salvos com sucesso!");
         } catch (IOException e) {
             System.err.println("Erro ao salvar itens: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    /**
+     * Carrega a lista de itens do bar do arquivo JSON
+     * @return Lista de itens ou lista vazia se o arquivo não existir
+     */
     public static List<Item> carregarItens() {
         try {
-            File arquivo = new File(ARQUIVO_ITENS);
-            if (!arquivo.exists()) {
-                return new ArrayList<>();
+            File arquivo = new File(ARQUIVO_ITENS);            if (!arquivo.exists()) {
+                System.out.println("Arquivo de itens não encontrado. Usando itens padrão.");
+                List<Item> itensPadrao = Item.getItensPadrao();
+                salvarItens(itensPadrao); // Salva os itens padrão para uso futuro
+                return itensPadrao;
             }
-
-            Type tipoLista = new TypeToken<List<Item>>(){}.getType();
             try (Reader reader = new FileReader(arquivo)) {
-                List<Item> itens = gson.fromJson(reader, tipoLista);
+                Type tipoLista = new TypeToken<ArrayList<Item>>(){}.getType();
+                ArrayList<Item> itens = gson.fromJson(reader, tipoLista);
                 return itens != null ? itens : new ArrayList<>();
             }
         } catch (IOException e) {
             System.err.println("Erro ao carregar itens: " + e.getMessage());
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }

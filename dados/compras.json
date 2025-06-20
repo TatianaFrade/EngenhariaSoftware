@@ -328,5 +328,43 @@
     "metodoPagamento": "Multibanco",
     "confirmada": false,
     "idUsuario": "tati"
+  },
+  {
+    "id": "ae612a67-7d13-40be-a027-4be633eb76b5",
+    "dataHora": "Jun 20, 2025, 10:50:33 AM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "H1",
+    "precoBase": 7.5,
+    "itensBar": [
+      {
+        "nome": "Pipoca Grande",
+        "descricao": "Pipoca salgada tamanho grande",
+        "preco": 5.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 13.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "f5211f39-2483-4750-822d-d28a5ebda1bc",
+    "dataHora": "Jun 20, 2025, 10:50:44 AM",
+    "precoBase": 0.0,
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 6.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
   }
 ]
