@@ -1,0 +1,34 @@
+[
+  {
+    "nome": "Combo Econômico",
+    "descricao": "Uma opção simples para matar a fome durante o filme.",
+    "itens": ["Pipoca Pequena", "Refrigerante 300ml"],
+    "preco": 5.50,
+    "filme": "Matrix",
+    "isAtivo": true
+  },
+  {
+    "nome": "Refeição Completa",
+    "descricao": "Inclui comida, bebida e sobremesa para uma experiência completa.",
+    "itens": ["Hot Dog", "Refrigerante 500ml", "Chocolate"],
+    "preco": 11.50,
+    "filme": "Interestelar",
+    "isAtivo": true
+  },
+  {
+    "nome": "Menu Kids",
+    "descricao": "Leve, divertido e pensado para os mais pequenos.",
+    "itens": ["Pipoca Pequena", "Água Mineral 500ml", "Chocolate"],
+    "preco": 8.00,
+    "filme": "O Rei Leão",
+    "isAtivo": false
+  },
+  {
+    "nome": "Menu Caramelo",
+    "descricao": "Para quem adora pipoca doce com um toque especial.",
+    "itens": ["Pipoca Caramelizada", "Refrigerante 300ml"],
+    "preco": 8.00,
+    "filme": "La La Land",
+    "isAtivo": true
+  }
+]

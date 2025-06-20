@@ -67,7 +67,7 @@ public class Compra implements Serializable {
     /**
      * Calcula o preço total da compra (bilhetes + itens do bar)
      */
-    private double calcularPrecoTotal() {
+    public double calcularPrecoTotal() {
         double total = 0.0;
 
         // Somar preço de todos os bilhetes
@@ -141,8 +141,22 @@ public class Compra implements Serializable {
         return itensBar;
     }
 
+    // Metodo para adicionar um item do bar a lista de itens do bar
+    public void addItemBar(Item item) {
+        if (itensBar == null) {
+            itensBar = new ArrayList<>();
+        }
+        itensBar.add(item);
+    }
+
+
+
     public double getPrecoTotal() {
         return precoTotal;
+    }
+
+    public void setPrecoTotal(double precoTotal) {
+        this.precoTotal = precoTotal;
     }
 
     public String getMetodoPagamento() {

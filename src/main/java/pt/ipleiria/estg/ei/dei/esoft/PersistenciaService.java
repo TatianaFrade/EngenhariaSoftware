@@ -239,6 +239,46 @@ public class PersistenciaService {
         }
     }
 
+    public static void editarCompra(Compra compraEditada) {
+        try {
+            List<Compra> compras = carregarCompras();
+
+            for (int i = 0; i < compras.size(); i++) {
+                if (compras.get(i).getId().equals(compraEditada.getId())) {
+                    compras.set(i, compraEditada);
+                    break;
+                }
+            }
+
+            try (Writer writer = new FileWriter(ARQUIVO_COMPRAS)) {
+                gson.toJson(compras, writer);
+                System.out.println("Compra atualizada com sucesso! ID: " + compraEditada.getId());
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao editar compra: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void eliminarCompraPorId(String idCompra) {
+        try {
+            List<Compra> compras = carregarCompras();
+            boolean removida = compras.removeIf(c -> c.getId().equals(idCompra));
+
+            if (removida) {
+                try (Writer writer = new FileWriter(ARQUIVO_COMPRAS)) {
+                    gson.toJson(compras, writer);
+                    System.out.println("Compra eliminada com sucesso! ID: " + idCompra);
+                }
+            } else {
+                System.out.println("Compra não encontrada para eliminar. ID: " + idCompra);
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao eliminar compra: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public static List<Compra> carregarCompras() {
         try {
             File arquivo = new File(ARQUIVO_COMPRAS);
