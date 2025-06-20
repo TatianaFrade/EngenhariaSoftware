@@ -7,7 +7,7 @@
       "dataLancamento": "1999-03-31",
       "rate": 8.7
     },
-    "dataHora": "2025-06-20T14:30:49.7339805",
+    "dataHora": "2025-06-20T14:30:00",
     "sala": {
       "nome": "Sala 1",
       "acessibilidade": "sim",
@@ -437,7 +437,7 @@
           "fila": 7,
           "coluna": 0,
           "vip": false,
-          "ocupado": true
+          "ocupado": false
         },
         {
           "fila": 7,
@@ -494,7 +494,7 @@
           "ocupado": true
         }
       ],
-      "lugaresOcupados": 16
+      "lugaresOcupados": 15
     },
     "preco": 7.5
   },
@@ -506,7 +506,7 @@
       "dataLancamento": "1999-03-31",
       "rate": 8.7
     },
-    "dataHora": "2025-06-20T18:00:49.7692559",
+    "dataHora": "2025-06-20T18:00:00",
     "sala": {
       "nome": "Sala 1",
       "acessibilidade": "sim",
@@ -1005,7 +1005,7 @@
       "dataLancamento": "1999-03-31",
       "rate": 8.7
     },
-    "dataHora": "2025-06-21T16:45:49.7692559",
+    "dataHora": "2025-06-21T16:45:00",
     "sala": {
       "nome": "Sala 3",
       "acessibilidade": "nao",
@@ -1309,7 +1309,7 @@
           "fila": 4,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 5,
@@ -1492,7 +1492,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 7
+      "lugaresOcupados": 8
     },
     "preco": 7.5
   },
@@ -1504,7 +1504,7 @@
       "dataLancamento": "1994-06-24",
       "rate": 8.5
     },
-    "dataHora": "2025-06-20T15:00:49.7692559",
+    "dataHora": "2025-06-20T15:00:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",
@@ -2003,7 +2003,7 @@
       "dataLancamento": "1994-06-24",
       "rate": 8.5
     },
-    "dataHora": "2025-06-21T14:00:49.7692559",
+    "dataHora": "2025-06-21T14:00:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",
@@ -2502,7 +2502,7 @@
       "dataLancamento": "2014-11-06",
       "rate": 8.6
     },
-    "dataHora": "2025-06-20T20:30:49.7692559",
+    "dataHora": "2025-06-20T20:30:00",
     "sala": {
       "nome": "Sala 3",
       "acessibilidade": "nao",
@@ -3001,7 +3001,7 @@
       "dataLancamento": "2014-11-06",
       "rate": 8.6
     },
-    "dataHora": "2025-06-22T19:15:49.7692559",
+    "dataHora": "2025-06-22T19:15:00",
     "sala": {
       "nome": "Sala 1",
       "acessibilidade": "sim",
@@ -3500,7 +3500,7 @@
       "dataLancamento": "2019-04-26",
       "rate": 8.4
     },
-    "dataHora": "2025-06-21T15:00:49.7692559",
+    "dataHora": "2025-06-21T15:00:00",
     "sala": {
       "nome": "Sala 1",
       "acessibilidade": "sim",
@@ -3870,6 +3870,505 @@
           "fila": 6,
           "coluna": 0,
           "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 6,
+          "coluna": 1,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 6,
+          "coluna": 2,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 6,
+          "coluna": 3,
+          "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 6,
+          "coluna": 4,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 6,
+          "coluna": 5,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 6,
+          "coluna": 6,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 6,
+          "coluna": 7,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 6,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 6,
+          "coluna": 9,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 0,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 1,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 2,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 3,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 4,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 5,
+          "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 7,
+          "coluna": 6,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 7,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 7,
+          "coluna": 9,
+          "vip": false,
+          "ocupado": false
+        }
+      ],
+      "lugaresOcupados": 6
+    },
+    "preco": 8.0
+  },
+  {
+    "id": "820ee422-1675-47f1-bfc0-76d3d6be7c76",
+    "filme": {
+      "nome": "Vingadores: Ultimato",
+      "legendado": false,
+      "dataLancamento": "2019-04-26",
+      "rate": 8.4
+    },
+    "dataHora": "2025-06-21T21:30:00",
+    "sala": {
+      "nome": "Sala 3",
+      "acessibilidade": "nao",
+      "totalLugares": 80,
+      "lugares": [
+        {
+          "fila": 0,
+          "coluna": 0,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 0,
+          "coluna": 1,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 0,
+          "coluna": 2,
+          "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 0,
+          "coluna": 3,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 0,
+          "coluna": 4,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 0,
+          "coluna": 5,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 0,
+          "coluna": 6,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 0,
+          "coluna": 7,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 0,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 0,
+          "coluna": 9,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 0,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 1,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 2,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 3,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 4,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 5,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 6,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 7,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 1,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 1,
+          "coluna": 9,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 0,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 1,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 2,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 3,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 4,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 5,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 6,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 7,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 2,
+          "coluna": 9,
+          "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 3,
+          "coluna": 0,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 1,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 2,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 3,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 4,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 5,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 6,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 7,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 3,
+          "coluna": 9,
+          "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 4,
+          "coluna": 0,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 1,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 2,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 3,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 4,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 5,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 6,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 7,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 4,
+          "coluna": 9,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 0,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 1,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 2,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 3,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 4,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 5,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 6,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 7,
+          "vip": true,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": false
+        },
+        {
+          "fila": 5,
+          "coluna": 9,
+          "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 6,
+          "coluna": 0,
+          "vip": false,
           "ocupado": false
         },
         {
@@ -3987,22 +4486,22 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 5
+      "lugaresOcupados": 7
     },
-    "preco": 8.0
+    "preco": 9.5
   },
   {
-    "id": "820ee422-1675-47f1-bfc0-76d3d6be7c76",
+    "id": "d7682829-3f8f-4cee-94b0-ca91386cb74e",
     "filme": {
-      "nome": "Vingadores: Ultimato",
+      "nome": "O Auto da Compadecida",
       "legendado": false,
-      "dataLancamento": "2019-04-26",
-      "rate": 8.4
+      "dataLancamento": "2000-09-15",
+      "rate": 8.8
     },
-    "dataHora": "2025-06-21T21:30:49.7692559",
+    "dataHora": "2025-06-20T16:00:00",
     "sala": {
-      "nome": "Sala 3",
-      "acessibilidade": "nao",
+      "nome": "Sala 2",
+      "acessibilidade": "sim",
       "totalLugares": 80,
       "lugares": [
         {
@@ -4488,505 +4987,6 @@
       ],
       "lugaresOcupados": 4
     },
-    "preco": 9.5
-  },
-  {
-    "id": "d7682829-3f8f-4cee-94b0-ca91386cb74e",
-    "filme": {
-      "nome": "O Auto da Compadecida",
-      "legendado": false,
-      "dataLancamento": "2000-09-15",
-      "rate": 8.8
-    },
-    "dataHora": "2025-06-20T16:00:49.7692559",
-    "sala": {
-      "nome": "Sala 2",
-      "acessibilidade": "sim",
-      "totalLugares": 80,
-      "lugares": [
-        {
-          "fila": 0,
-          "coluna": 0,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 0,
-          "coluna": 1,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 0,
-          "coluna": 2,
-          "vip": false,
-          "ocupado": true
-        },
-        {
-          "fila": 0,
-          "coluna": 3,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 0,
-          "coluna": 4,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 0,
-          "coluna": 5,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 0,
-          "coluna": 6,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 0,
-          "coluna": 7,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 0,
-          "coluna": 8,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 0,
-          "coluna": 9,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 0,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 1,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 2,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 3,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 4,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 5,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 6,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 7,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 8,
-          "vip": false,
-          "ocupado": true
-        },
-        {
-          "fila": 1,
-          "coluna": 9,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 0,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 1,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 2,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 3,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 4,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 5,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 6,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 7,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 8,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 2,
-          "coluna": 9,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 0,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 1,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 2,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 3,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 4,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 5,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 6,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 7,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 8,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 3,
-          "coluna": 9,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 0,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 1,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 2,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 3,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 4,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 5,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 6,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 7,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 8,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 4,
-          "coluna": 9,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 0,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 1,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 2,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 3,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 4,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 5,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 6,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 7,
-          "vip": true,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 8,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 5,
-          "coluna": 9,
-          "vip": false,
-          "ocupado": true
-        },
-        {
-          "fila": 6,
-          "coluna": 0,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 6,
-          "coluna": 1,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 6,
-          "coluna": 2,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 6,
-          "coluna": 3,
-          "vip": false,
-          "ocupado": true
-        },
-        {
-          "fila": 6,
-          "coluna": 4,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 6,
-          "coluna": 5,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 6,
-          "coluna": 6,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 6,
-          "coluna": 7,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 6,
-          "coluna": 8,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 6,
-          "coluna": 9,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 0,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 1,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 2,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 3,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 4,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 5,
-          "vip": false,
-          "ocupado": true
-        },
-        {
-          "fila": 7,
-          "coluna": 6,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 7,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 8,
-          "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 7,
-          "coluna": 9,
-          "vip": false,
-          "ocupado": false
-        }
-      ],
-      "lugaresOcupados": 5
-    },
     "preco": 7.5
   },
   {
@@ -4997,7 +4997,7 @@
       "dataLancamento": "2000-09-15",
       "rate": 8.8
     },
-    "dataHora": "2025-06-22T18:30:49.7692559",
+    "dataHora": "2025-06-22T18:30:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",
@@ -5496,7 +5496,7 @@
       "dataLancamento": "2016-12-16",
       "rate": 8.0
     },
-    "dataHora": "2025-06-23T17:45:49.7692559",
+    "dataHora": "2025-06-23T17:45:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",

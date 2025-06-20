@@ -366,5 +366,86 @@
     "metodoPagamento": "Multibanco",
     "confirmada": false,
     "idUsuario": "tati"
+  },
+  {
+    "id": "ad475ebb-d33d-4c1e-8a14-9c2a8bef7ae3",
+    "dataHora": "Jun 20, 2025, 10:54:03 AM",
+    "precoBase": 0.0,
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 4.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "5e455e61-c981-4ed0-85b3-38dcbafeccac",
+    "dataHora": "Jun 20, 2025, 11:27:39 AM",
+    "precoBase": 0.0,
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 3.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "c10b582e-ebe1-4279-8fab-bb50322c6249",
+    "dataHora": "Jun 20, 2025, 11:27:48 AM",
+    "precoBase": 0.0,
+    "itensBar": [
+      {
+        "nome": "Nachos com Queijo",
+        "descricao": "Porção de nachos com molho de queijo",
+        "preco": 7.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "5cefe53f-d5ca-461d-8685-be1497aa9c09",
+    "dataHora": "Jun 20, 2025, 11:48:57 AM",
+    "precoBase": 0.0,
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 4.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "ae7cb20f-6248-4404-8d95-ec724cd7b06e",
+    "dataHora": "Jun 20, 2025, 11:49:04 AM",
+    "idSessao": "820ee422-1675-47f1-bfc0-76d3d6be7c76",
+    "idLugar": "D10",
+    "precoBase": 9.5,
+    "itensBar": [],
+    "precoTotal": 9.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
   }
 ]
