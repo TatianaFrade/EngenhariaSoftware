@@ -23,4 +23,9 @@ public class Filme implements Serializable {
     public String getDataLancamento() { return dataLancamento; }
     public double getRate() { return rate; }
     public String getImagemPath() { return imagemPath; }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
 }

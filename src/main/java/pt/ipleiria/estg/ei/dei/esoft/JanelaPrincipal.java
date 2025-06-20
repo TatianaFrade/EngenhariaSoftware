@@ -229,6 +229,7 @@ public class JanelaPrincipal extends JFrame {
         comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
         comprarItensButton.addActionListener(e -> mostrarJanelaSelecaoItensBar());
         consultarSessoesPorDiaButton.addActionListener(e -> consultarSessoesPorDia());
+        verMenusButton.addActionListener(e -> mostrarJanelaVerMenus());
 
         painelPrincipal.add(centerPanel, BorderLayout.CENTER);
 
@@ -1191,6 +1192,10 @@ public class JanelaPrincipal extends JFrame {
         });
 
         trocarPainel(painelPagamento);
+    }
+
+    private void mostrarJanelaVerMenus() {
+        new JanelaVerMenus(this, usuarioLogado != null && usuarioLogado.isAdministrador(),usuarioLogado).setVisible(true);
     }
 
     /**

@@ -36,7 +36,6 @@ public class JanelaEditarCompraBar extends JFrame {
         JLabel lblData = new JLabel("Data da Compra:  " + sdf.format(compra.getDataHora()));
         painelFormulario.add(lblData);
 
-
         JLabel lblMetodo = new JLabel("Método de Pagamento:  " + compra.getMetodoPagamento());
         painelFormulario.add(lblMetodo);
 
@@ -60,12 +59,10 @@ public class JanelaEditarCompraBar extends JFrame {
 
             JPanel linha = new JPanel(new BorderLayout());
 
-            // Nome do item com preço
             JLabel nome = new JLabel(item.getNome() + " (" + String.format("%.2f €", item.getPreco()) + ")");
             nome.setPreferredSize(new Dimension(250, 25));
             linha.add(nome, BorderLayout.WEST);
 
-            // Painel com botões e quantidade
             JLabel qtdLabel = new JLabel(String.valueOf(qtdInicial));
             etiquetasQuantidade.put(item, qtdLabel);
 
@@ -84,7 +81,6 @@ public class JanelaEditarCompraBar extends JFrame {
             painelItens.add(linha);
         }
 
-        // Scroll com velocidade aumentada
         JScrollPane scrollItens = new JScrollPane(painelItens);
         scrollItens.setPreferredSize(new Dimension(400, 220));
         scrollItens.getVerticalScrollBar().setUnitIncrement(20);
@@ -104,7 +100,11 @@ public class JanelaEditarCompraBar extends JFrame {
             dispose();
         });
 
-        JPanel painelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton btnCancelar = new JButton("❌ Cancelar");
+        btnCancelar.addActionListener(e -> dispose());
+
+        JPanel painelInferior = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        painelInferior.add(btnCancelar);
         painelInferior.add(btnGuardar);
 
         add(new JScrollPane(painelFormulario), BorderLayout.CENTER);

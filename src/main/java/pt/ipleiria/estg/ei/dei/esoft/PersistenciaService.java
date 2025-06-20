@@ -23,6 +23,7 @@ public class PersistenciaService {
     private static final String ARQUIVO_SESSOES = DIRETORIO_DADOS + "sessoes.json";
     private static final String ARQUIVO_COMPRAS = DIRETORIO_DADOS + "compras.json";
     private static final String ARQUIVO_ITENS = DIRETORIO_DADOS + "itens.json";
+    private static final String ARQUIVO_MENUS = DIRETORIO_DADOS + "menus.json";
 
     // Configurar o Gson com adaptadores para tipos especiais como LocalDateTime
     private static Gson gson = new GsonBuilder()
@@ -334,5 +335,71 @@ public class PersistenciaService {
         // Ordenar por hora
         sessoesNaData.sort(Comparator.comparing(Sessao::getDataHora));
         return sessoesNaData;
+    }
+
+    public static List<Menu> carregarMenus() {
+        try {
+            File arquivo = new File(ARQUIVO_MENUS);
+            if (!arquivo.exists()) {
+                return new ArrayList<>();
+            }
+
+            Type tipoLista = new TypeToken<List<Menu>>(){}.getType();
+            try (Reader reader = new FileReader(arquivo)) {
+                List<Menu> menus = gson.fromJson(reader, tipoLista);
+                if (menus != null) {
+                    System.out.println("Carregados " + menus.size() + " menus do arquivo");
+                    return menus;
+                }
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar menus: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public static int gerarNovoIdMenu() {
+        List<Menu> menus = carregarMenus();
+        return menus.stream()
+                .mapToInt(Menu::getId)
+                .max()
+                .orElse(0) + 1;
+    }
+
+    public static void salvarMenus(List<Menu> menus) {
+        try {
+            File arquivo = new File(ARQUIVO_MENUS);
+            if (!arquivo.getParentFile().exists()) {
+                arquivo.getParentFile().mkdirs();
+            }
+
+            try (Writer writer = new FileWriter(arquivo)) {
+                gson.toJson(menus, writer);
+                System.out.println("Menus salvos com sucesso em " + ARQUIVO_MENUS + " - Total: " + menus.size());
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao salvar menus: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public static void adicionarMenu(Menu novoMenu) {
+        List<Menu> menus = carregarMenus();
+        novoMenu.setId(gerarNovoIdMenu());
+        menus.add(novoMenu);
+        salvarMenus(menus);
+    }
+
+    public static void atualizarMenu(Menu menuAtualizado) {
+        List<Menu> menus = carregarMenus();
+        for (int i = 0; i < menus.size(); i++) {
+            if (menus.get(i).getId() == menuAtualizado.getId()) {
+                menus.set(i, menuAtualizado);
+                salvarMenus(menus);
+                return;
+            }
+        }
+        System.out.println("Menu não encontrado para atualizar: ID " + menuAtualizado.getId());
     }
 }
