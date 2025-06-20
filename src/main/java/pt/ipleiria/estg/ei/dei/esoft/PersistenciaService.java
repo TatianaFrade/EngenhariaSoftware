@@ -170,38 +170,50 @@ public class PersistenciaService {
         }
     }
 
-    // Métodos para Itens do Bar
+    /**
+     * Salva a lista de itens do bar no arquivo JSON
+     * @param itens Lista de itens para salvar
+     */
     public static void salvarItens(List<Item> itens) {
         try {
-            File arquivo = new File(ARQUIVO_ITENS);
-            if (!arquivo.getParentFile().exists()) {
-                arquivo.getParentFile().mkdirs();
+            // Criar diretório se não existir
+            File diretorio = new File(DIRETORIO_DADOS);
+            if (!diretorio.exists()) {
+                diretorio.mkdirs();
             }
 
+            // Salvar itens no arquivo JSON
+            File arquivo = new File(ARQUIVO_ITENS);
             try (Writer writer = new FileWriter(arquivo)) {
                 gson.toJson(itens, writer);
-                System.out.println("Itens salvos com sucesso: " + itens.size());
             }
+            System.out.println("Itens salvos com sucesso!");
         } catch (IOException e) {
             System.err.println("Erro ao salvar itens: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    /**
+     * Carrega a lista de itens do bar do arquivo JSON
+     * @return Lista de itens ou lista vazia se o arquivo não existir
+     */
     public static List<Item> carregarItens() {
         try {
-            File arquivo = new File(ARQUIVO_ITENS);
-            if (!arquivo.exists()) {
-                return new ArrayList<>();
+            File arquivo = new File(ARQUIVO_ITENS);            if (!arquivo.exists()) {
+                System.out.println("Arquivo de itens não encontrado. Usando itens padrão.");
+                List<Item> itensPadrao = Item.getItensPadrao();
+                salvarItens(itensPadrao); // Salva os itens padrão para uso futuro
+                return itensPadrao;
             }
-
-            Type tipoLista = new TypeToken<List<Item>>(){}.getType();
             try (Reader reader = new FileReader(arquivo)) {
-                List<Item> itens = gson.fromJson(reader, tipoLista);
+                Type tipoLista = new TypeToken<ArrayList<Item>>(){}.getType();
+                ArrayList<Item> itens = gson.fromJson(reader, tipoLista);
                 return itens != null ? itens : new ArrayList<>();
             }
         } catch (IOException e) {
             System.err.println("Erro ao carregar itens: " + e.getMessage());
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
@@ -243,5 +255,44 @@ public class PersistenciaService {
             System.err.println("Erro ao carregar compras: " + e.getMessage());
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Retorna todas as datas únicas que têm sessões agendadas
+     * @return Set de LocalDateTime com as datas únicas
+     */
+    public static Set<LocalDateTime> getDatasSessoes() {
+        List<Sessao> sessoes = carregarSessoes();
+        Set<LocalDateTime> datas = new TreeSet<>(); // TreeSet para manter ordenado
+        for (Sessao sessao : sessoes) {
+            // Removendo a parte do tempo para comparar apenas as datas
+            LocalDateTime dataApenasDia = sessao.getDataHora()
+                    .withHour(0)
+                    .withMinute(0)
+                    .withSecond(0)
+                    .withNano(0);
+            datas.add(dataApenasDia);
+        }
+        return datas;
+    }
+
+    /**
+     * Retorna todas as sessões para uma data específica
+     * @param data A data para filtrar as sessões
+     * @return Lista de sessões na data especificada
+     */
+    public static List<Sessao> getSessoesPorData(LocalDateTime data) {
+        List<Sessao> todasSessoes = carregarSessoes();
+        List<Sessao> sessoesNaData = new ArrayList<>();
+
+        for (Sessao sessao : todasSessoes) {
+            if (sessao.getDataHora().toLocalDate().equals(data.toLocalDate())) {
+                sessoesNaData.add(sessao);
+            }
+        }
+
+        // Ordenar por hora
+        sessoesNaData.sort(Comparator.comparing(Sessao::getDataHora));
+        return sessoesNaData;
     }
 }

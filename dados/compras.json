@@ -2,9 +2,6 @@
   {
     "id": "2b846e24-df7e-4055-b4bc-32e1f31bda5e",
     "dataHora": "Jun 19, 2025, 4:28:39 PM",
-    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
-    "idLugar": "H10",
-    "precoBase": 7.5,
     "itensBar": [],
     "precoTotal": 7.5,
     "metodoPagamento": "Multibanco",
@@ -13,9 +10,6 @@
   {
     "id": "215400a4-a650-4625-a8e9-3d5b1b69e5c0",
     "dataHora": "Jun 19, 2025, 4:28:54 PM",
-    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
-    "idLugar": "G10",
-    "precoBase": 7.5,
     "itensBar": [],
     "precoTotal": 7.5,
     "metodoPagamento": "Multibanco",
@@ -24,9 +18,6 @@
   {
     "id": "ee276a24-d08d-4725-bd19-1e9154545055",
     "dataHora": "Jun 19, 2025, 4:43:34 PM",
-    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
-    "idLugar": "F10",
-    "precoBase": 7.5,
     "itensBar": [],
     "precoTotal": 7.5,
     "metodoPagamento": "Multibanco",
@@ -35,9 +26,6 @@
   {
     "id": "02036263-d54e-4113-b290-9b8291a7510e",
     "dataHora": "Jun 19, 2025, 4:43:45 PM",
-    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
-    "idLugar": "E10",
-    "precoBase": 7.5,
     "itensBar": [],
     "precoTotal": 7.5,
     "metodoPagamento": "Multibanco",
@@ -46,9 +34,6 @@
   {
     "id": "a27541d7-a4e5-4061-8650-1331b18736cc",
     "dataHora": "Jun 19, 2025, 4:49:34 PM",
-    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
-    "idLugar": "F3 (VIP)",
-    "precoBase": 9.5,
     "itensBar": [],
     "precoTotal": 9.5,
     "metodoPagamento": "Multibanco",
@@ -57,9 +42,6 @@
   {
     "id": "867adc38-1927-4379-a4c4-54a25e40b239",
     "dataHora": "Jun 19, 2025, 4:50:28 PM",
-    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
-    "idLugar": "F8 (VIP)",
-    "precoBase": 9.5,
     "itensBar": [],
     "precoTotal": 9.5,
     "metodoPagamento": "Multibanco",
@@ -68,9 +50,6 @@
   {
     "id": "a7212056-a68e-4472-b485-71568cafb10d",
     "dataHora": "Jun 19, 2025, 4:51:28 PM",
-    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
-    "idLugar": "A1",
-    "precoBase": 7.5,
     "itensBar": [],
     "precoTotal": 7.5,
     "metodoPagamento": "Multibanco",
@@ -79,9 +58,6 @@
   {
     "id": "5c0afdc5-5d27-43d1-86c7-2abe751c969a",
     "dataHora": "Jun 19, 2025, 6:49:02 PM",
-    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
-    "idLugar": "C1",
-    "precoBase": 7.5,
     "itensBar": [],
     "precoTotal": 7.5,
     "metodoPagamento": "Multibanco",
@@ -90,9 +66,6 @@
   {
     "id": "1a5459ae-32a8-442b-abc7-c851639aa7d1",
     "dataHora": "Jun 19, 2025, 6:57:15 PM",
-    "idSessao": "a7299f24-e9b0-4142-8595-4fa48daa863d",
-    "idLugar": "G10",
-    "precoBase": 9.0,
     "itensBar": [],
     "precoTotal": 9.0,
     "metodoPagamento": "Cartão de Crédito",
@@ -101,12 +74,424 @@
   {
     "id": "ddec94cb-1117-4a34-be22-f439bebd38c1",
     "dataHora": "Jun 19, 2025, 7:13:09 PM",
-    "idSessao": "55f5f746-496d-4131-a081-2f98976c2712",
-    "idLugar": "E7 (VIP)",
-    "precoBase": 9.5,
     "itensBar": [],
     "precoTotal": 9.5,
     "metodoPagamento": "Multibanco",
     "confirmada": false
+  },
+  {
+    "id": "88cd1aa8-2e4e-498f-a831-7305381bbb2e",
+    "dataHora": "Jun 19, 2025, 9:24:37 PM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 15.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "c4891fbe-45fb-4622-8047-7db676a575cd",
+    "dataHora": "Jun 19, 2025, 9:25:05 PM",
+    "itensBar": [],
+    "precoTotal": 11.0,
+    "metodoPagamento": "Cartão de Crédito",
+    "confirmada": true,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "d330b191-6f25-43d6-b524-1765de86cca4",
+    "dataHora": "Jun 19, 2025, 10:03:06 PM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 15.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "8a69ee78-3e1e-4aa0-8b72-48f67e665a86",
+    "dataHora": "Jun 19, 2025, 10:03:39 PM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 11.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "f55f5850-5903-4bba-b75b-402ff9e62d16",
+    "dataHora": "Jun 19, 2025, 10:11:10 PM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 11.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "5ad50a4f-230b-49a8-bf5f-c13b15bd89fe",
+    "dataHora": "Jun 19, 2025, 10:11:33 PM",
+    "itensBar": [],
+    "precoTotal": 11.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "854d67f0-4fec-4297-abe3-787eb4c72a0f",
+    "dataHora": "Jun 20, 2025, 7:54:11 AM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Grande",
+        "descricao": "Pipoca salgada tamanho grande",
+        "preco": 5.5,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Refrigerante 500ml",
+        "descricao": "Refrigerante em garrafa",
+        "preco": 4.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 17.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "84909dac-853d-461e-b0f2-0bffaf5b2da8",
+    "dataHora": "Jun 20, 2025, 7:55:51 AM",
+    "itensBar": [
+      {
+        "nome": "Refrigerante 500ml",
+        "descricao": "Refrigerante em garrafa",
+        "preco": 4.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 12.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "67d98b2d-83b0-4b9b-841a-cf02f771b58d",
+    "dataHora": "Jun 20, 2025, 8:16:05 AM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Refrigerante 300ml",
+        "descricao": "Refrigerante em lata",
+        "preco": 3.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      },
+      {
+        "nome": "Refrigerante 500ml",
+        "descricao": "Refrigerante em garrafa",
+        "preco": 4.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 22.0,
+    "metodoPagamento": "Cartão de Crédito",
+    "confirmada": true
+  },
+  {
+    "id": "963edcff-e09e-441a-83f2-e8dbb110795c",
+    "dataHora": "Jun 20, 2025, 8:26:12 AM",
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "748f3e93-09e7-4ddb-a034-d9164c993b4a",
+    "dataHora": "Jun 20, 2025, 8:40:52 AM",
+    "itensBar": [
+      {
+        "nome": "Refrigerante 500ml",
+        "descricao": "Refrigerante em garrafa",
+        "preco": 4.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      },
+      {
+        "nome": "Combo 2",
+        "descricao": "Pipoca grande + 2 Refrigerantes 300ml",
+        "preco": 10.0,
+        "categoria": "Combo",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 21.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "ae612a67-7d13-40be-a027-4be633eb76b5",
+    "dataHora": "Jun 20, 2025, 10:50:33 AM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Grande",
+        "descricao": "Pipoca salgada tamanho grande",
+        "preco": 5.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 13.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "f5211f39-2483-4750-822d-d28a5ebda1bc",
+    "dataHora": "Jun 20, 2025, 10:50:44 AM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 6.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "ad475ebb-d33d-4c1e-8a14-9c2a8bef7ae3",
+    "dataHora": "Jun 20, 2025, 10:54:03 AM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 4.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "5e455e61-c981-4ed0-85b3-38dcbafeccac",
+    "dataHora": "Jun 20, 2025, 11:27:39 AM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 3.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "c10b582e-ebe1-4279-8fab-bb50322c6249",
+    "dataHora": "Jun 20, 2025, 11:27:48 AM",
+    "itensBar": [
+      {
+        "nome": "Nachos com Queijo",
+        "descricao": "Porção de nachos com molho de queijo",
+        "preco": 7.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "5cefe53f-d5ca-461d-8685-be1497aa9c09",
+    "dataHora": "Jun 20, 2025, 11:48:57 AM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 4.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "ae7cb20f-6248-4404-8d95-ec724cd7b06e",
+    "dataHora": "Jun 20, 2025, 11:49:04 AM",
+    "itensBar": [],
+    "precoTotal": 9.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "e704633e-0d96-48ed-9110-cd80ea5c0d24",
+    "dataHora": "Jun 20, 2025, 12:31:15 PM",
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 13.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "2a08fd60-19c1-439f-a505-4414dbb4a1c9",
+    "dataHora": "Jun 20, 2025, 2:00:49 PM",
+    "bilhetes": [
+      {
+        "id": "419312ad-7067-4c36-ae45-cb5848e2745c",
+        "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+        "idLugar": "F9",
+        "preco": 7.5
+      }
+    ],
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 12.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "148fb54a-9545-4026-8aa8-5530dbcc192d",
+    "dataHora": "Jun 20, 2025, 2:01:01 PM",
+    "bilhetes": [],
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 4.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "319e7cf9-d0e9-42cf-94a0-317143475e40",
+    "dataHora": "Jun 20, 2025, 2:01:48 PM",
+    "bilhetes": [
+      {
+        "id": "7f518d94-60ea-40fe-9ab1-98bea8ef6766",
+        "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+        "idLugar": "G9",
+        "preco": 7.5
+      }
+    ],
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 12.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "ma"
+  },
+  {
+    "id": "7712693b-9ce2-4a51-95eb-b59ab1a76e0c",
+    "dataHora": "Jun 20, 2025, 2:03:38 PM",
+    "bilhetes": [
+      {
+        "id": "b7e89fda-23c2-409c-b7ae-54208a33b713",
+        "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+        "idLugar": "G2",
+        "preco": 7.5
+      }
+    ],
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "fe42e414-5b9d-45bf-879d-46cac89c2d42",
+    "dataHora": "Jun 20, 2025, 2:03:43 PM",
+    "bilhetes": [],
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 3.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
   }
 ]

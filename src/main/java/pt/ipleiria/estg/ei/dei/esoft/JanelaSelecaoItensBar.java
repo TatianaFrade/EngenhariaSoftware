@@ -13,6 +13,7 @@ import java.util.List;
 public class JanelaSelecaoItensBar extends JPanel {
     private JButton btnProximo;
     private JButton btnVoltar;
+    private JButton btnCancelar;
     private JPanel itensPanel;
     private List<Item> itensSelecionados;
     private List<JPanel> cartoes;
@@ -36,9 +37,8 @@ public class JanelaSelecaoItensBar extends JPanel {
      * @param precoInicial Preço total da compra do bilhete
      * @param onVoltar Listener para o botão voltar
      * @param onProximo Listener para o botão próximo
-     */
-    public JanelaSelecaoItensBar(Sessao sessao, Lugar lugar, double precoInicial,
-                                 ActionListener onVoltar, ActionListener onProximo) {
+     */    public JanelaSelecaoItensBar(Sessao sessao, Lugar lugar, double precoInicial,
+                                        ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
         setLayout(new BorderLayout(10, 10));
         cartoes = new ArrayList<>();
         itensSelecionados = new ArrayList<>();
@@ -47,42 +47,44 @@ public class JanelaSelecaoItensBar extends JPanel {
 
         // Configurar o painel de título
         configurarPainelTitulo(sessao, lugar);
-
-        // Configuração do painel de itens com layout em grade
-        configurarPainelItens(Item.getItensPadrao());
+        // Carregar itens do arquivo JSON e configurar o painel
+        List<Item> itensDisponiveis = PersistenciaService.carregarItens();
+        configurarPainelItens(itensDisponiveis.toArray(new Item[0]));
 
         // Configuração do painel com valor total
         configurarPainelValorTotal();
-
         // Configuração dos botões de navegação
-        configurarBotoes(onVoltar, onProximo);
+        configurarBotoes(onVoltar, onProximo, onCancelar);
     }
-
     private void configurarPainelTitulo(Sessao sessao, Lugar lugar) {
         JPanel painelTitulo = new JPanel();
         painelTitulo.setLayout(new BoxLayout(painelTitulo, BoxLayout.Y_AXIS));
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        JLabel labelTitulo = new JLabel("Adicionar Itens do Bar");
+        // Título diferente dependendo se é compra direta ou adicional ao bilhete
+        String titulo = (sessao == null) ? "Compra de Itens do Bar" : "Adicionar Itens do Bar";
+        JLabel labelTitulo = new JLabel(titulo);
         labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.BOLD, 18));
         labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelTitulo);
 
-        JLabel labelSubtitulo = new JLabel("Selecione os produtos que deseja adicionar à sua compra");
+        JLabel labelSubtitulo = new JLabel("Selecione os itens que deseja " +
+                ((sessao == null) ? "comprar" : "adicionar à sua compra"));
         labelSubtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelSubtitulo);
 
         painelTitulo.add(Box.createVerticalStrut(10));
 
-        // Informações do filme e lugar
-        JLabel labelDetalhes = new JLabel(String.format(
-                "Filme: %s | Sessão: %s | Lugar: %s",
-                sessao.getFilme().getNome(),
-                sessao.getDataHoraFormatada(),
-                lugar.getIdentificacao()
-        ));
-        labelDetalhes.setAlignmentX(Component.CENTER_ALIGNMENT);
-        painelTitulo.add(labelDetalhes);
+        // Informações do filme e lugar apenas se estiverem disponíveis
+        if (sessao != null && lugar != null) {
+            JLabel labelDetalhes = new JLabel(String.format(
+                    "Filme: %s | Sessão: %s | Lugar: %s",
+                    sessao.getFilme().getNome(),
+                    sessao.getDataHoraFormatada(),
+                    lugar.getIdentificacao()
+            ));
+            labelDetalhes.setAlignmentX(Component.CENTER_ALIGNMENT);
+            painelTitulo.add(labelDetalhes);
+        }
 
         // Instrução para seleção múltipla
         JLabel labelInstrucao = new JLabel("Clique nos itens para selecioná-los. Você pode selecionar múltiplos itens.");
@@ -270,9 +272,12 @@ public class JanelaSelecaoItensBar extends JPanel {
         DecimalFormat df = new DecimalFormat("0.00 €");
         labelTotalValor.setText(df.format(precoTotalCompra + precoTotalItens));
     }
+    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
+        // Botão Cancelar à esquerda
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.addActionListener(onCancelar != null ? onCancelar : e -> {});
 
-    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo) {
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Botões de navegação à direita
         btnVoltar = new JButton("Voltar");
         btnProximo = new JButton("Próximo");
 
@@ -280,18 +285,32 @@ public class JanelaSelecaoItensBar extends JPanel {
         btnVoltar.addActionListener(onVoltar != null ? onVoltar : e -> {});
         btnProximo.addActionListener(onProximo != null ? onProximo : e -> {});
 
-        bottomPanel.add(btnVoltar);
-        bottomPanel.add(btnProximo);
-        add(bottomPanel, BorderLayout.SOUTH);
+        // Layout para posicionar botões (Cancelar à esquerda, Voltar e Próximo à direita)
+        JPanel leftButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftButtonPanel.add(btnCancelar);
+
+        JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightButtonPanel.add(btnVoltar);
+        rightButtonPanel.add(btnProximo);
+
+        // Painel para organizar os dois grupos de botões
+        JPanel navigationPanel = new JPanel(new BorderLayout());
+        navigationPanel.add(leftButtonPanel, BorderLayout.WEST);
+        navigationPanel.add(rightButtonPanel, BorderLayout.EAST);
+
+        add(navigationPanel, BorderLayout.SOUTH);
     }
 
     // Getters
     public JButton getBtnProximo() {
         return btnProximo;
     }
-
     public JButton getBtnVoltar() {
         return btnVoltar;
+    }
+
+    public JButton getBtnCancelar() {
+        return btnCancelar;
     }
 
     public List<Item> getItensSelecionados() {

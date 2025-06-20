@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class JanelaSelecaoSessao extends JPanel {
     private JButton btnProximo;
     private JButton btnVoltar;
+    private JButton btnCancelar;
     private JPanel sessoesPanel;
     private Sessao sessaoSeleccionada;
     private Filme filme;
@@ -26,24 +27,26 @@ public class JanelaSelecaoSessao extends JPanel {
     public JButton getBtnProximo() {
         return btnProximo;
     }
-
     public JButton getBtnVoltar() {
         return btnVoltar;
     }
 
-    public JanelaSelecaoSessao(Filme filme, List<Sessao> todasSessoes, ActionListener onVoltar, ActionListener onProximo) {
+    public JButton getBtnCancelar() {
+        return btnCancelar;
+    }
+
+    public JanelaSelecaoSessao(Filme filme, List<Sessao> todasSessoes, ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
         this.filme = filme;
         this.cartoes = new ArrayList<>();
         setLayout(new BorderLayout());
 
         // Configurar título
         configurarTitulo();
-
         // Configurar painel de sessões
         configurarPainelSessoes(todasSessoes);
 
         // Configurar botões de navegação
-        configurarBotoes(onVoltar, onProximo);
+        configurarBotoes(onVoltar, onProximo, onCancelar);
     }
 
     private void configurarTitulo() {
@@ -170,9 +173,12 @@ public class JanelaSelecaoSessao extends JPanel {
 
         return cartao;
     }
+    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
+        // Botão Cancelar à esquerda
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.addActionListener(onCancelar != null ? onCancelar : e -> {});
 
-    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo) {
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Botões de navegação à direita
         btnVoltar = new JButton("Voltar");
         btnProximo = new JButton("Próximo");
 
@@ -183,9 +189,20 @@ public class JanelaSelecaoSessao extends JPanel {
         // O botão Próximo começa desabilitado até que uma sessão seja selecionada
         btnProximo.setEnabled(false);
 
-        bottomPanel.add(btnVoltar);
-        bottomPanel.add(btnProximo);
-        add(bottomPanel, BorderLayout.SOUTH);
+        // Layout para posicionar botões (Cancelar à esquerda, Voltar e Próximo à direita)
+        JPanel leftButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftButtonPanel.add(btnCancelar);
+
+        JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightButtonPanel.add(btnVoltar);
+        rightButtonPanel.add(btnProximo);
+
+        // Painel para organizar os dois grupos de botões
+        JPanel navigationPanel = new JPanel(new BorderLayout());
+        navigationPanel.add(leftButtonPanel, BorderLayout.WEST);
+        navigationPanel.add(rightButtonPanel, BorderLayout.EAST);
+
+        add(navigationPanel, BorderLayout.SOUTH);
     }
 
     public Sessao getSessaoSeleccionada() {

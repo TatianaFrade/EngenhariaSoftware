@@ -7,7 +7,7 @@
       "dataLancamento": "1999-03-31",
       "rate": 8.7
     },
-    "dataHora": "2025-06-20T14:30:49.7339805",
+    "dataHora": "2025-06-20T14:30:00",
     "sala": {
       "nome": "Sala 1",
       "acessibilidade": "sim",
@@ -179,13 +179,13 @@
           "fila": 2,
           "coluna": 7,
           "vip": true,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 2,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 2,
@@ -203,7 +203,7 @@
           "fila": 3,
           "coluna": 1,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 3,
@@ -263,7 +263,7 @@
           "fila": 4,
           "coluna": 1,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -365,7 +365,7 @@
           "fila": 5,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 5,
@@ -383,7 +383,7 @@
           "fila": 6,
           "coluna": 1,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 6,
@@ -425,7 +425,7 @@
           "fila": 6,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 6,
@@ -494,7 +494,7 @@
           "ocupado": true
         }
       ],
-      "lugaresOcupados": 12
+      "lugaresOcupados": 19
     },
     "preco": 7.5
   },
@@ -506,7 +506,7 @@
       "dataLancamento": "1999-03-31",
       "rate": 8.7
     },
-    "dataHora": "2025-06-20T18:00:49.7692559",
+    "dataHora": "2025-06-20T18:00:00",
     "sala": {
       "nome": "Sala 1",
       "acessibilidade": "sim",
@@ -726,7 +726,7 @@
           "fila": 3,
           "coluna": 5,
           "vip": true,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 3,
@@ -750,7 +750,7 @@
           "fila": 3,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -810,7 +810,7 @@
           "fila": 4,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 5,
@@ -993,7 +993,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 5
+      "lugaresOcupados": 8
     },
     "preco": 9.0
   },
@@ -1005,7 +1005,7 @@
       "dataLancamento": "1999-03-31",
       "rate": 8.7
     },
-    "dataHora": "2025-06-21T16:45:49.7692559",
+    "dataHora": "2025-06-21T16:45:00",
     "sala": {
       "nome": "Sala 3",
       "acessibilidade": "nao",
@@ -1093,7 +1093,7 @@
           "fila": 1,
           "coluna": 3,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 1,
@@ -1303,13 +1303,13 @@
           "fila": 4,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 5,
@@ -1492,7 +1492,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 5
+      "lugaresOcupados": 8
     },
     "preco": 7.5
   },
@@ -1504,7 +1504,7 @@
       "dataLancamento": "1994-06-24",
       "rate": 8.5
     },
-    "dataHora": "2025-06-20T15:00:49.7692559",
+    "dataHora": "2025-06-20T15:00:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",
@@ -2003,7 +2003,7 @@
       "dataLancamento": "1994-06-24",
       "rate": 8.5
     },
-    "dataHora": "2025-06-21T14:00:49.7692559",
+    "dataHora": "2025-06-21T14:00:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",
@@ -2502,7 +2502,7 @@
       "dataLancamento": "2014-11-06",
       "rate": 8.6
     },
-    "dataHora": "2025-06-20T20:30:49.7692559",
+    "dataHora": "2025-06-20T20:30:00",
     "sala": {
       "nome": "Sala 3",
       "acessibilidade": "nao",
@@ -3001,7 +3001,7 @@
       "dataLancamento": "2014-11-06",
       "rate": 8.6
     },
-    "dataHora": "2025-06-22T19:15:49.7692559",
+    "dataHora": "2025-06-22T19:15:00",
     "sala": {
       "nome": "Sala 1",
       "acessibilidade": "sim",
@@ -3281,7 +3281,7 @@
           "fila": 4,
           "coluna": 5,
           "vip": true,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -3488,7 +3488,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 4
+      "lugaresOcupados": 5
     },
     "preco": 9.0
   },
@@ -3500,7 +3500,7 @@
       "dataLancamento": "2019-04-26",
       "rate": 8.4
     },
-    "dataHora": "2025-06-21T15:00:49.7692559",
+    "dataHora": "2025-06-21T15:00:00",
     "sala": {
       "nome": "Sala 1",
       "acessibilidade": "sim",
@@ -3804,7 +3804,7 @@
           "fila": 4,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 5,
@@ -3870,7 +3870,7 @@
           "fila": 6,
           "coluna": 0,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 6,
@@ -3987,7 +3987,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 4
+      "lugaresOcupados": 6
     },
     "preco": 8.0
   },
@@ -3999,7 +3999,7 @@
       "dataLancamento": "2019-04-26",
       "rate": 8.4
     },
-    "dataHora": "2025-06-21T21:30:49.7692559",
+    "dataHora": "2025-06-21T21:30:00",
     "sala": {
       "nome": "Sala 3",
       "acessibilidade": "nao",
@@ -4183,7 +4183,7 @@
           "fila": 2,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 3,
@@ -4243,7 +4243,7 @@
           "fila": 3,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -4363,7 +4363,7 @@
           "fila": 5,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 6,
@@ -4486,7 +4486,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 4
+      "lugaresOcupados": 7
     },
     "preco": 9.5
   },
@@ -4498,7 +4498,7 @@
       "dataLancamento": "2000-09-15",
       "rate": 8.8
     },
-    "dataHora": "2025-06-20T16:00:49.7692559",
+    "dataHora": "2025-06-20T16:00:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",
@@ -4997,7 +4997,7 @@
       "dataLancamento": "2000-09-15",
       "rate": 8.8
     },
-    "dataHora": "2025-06-22T18:30:49.7692559",
+    "dataHora": "2025-06-22T18:30:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",
@@ -5496,7 +5496,7 @@
       "dataLancamento": "2016-12-16",
       "rate": 8.0
     },
-    "dataHora": "2025-06-23T17:45:49.7692559",
+    "dataHora": "2025-06-23T17:45:00",
     "sala": {
       "nome": "Sala 2",
       "acessibilidade": "sim",
