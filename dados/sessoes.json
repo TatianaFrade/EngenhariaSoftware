@@ -179,13 +179,13 @@
           "fila": 2,
           "coluna": 7,
           "vip": true,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 2,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 2,
@@ -203,7 +203,7 @@
           "fila": 3,
           "coluna": 1,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 3,
@@ -494,7 +494,7 @@
           "ocupado": true
         }
       ],
-      "lugaresOcupados": 12
+      "lugaresOcupados": 15
     },
     "preco": 7.5
   },
@@ -726,7 +726,7 @@
           "fila": 3,
           "coluna": 5,
           "vip": true,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 3,
@@ -750,7 +750,7 @@
           "fila": 3,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -810,7 +810,7 @@
           "fila": 4,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 5,
@@ -993,7 +993,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 5
+      "lugaresOcupados": 8
     },
     "preco": 9.0
   },
@@ -1093,7 +1093,7 @@
           "fila": 1,
           "coluna": 3,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 1,
@@ -1303,7 +1303,7 @@
           "fila": 4,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -1492,7 +1492,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 5
+      "lugaresOcupados": 7
     },
     "preco": 7.5
   },
@@ -3281,7 +3281,7 @@
           "fila": 4,
           "coluna": 5,
           "vip": true,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -3488,7 +3488,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 4
+      "lugaresOcupados": 5
     },
     "preco": 9.0
   },
@@ -3804,7 +3804,7 @@
           "fila": 4,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 5,
@@ -3987,7 +3987,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 4
+      "lugaresOcupados": 5
     },
     "preco": 8.0
   },
@@ -4862,7 +4862,7 @@
           "fila": 5,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 6,
@@ -4985,7 +4985,7 @@
           "ocupado": false
         }
       ],
-      "lugaresOcupados": 4
+      "lugaresOcupados": 5
     },
     "preco": 7.5
   },

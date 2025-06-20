@@ -3,6 +3,9 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.border.TitledBorder;
 
 /**
  * Janela para edição de perfil de usuário, permitindo atualizar dados e excluir conta.
@@ -14,10 +17,12 @@ public class JanelaEditarPerfil extends JPanel {
     private JPasswordField campoSenhaAtual;
     private JPasswordField campoNovaSenha;
     private JPasswordField campoConfirmaSenha;
-
     private JButton btnSalvar;
     private JButton btnExcluirConta;
     private JButton btnVoltar;
+
+    private JList<Compra> listaCompras;
+    private DefaultListModel<Compra> modeloListaCompras;
 
     private Usuario usuario;
 
@@ -33,13 +38,14 @@ public class JanelaEditarPerfil extends JPanel {
                               ActionListener onSalvar, ActionListener onExcluir) {
         this.usuario = usuario;
         setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Configurar o painel de título
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));        // Configurar o painel de título
         configurarPainelTitulo();
 
         // Configurar o painel de formulário
         configurarPainelFormulario();
+
+        // Configurar histórico de compras
+        configurarHistoricoCompras();
 
         // Configurar botões
         configurarBotoes(onVoltar, onSalvar, onExcluir);
@@ -57,7 +63,6 @@ public class JanelaEditarPerfil extends JPanel {
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         add(painelTitulo, BorderLayout.NORTH);
     }
-
     private void configurarPainelFormulario() {
         JPanel painelFormulario = new JPanel(new GridLayout(0, 2, 10, 10));
 
@@ -107,14 +112,14 @@ public class JanelaEditarPerfil extends JPanel {
         JScrollPane scrollPane = new JScrollPane(painelFormulario);
         scrollPane.setBorder(null);
 
+        // Cria o painel central que vai conter tanto o formulário quanto o histórico de compras
         JPanel painelCentral = new JPanel(new BorderLayout());
         painelCentral.add(scrollPane, BorderLayout.NORTH);
+
+        // Adiciona o painel central ao painel principal
         add(painelCentral, BorderLayout.CENTER);
     }
-
     private void configurarBotoes(ActionListener onVoltar, ActionListener onSalvar, ActionListener onExcluir) {
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-
         btnVoltar = new JButton("Voltar");
         btnSalvar = new JButton("Salvar Alterações");
         btnExcluirConta = new JButton("Excluir Conta");
@@ -149,6 +154,151 @@ public class JanelaEditarPerfil extends JPanel {
             campoNome.setText(usuario.getNome());
             campoUsuario.setText(usuario.getUsuario());
             campoEmail.setText(usuario.getEmail());
+        }
+    }
+
+    private void configurarHistoricoCompras() {
+        System.out.println("[DEBUG] Configurando histórico de compras para usuário: " + usuario.getNomeUsuario());
+
+        // Buscar compras do usuário
+        List<Compra> compras = UsuarioService.buscarComprasDoUsuario(usuario.getNomeUsuario());
+
+        // Criar modelo para a lista de compras
+        modeloListaCompras = new DefaultListModel<>();
+        for (Compra compra : compras) {
+            modeloListaCompras.addElement(compra);
+        }
+
+        // Criar a JList para mostrar as compras
+        listaCompras = new JList<>(modeloListaCompras);
+
+        // Configurar o renderizador da lista para exibir detalhes da compra
+        listaCompras.setCellRenderer(new CompraListCellRenderer());
+
+        // Adicionar a lista em um painel com scroll
+        JScrollPane scrollPane = new JScrollPane(listaCompras);
+        scrollPane.setPreferredSize(new Dimension(600, 200)); // Aumentado tamanho para melhor visualização
+
+        // Criar painel para o histórico com título
+        JPanel painelHistorico = new JPanel(new BorderLayout());
+        painelHistorico.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createEmptyBorder(20, 0, 0, 0),
+                        BorderFactory.createTitledBorder("Histórico de Compras")
+                )
+        ));
+        painelHistorico.add(scrollPane, BorderLayout.CENTER);
+
+        // Adicionar texto explicativo ou mensagem quando não há compras
+        JLabel infoLabel = new JLabel(compras.isEmpty()
+                ? "Você ainda não realizou nenhuma compra."
+                : "Abaixo estão listadas suas compras anteriores:");
+        infoLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
+        painelHistorico.add(infoLabel, BorderLayout.NORTH);
+
+        // Adicionar o painel de histórico após o painel central (formulário)
+        JPanel painelCentral = (JPanel) getComponent(1);
+        painelCentral.add(painelHistorico, BorderLayout.CENTER);
+
+        System.out.println("[DEBUG] Configuração do histórico de compras concluída. " +
+                "Foram encontradas " + compras.size() + " compras.");
+    }
+
+    /**
+     * Classe para renderizar cada item da lista de compras
+     */
+    private class CompraListCellRenderer extends JPanel implements ListCellRenderer<Compra> {
+        private JLabel labelData = new JLabel();
+        private JLabel labelFilme = new JLabel();
+        private JLabel labelLugar = new JLabel();
+        private JLabel labelPreco = new JLabel();
+        private JLabel labelItensBar = new JLabel();
+        private JLabel labelStatus = new JLabel();
+
+        public CompraListCellRenderer() {
+            setLayout(new GridLayout(0, 1, 2, 2));
+            setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+
+            // Estilizar os labels
+            Font labelFont = new Font("Arial", Font.PLAIN, 12);
+            Font boldFont = new Font("Arial", Font.BOLD, 13);
+
+            labelData.setFont(boldFont);
+            labelFilme.setFont(labelFont);
+            labelLugar.setFont(labelFont);
+            labelPreco.setFont(labelFont);
+            labelItensBar.setFont(labelFont);
+            labelStatus.setFont(labelFont);
+
+            add(labelData);
+            add(labelFilme);
+            add(labelLugar);
+            add(labelPreco);
+            add(labelItensBar);
+            add(labelStatus);
+        }
+
+        @Override
+        public Component getListCellRendererComponent(
+                JList<? extends Compra> list, Compra compra, int index,
+                boolean isSelected, boolean cellHasFocus) {
+
+            // Formatar data
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String dataFormatada = sdf.format(compra.getDataHora());
+
+            // Buscar informações da sessão
+            String infoFilme = "Sessão desconhecida";
+            String infoSala = "";
+
+            // Tentar obter detalhes do filme e sala para esta sessão
+            List<Sessao> sessoes = PersistenciaService.carregarSessoes();
+            for (Sessao sessao : sessoes) {
+                if (sessao.getId().equals(compra.getIdSessao())) {
+                    infoFilme = sessao.getFilme().getNome();
+                    infoSala = "Sala " + sessao.getNomeSala();
+                    break;
+                }
+            }
+
+            // Preencher informações da compra com estilo colorido para destacar
+            labelData.setText("📅 " + dataFormatada);
+            labelFilme.setText("🎬 Filme: " + infoFilme + " - " + infoSala);
+            labelLugar.setText("💺 Lugar: " + compra.getIdLugar());
+
+            // Formatar preço com cores diferentes para destacar
+            labelPreco.setText(String.format("💰 Preço: %.2f € (Bilhete: %.2f € | Bar: %.2f €)",
+                    compra.getPrecoTotal(),
+                    compra.getPrecoBase(),
+                    compra.getValorItensBar()));
+
+            // Itens de bar
+            labelItensBar.setText("🍿 " + compra.getResumoItensBar());
+
+            // Status da compra com ícone
+            String statusIcon = compra.isConfirmada() ? "✅" : "⏳";
+            labelStatus.setText(statusIcon + " Status: " + (compra.isConfirmada() ? "Confirmado" : "Pendente") +
+                    " | Método: " + compra.getMetodoPagamento());
+
+            // Configurar cores para seleção
+            if (isSelected) {
+                setBackground(new Color(230, 240, 250)); // Azul claro para selecionado
+                setForeground(list.getSelectionForeground());
+                setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(1, 3, 1, 1, new Color(65, 105, 225)), // Borda azul à esquerda para destacar item selecionado
+                        BorderFactory.createEmptyBorder(8, 8, 8, 8)
+                ));
+            } else {
+                setBackground(index % 2 == 0 ? Color.WHITE : new Color(248, 248, 248)); // Alternância de cores para facilitar leitura
+                setForeground(list.getForeground());
+                // Adicionar uma linha divisória entre itens
+                setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY),
+                        BorderFactory.createEmptyBorder(8, 8, 8, 8)
+                ));
+            }
+
+            return this;
         }
     }
 

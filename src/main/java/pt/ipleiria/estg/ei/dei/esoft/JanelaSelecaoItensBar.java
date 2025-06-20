@@ -13,6 +13,7 @@ import java.util.List;
 public class JanelaSelecaoItensBar extends JPanel {
     private JButton btnProximo;
     private JButton btnVoltar;
+    private JButton btnCancelar;
     private JPanel itensPanel;
     private List<Item> itensSelecionados;
     private List<JPanel> cartoes;
@@ -36,9 +37,8 @@ public class JanelaSelecaoItensBar extends JPanel {
      * @param precoInicial Preço total da compra do bilhete
      * @param onVoltar Listener para o botão voltar
      * @param onProximo Listener para o botão próximo
-     */
-    public JanelaSelecaoItensBar(Sessao sessao, Lugar lugar, double precoInicial,
-                                 ActionListener onVoltar, ActionListener onProximo) {
+     */    public JanelaSelecaoItensBar(Sessao sessao, Lugar lugar, double precoInicial,
+                                        ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
         setLayout(new BorderLayout(10, 10));
         cartoes = new ArrayList<>();
         itensSelecionados = new ArrayList<>();
@@ -53,9 +53,8 @@ public class JanelaSelecaoItensBar extends JPanel {
 
         // Configuração do painel com valor total
         configurarPainelValorTotal();
-
         // Configuração dos botões de navegação
-        configurarBotoes(onVoltar, onProximo);
+        configurarBotoes(onVoltar, onProximo, onCancelar);
     }
 
     private void configurarPainelTitulo(Sessao sessao, Lugar lugar) {
@@ -270,9 +269,12 @@ public class JanelaSelecaoItensBar extends JPanel {
         DecimalFormat df = new DecimalFormat("0.00 €");
         labelTotalValor.setText(df.format(precoTotalCompra + precoTotalItens));
     }
+    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
+        // Botão Cancelar à esquerda
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.addActionListener(onCancelar != null ? onCancelar : e -> {});
 
-    private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo) {
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Botões de navegação à direita
         btnVoltar = new JButton("Voltar");
         btnProximo = new JButton("Próximo");
 
@@ -280,18 +282,32 @@ public class JanelaSelecaoItensBar extends JPanel {
         btnVoltar.addActionListener(onVoltar != null ? onVoltar : e -> {});
         btnProximo.addActionListener(onProximo != null ? onProximo : e -> {});
 
-        bottomPanel.add(btnVoltar);
-        bottomPanel.add(btnProximo);
-        add(bottomPanel, BorderLayout.SOUTH);
+        // Layout para posicionar botões (Cancelar à esquerda, Voltar e Próximo à direita)
+        JPanel leftButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftButtonPanel.add(btnCancelar);
+
+        JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightButtonPanel.add(btnVoltar);
+        rightButtonPanel.add(btnProximo);
+
+        // Painel para organizar os dois grupos de botões
+        JPanel navigationPanel = new JPanel(new BorderLayout());
+        navigationPanel.add(leftButtonPanel, BorderLayout.WEST);
+        navigationPanel.add(rightButtonPanel, BorderLayout.EAST);
+
+        add(navigationPanel, BorderLayout.SOUTH);
     }
 
     // Getters
     public JButton getBtnProximo() {
         return btnProximo;
     }
-
     public JButton getBtnVoltar() {
         return btnVoltar;
+    }
+
+    public JButton getBtnCancelar() {
+        return btnCancelar;
     }
 
     public List<Item> getItensSelecionados() {

@@ -108,5 +108,225 @@
     "precoTotal": 9.5,
     "metodoPagamento": "Multibanco",
     "confirmada": false
+  },
+  {
+    "id": "88cd1aa8-2e4e-498f-a831-7305381bbb2e",
+    "dataHora": "Jun 19, 2025, 9:24:37 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "C8 (VIP)",
+    "precoBase": 9.5,
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 15.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "c4891fbe-45fb-4622-8047-7db676a575cd",
+    "dataHora": "Jun 19, 2025, 9:25:05 PM",
+    "idSessao": "54ceef03-fad6-454b-bd7b-4b267c9a2632",
+    "idLugar": "E6 (VIP)",
+    "precoBase": 11.0,
+    "itensBar": [],
+    "precoTotal": 11.0,
+    "metodoPagamento": "Cartão de Crédito",
+    "confirmada": true,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "d330b191-6f25-43d6-b524-1765de86cca4",
+    "dataHora": "Jun 19, 2025, 10:03:06 PM",
+    "idSessao": "a7299f24-e9b0-4142-8595-4fa48daa863d",
+    "idLugar": "D10",
+    "precoBase": 9.0,
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 15.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "8a69ee78-3e1e-4aa0-8b72-48f67e665a86",
+    "dataHora": "Jun 19, 2025, 10:03:39 PM",
+    "idSessao": "55f5f746-496d-4131-a081-2f98976c2712",
+    "idLugar": "B4",
+    "precoBase": 7.5,
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 11.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "f55f5850-5903-4bba-b75b-402ff9e62d16",
+    "dataHora": "Jun 19, 2025, 10:11:10 PM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "C9",
+    "precoBase": 7.5,
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 11.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "5ad50a4f-230b-49a8-bf5f-c13b15bd89fe",
+    "dataHora": "Jun 19, 2025, 10:11:33 PM",
+    "idSessao": "a7299f24-e9b0-4142-8595-4fa48daa863d",
+    "idLugar": "D6 (VIP)",
+    "precoBase": 11.0,
+    "itensBar": [],
+    "precoTotal": 11.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "854d67f0-4fec-4297-abe3-787eb4c72a0f",
+    "dataHora": "Jun 20, 2025, 7:54:11 AM",
+    "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+    "idLugar": "D2",
+    "precoBase": 7.5,
+    "itensBar": [
+      {
+        "nome": "Pipoca Grande",
+        "descricao": "Pipoca salgada tamanho grande",
+        "preco": 5.5,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Refrigerante 500ml",
+        "descricao": "Refrigerante em garrafa",
+        "preco": 4.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 17.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "84909dac-853d-461e-b0f2-0bffaf5b2da8",
+    "dataHora": "Jun 20, 2025, 7:55:51 AM",
+    "idSessao": "d54e03bc-3f7b-408c-b9f7-5a8bb83f99ad",
+    "idLugar": "E10",
+    "precoBase": 8.0,
+    "itensBar": [
+      {
+        "nome": "Refrigerante 500ml",
+        "descricao": "Refrigerante em garrafa",
+        "preco": 4.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 12.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "67d98b2d-83b0-4b9b-841a-cf02f771b58d",
+    "dataHora": "Jun 20, 2025, 8:16:05 AM",
+    "idSessao": "a7299f24-e9b0-4142-8595-4fa48daa863d",
+    "idLugar": "E10",
+    "precoBase": 9.0,
+    "itensBar": [
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Refrigerante 300ml",
+        "descricao": "Refrigerante em lata",
+        "preco": 3.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      },
+      {
+        "nome": "Refrigerante 500ml",
+        "descricao": "Refrigerante em garrafa",
+        "preco": 4.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 22.0,
+    "metodoPagamento": "Cartão de Crédito",
+    "confirmada": true
+  },
+  {
+    "id": "963edcff-e09e-441a-83f2-e8dbb110795c",
+    "dataHora": "Jun 20, 2025, 8:26:12 AM",
+    "idSessao": "55f5f746-496d-4131-a081-2f98976c2712",
+    "idLugar": "E9",
+    "precoBase": 7.5,
+    "itensBar": [],
+    "precoTotal": 7.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "748f3e93-09e7-4ddb-a034-d9164c993b4a",
+    "dataHora": "Jun 20, 2025, 8:40:52 AM",
+    "idSessao": "d7682829-3f8f-4cee-94b0-ca91386cb74e",
+    "idLugar": "F10",
+    "precoBase": 7.5,
+    "itensBar": [
+      {
+        "nome": "Refrigerante 500ml",
+        "descricao": "Refrigerante em garrafa",
+        "preco": 4.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      },
+      {
+        "nome": "Combo 2",
+        "descricao": "Pipoca grande + 2 Refrigerantes 300ml",
+        "preco": 10.0,
+        "categoria": "Combo",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 21.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
   }
 ]

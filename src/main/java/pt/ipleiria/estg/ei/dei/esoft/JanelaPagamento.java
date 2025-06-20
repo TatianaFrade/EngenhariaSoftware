@@ -13,8 +13,10 @@ import java.util.Map;
  * Janela para seleção de método de pagamento
  * Exibe valores e permite escolher entre cartão de crédito e multibanco
  */
-public class JanelaPagamento extends JPanel {    private JButton btnPagar;
+public class JanelaPagamento extends JPanel {
+    private JButton btnPagar;
     private JButton btnVoltar;
+    private JButton btnCancelar;
 
     private Sessao sessao;
     private Lugar lugar;
@@ -243,8 +245,40 @@ public class JanelaPagamento extends JPanel {    private JButton btnPagar;
         // Adicionar ao painel da janela
         add(painelPrincipal, BorderLayout.CENTER);
     }    private void configurarPainelBotoes(ActionListener actionListenerVoltar, ActionListener actionListenerProximo) {
-        // Usar o mesmo layout de JanelaSelecaoLugar
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Layout para posicionar botões (Cancelar à esquerda, Voltar e Pagar à direita)
+        JPanel leftButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        // Botão de cancelar à esquerda
+        btnCancelar = new JButton("Cancelar");        btnCancelar.addActionListener(e -> {
+            // Voltar para o menu principal
+            // Criar um array com as opções em português
+            Object[] opcoes = {"Sim", "Não"};
+
+            int resposta = JOptionPane.showOptionDialog(
+                    this,
+                    "Tem certeza de que deseja cancelar a compra?",
+                    "Confirmar Cancelamento",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcoes,
+                    opcoes[1]  // "Não" como opção padrão (mais seguro)
+            );
+
+            if (resposta == JOptionPane.YES_OPTION) {
+                Container topLevel = this.getParent();
+                while (!(topLevel instanceof JFrame) && topLevel != null) {
+                    topLevel = topLevel.getParent();
+                }
+
+                if (topLevel instanceof JanelaPrincipal) {
+                    ((JanelaPrincipal) topLevel).voltarParaPainelPrincipal();
+                }
+            }
+        });
+
+        // Botões de navegação
         btnVoltar = new JButton("Voltar");
         btnPagar = new JButton("Finalizar Pagamento");
 
@@ -255,8 +289,17 @@ public class JanelaPagamento extends JPanel {    private JButton btnPagar;
         btnVoltar.addActionListener(actionListenerVoltar);
         btnPagar.addActionListener(actionListenerProximo);
 
-        painelBotoes.add(btnVoltar);
-        painelBotoes.add(btnPagar);
+        // Adicionar botões aos painéis
+        leftButtonPanel.add(btnCancelar);
+        rightButtonPanel.add(btnVoltar);
+        rightButtonPanel.add(btnPagar);
+
+        // Criar painel principal para os botões
+        JPanel painelBotoes = new JPanel(new BorderLayout());
+        painelBotoes.add(leftButtonPanel, BorderLayout.WEST);
+        painelBotoes.add(rightButtonPanel, BorderLayout.EAST);
+
+        add(painelBotoes, BorderLayout.SOUTH);
 
         add(painelBotoes, BorderLayout.SOUTH);
     }

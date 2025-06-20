@@ -300,4 +300,45 @@ public class UsuarioService {
         }
         System.out.println("================================");
     }
+    /**
+     * Busca todas as compras realizadas por um usuário específico.
+     * @param nomeUsuario Nome do usuário cujas compras serão buscadas
+     * @return Lista de compras do usuário, ou lista vazia se não houver
+     */
+    public static List<Compra> buscarComprasDoUsuario(String nomeUsuario) {
+        if (nomeUsuario == null || nomeUsuario.trim().isEmpty()) {
+            System.out.println("AVISO: Tentativa de buscar compras com nome de usuário nulo ou vazio");
+            return new ArrayList<>();
+        }
+
+        List<Compra> todasCompras = PersistenciaService.carregarCompras();
+        List<Compra> comprasDoUsuario = new ArrayList<>();
+
+        System.out.println("[DEBUG] Buscando compras para o usuário: " + nomeUsuario);
+        System.out.println("[DEBUG] Total de compras no sistema: " + todasCompras.size());
+
+        // Verificamos se o ID do usuário está associado à compra
+        for (Compra compra : todasCompras) {
+            String idUsuarioCompra = compra.getIdUsuario();
+            System.out.println("[DEBUG] Analisando compra ID=" + compra.getId() + ", IdUsuario=" + idUsuarioCompra);
+
+            // Verificar se o ID do usuário coincide com o nome de usuário fornecido
+            if (idUsuarioCompra != null &&
+                    (idUsuarioCompra.equals(nomeUsuario))) {
+
+                comprasDoUsuario.add(compra);
+                System.out.println("[DEBUG]   ✓ Compra ENCONTRADA para o usuário " + nomeUsuario);
+                System.out.println("[DEBUG]     Data: " + compra.getDataHora());
+                System.out.println("[DEBUG]     Sessão: " + compra.getIdSessao());
+                System.out.println("[DEBUG]     Valor: " + compra.getPrecoTotal() + "€");
+            } else {
+                System.out.println("[DEBUG]   ✗ Compra não pertence ao usuário " + nomeUsuario);
+            }
+        }
+
+        comprasDoUsuario.sort((c1, c2) -> c2.getDataHora().compareTo(c1.getDataHora())); // Ordena por data decrescente (mais recente primeiro)
+
+        System.out.println("[DEBUG] Total de compras encontradas para o usuário: " + comprasDoUsuario.size());
+        return comprasDoUsuario;
+    }
 }
