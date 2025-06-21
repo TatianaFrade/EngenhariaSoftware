@@ -23,6 +23,8 @@ public class PersistenciaService {
     private static final String ARQUIVO_SESSOES = DIRETORIO_DADOS + "sessoes.json";
     private static final String ARQUIVO_COMPRAS = DIRETORIO_DADOS + "compras.json";
     private static final String ARQUIVO_ITENS = DIRETORIO_DADOS + "itens.json";
+    private static final String ARQUIVO_MENUS = DIRETORIO_DADOS + "menus.json";
+    private static final String ARQUIVO_STOCKS = DIRETORIO_DADOS + "stocks.json";
     private static final String ARQUIVO_ENCOMENDAS = DIRETORIO_DADOS + "encomendas.json";
 
     // Configurar o Gson com adaptadores para tipos especiais como LocalDateTime
@@ -144,6 +146,26 @@ public class PersistenciaService {
         } catch (Exception e) {
             System.err.println("Erro ao salvar sessões: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    public static void atualizarSalaSessao(Lugar lugar, String idSessao) {
+        List<Sessao> sessoes = carregarSessoes();
+
+        boolean atualizada = false;
+        for (Sessao sessao : sessoes) {
+            if (sessao.getId().equals(idSessao)) {
+                sessao.getSala().ocuparLugar(lugar.getFila(), lugar.getColuna());
+                atualizada = true;
+                break;
+            }
+        }
+
+        if (atualizada) {
+            salvarSessoes(sessoes);
+            System.out.println("Sala atualizada para a sessão ID: " + idSessao);
+        } else {
+            System.out.println("⚠️ Sessão com ID " + idSessao + " não encontrada.");
         }
     }
 
@@ -284,6 +306,46 @@ public class PersistenciaService {
         }
     }
 
+    public static void editarCompra(Compra compraEditada) {
+        try {
+            List<Compra> compras = carregarCompras();
+
+            for (int i = 0; i < compras.size(); i++) {
+                if (compras.get(i).getId().equals(compraEditada.getId())) {
+                    compras.set(i, compraEditada);
+                    break;
+                }
+            }
+
+            try (Writer writer = new FileWriter(ARQUIVO_COMPRAS)) {
+                gson.toJson(compras, writer);
+                System.out.println("Compra atualizada com sucesso! ID: " + compraEditada.getId());
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao editar compra: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void eliminarCompraPorId(String idCompra) {
+        try {
+            List<Compra> compras = carregarCompras();
+            boolean removida = compras.removeIf(c -> c.getId().equals(idCompra));
+
+            if (removida) {
+                try (Writer writer = new FileWriter(ARQUIVO_COMPRAS)) {
+                    gson.toJson(compras, writer);
+                    System.out.println("Compra eliminada com sucesso! ID: " + idCompra);
+                }
+            } else {
+                System.out.println("Compra não encontrada para eliminar. ID: " + idCompra);
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao eliminar compra: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public static List<Compra> carregarCompras() {
         try {
             File arquivo = new File(ARQUIVO_COMPRAS);
@@ -339,5 +401,108 @@ public class PersistenciaService {
         // Ordenar por hora
         sessoesNaData.sort(Comparator.comparing(Sessao::getDataHora));
         return sessoesNaData;
+    }
+
+    // Métodos para Menus
+    public static List<Menu> carregarMenus() {
+        try {
+            File arquivo = new File(ARQUIVO_MENUS);
+            if (!arquivo.exists()) {
+                return new ArrayList<>();
+            }
+
+            Type tipoLista = new TypeToken<List<Menu>>(){}.getType();
+            try (Reader reader = new FileReader(arquivo)) {
+                List<Menu> menus = gson.fromJson(reader, tipoLista);
+                if (menus != null) {
+                    System.out.println("Carregados " + menus.size() + " menus do arquivo");
+                    return menus;
+                }
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar menus: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public static int gerarNovoIdMenu() {
+        List<Menu> menus = carregarMenus();
+        return menus.stream()
+                .mapToInt(Menu::getId)
+                .max()
+                .orElse(0) + 1;
+    }
+
+    public static void salvarMenus(List<Menu> menus) {
+        try {
+            File arquivo = new File(ARQUIVO_MENUS);
+            if (!arquivo.getParentFile().exists()) {
+                arquivo.getParentFile().mkdirs();
+            }
+
+            try (Writer writer = new FileWriter(arquivo)) {
+                gson.toJson(menus, writer);
+                System.out.println("Menus salvos com sucesso em " + ARQUIVO_MENUS + " - Total: " + menus.size());
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao salvar menus: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public static void adicionarMenu(Menu novoMenu) {
+        List<Menu> menus = carregarMenus();
+        novoMenu.setId(gerarNovoIdMenu());
+        menus.add(novoMenu);
+        salvarMenus(menus);
+    }
+
+    public static void atualizarMenu(Menu menuAtualizado) {
+        List<Menu> menus = carregarMenus();
+        for (int i = 0; i < menus.size(); i++) {
+            if (menus.get(i).getId() == menuAtualizado.getId()) {
+                menus.set(i, menuAtualizado);
+                salvarMenus(menus);
+                return;
+            }
+        }
+        System.out.println("Menu não encontrado para atualizar: ID " + menuAtualizado.getId());
+    }
+
+    //metodos para stocks
+    public static List<Stock> carregarStocks() {
+        try {
+            File arquivo = new File(ARQUIVO_STOCKS);
+            if (!arquivo.exists()) {
+                return new ArrayList<>();
+            }
+
+            try (Reader reader = new FileReader(arquivo)) {
+                Type tipoLista = new TypeToken<List<Stock>>() {}.getType();
+                List<Stock> stocks = gson.fromJson(reader, tipoLista);
+                return stocks != null ? stocks : new ArrayList<>();
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar stocks: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public static void salvarStocks(List<Stock> stocks) {
+        try {
+            File arquivo = new File(ARQUIVO_STOCKS);
+            if (!arquivo.getParentFile().exists()) {
+                arquivo.getParentFile().mkdirs();
+            }
+
+            try (Writer writer = new FileWriter(arquivo)) {
+                gson.toJson(stocks, writer);
+                System.out.println("Stocks salvos com sucesso: " + stocks.size());
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar stocks: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

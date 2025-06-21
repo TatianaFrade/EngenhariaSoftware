@@ -3,9 +3,10 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import javax.swing.border.TitledBorder;
 
 /**
  * Janela para edição de perfil de usuário, permitindo atualizar dados e excluir conta.
@@ -29,9 +30,9 @@ public class JanelaEditarPerfil extends JPanel {
     /**
      * Construtor da janela de edição de perfil
      *
-     * @param usuario Usuário atual logado
-     * @param onVoltar Listener para o botão Voltar
-     * @param onSalvar Listener para o botão Salvar alterações
+     * @param usuario   Usuário atual logado
+     * @param onVoltar  Listener para o botão Voltar
+     * @param onSalvar  Listener para o botão Salvar alterações
      * @param onExcluir Listener para o botão Excluir conta
      */
     public JanelaEditarPerfil(Usuario usuario, ActionListener onVoltar,
@@ -63,6 +64,7 @@ public class JanelaEditarPerfil extends JPanel {
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         add(painelTitulo, BorderLayout.NORTH);
     }
+
     private void configurarPainelFormulario() {
         JPanel painelFormulario = new JPanel(new GridLayout(0, 2, 10, 10));
 
@@ -119,6 +121,7 @@ public class JanelaEditarPerfil extends JPanel {
         // Adiciona o painel central ao painel principal
         add(painelCentral, BorderLayout.CENTER);
     }
+
     private void configurarBotoes(ActionListener onVoltar, ActionListener onSalvar, ActionListener onExcluir) {
         btnVoltar = new JButton("Voltar");
         btnSalvar = new JButton("Salvar Alterações");
@@ -172,6 +175,74 @@ public class JanelaEditarPerfil extends JPanel {
         // Criar a JList para mostrar as compras
         listaCompras = new JList<>(modeloListaCompras);
 
+
+        // Criar o menu de contexto
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem editar = new JMenuItem("✏️ Editar");
+        JMenuItem eliminar = new JMenuItem("❌ Eliminar");
+
+        menu.add(editar);
+        menu.add(eliminar);
+
+        // Ações dos botões
+        editar.addActionListener(e -> {
+            Compra selecionada = listaCompras.getSelectedValue();
+            if (selecionada != null) {
+                if (selecionada.isConfirmada()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Não é possível editar uma compra confirmada.",
+                            "Edição Não Permitida",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (selecionada.getIdSessao() == null) {
+                    new JanelaEditarCompraBar(listaCompras.getSelectedValue()).setVisible(true);
+                }
+            }
+        });
+
+        eliminar.addActionListener(e -> {
+            Compra selecionada = listaCompras.getSelectedValue();
+            if (selecionada != null) {
+                if (selecionada.isConfirmada() && selecionada.getIdSessao() == null) {
+                    JOptionPane.showMessageDialog(this,
+                            "Não é possível eliminar uma compra confirmada.",
+                            "Eliminação Não Permitida",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                int resposta = JOptionPane.showConfirmDialog(this,
+                        "Tem certeza que deseja eliminar esta compra?",
+                        "Confirmação de Eliminação",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+                if (resposta == JOptionPane.YES_OPTION) {
+                    PersistenciaService.eliminarCompraPorId(selecionada.getId());
+                    modeloListaCompras.removeElement(selecionada);
+                }
+            }
+        });
+
+        listaCompras.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) mostrarMenu(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) mostrarMenu(e);
+            }
+
+            private void mostrarMenu(MouseEvent e) {
+                int index = listaCompras.locationToIndex(e.getPoint());
+                if (index != -1) {
+                    listaCompras.setSelectedIndex(index);
+                    menu.show(listaCompras, e.getX(), e.getY());
+                }
+            }
+        });
+
         // Configurar o renderizador da lista para exibir detalhes da compra
         listaCompras.setCellRenderer(new CompraListCellRenderer());
         // Adicionar a lista em um painel com scroll
@@ -205,7 +276,8 @@ public class JanelaEditarPerfil extends JPanel {
 
     /**
      * Classe para renderizar cada item da lista de compras
-     */    private class CompraListCellRenderer extends JPanel implements ListCellRenderer<Compra> {
+     */
+    private class CompraListCellRenderer extends JPanel implements ListCellRenderer<Compra> {
         private JLabel labelData = new JLabel();
         private JLabel labelFilme = new JLabel();
         private JLabel labelLugar = new JLabel();
@@ -239,6 +311,7 @@ public class JanelaEditarPerfil extends JPanel {
             // Adicionamos os componentes ao painel de conteúdo diretamente no getListCellRendererComponent
             // para poder reorganizá-los dependendo do tipo de compra
         }
+
         @Override
         public Component getListCellRendererComponent(
                 JList<? extends Compra> list, Compra compra, int index,
@@ -410,8 +483,11 @@ public class JanelaEditarPerfil extends JPanel {
         }
 
         return true;
-    }    /**
+    }
+
+    /**
      * Retorna os dados do usuário atualizados
+     *
      * @return Objeto Usuario com os dados atualizados
      */
     public Usuario getDadosAtualizados() {
@@ -440,6 +516,7 @@ public class JanelaEditarPerfil extends JPanel {
         System.out.println("Objeto Usuario criado: " + usuarioAtualizado);
         return usuarioAtualizado;
     }
+
     /**
      * Retorna a senha atual digitada pelo usuário para confirmação
      */
