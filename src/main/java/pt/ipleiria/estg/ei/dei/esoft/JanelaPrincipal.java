@@ -1301,7 +1301,8 @@ public class JanelaPrincipal extends JFrame {
                             painelSessao.add(new JLabel("Filme: " + s.getFilme().getNome()));
                             painelSessao.add(Box.createVerticalStrut(5));
                             painelSessao.add(new JLabel("Sala: " + s.getSala().getNome()));
-                            painelSessao.add(Box.createVerticalStrut(5));                           painelSessao.add(new JLabel("Lugares disponíveis: " +
+                            painelSessao.add(Box.createVerticalStrut(5));
+                            painelSessao.add(new JLabel("Lugares disponíveis: " +
                                     s.getSala().getLugares().stream().filter(l -> !l.isOcupado()).count()));
                             painelSessoes.add(painelSessao);
                             painelSessoes.add(Box.createVerticalStrut(10));
