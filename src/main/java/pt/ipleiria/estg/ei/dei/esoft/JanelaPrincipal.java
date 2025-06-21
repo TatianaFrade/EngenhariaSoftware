@@ -3,14 +3,10 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class JanelaPrincipal extends JFrame {
     private JPanel painelPrincipal;
@@ -18,6 +14,8 @@ public class JanelaPrincipal extends JFrame {
     private JButton comprarItensButton;
     private JButton verMenusButton;
     private JButton consultarSessoesPorDiaButton;
+    private JButton consultarStockBarButton;
+    private JButton consultarRelatoriosButton;
     private JButton loginButton;
     private JButton perfilButton;
     private JLabel usuarioLabel; // Rótulo para mostrar o nome do usuário
@@ -201,6 +199,8 @@ public class JanelaPrincipal extends JFrame {
         comprarItensButton = new JButton("Comprar Itens do Bar");
         verMenusButton = new JButton("Ver Menus");
         consultarSessoesPorDiaButton = new JButton("Consultar Sessões por Dia");
+        consultarStockBarButton = new JButton("Consultar Stock do Bar");
+        consultarRelatoriosButton = new JButton("Consultar Relatórios");
 
         // Configurar estilo dos botões
         Font buttonFont = new Font("Arial", Font.BOLD, 16);
@@ -208,7 +208,7 @@ public class JanelaPrincipal extends JFrame {
         Insets buttonMargin = new Insets(10, 10, 10, 10);
 
         for (JButton btn : new JButton[]{comprarBilheteButton, comprarItensButton,
-                verMenusButton, consultarSessoesPorDiaButton}) {
+                verMenusButton, consultarSessoesPorDiaButton, consultarStockBarButton, consultarRelatoriosButton}) {
             btn.setFont(buttonFont);
             btn.setPreferredSize(buttonSize);
             btn.setMargin(buttonMargin);
@@ -217,19 +217,35 @@ public class JanelaPrincipal extends JFrame {
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
 
+
         // Painel central com os botões principais em grid 2x2
-        JPanel centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
+        JPanel centerPanel;
+        if (usuarioLogado != null && usuarioLogado.isAdministrador()) {
+            centerPanel = new JPanel(new GridLayout(3, 2, 20, 20));
+        } else {
+            centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
+        }
         centerPanel.setBorder(BorderFactory.createEmptyBorder(40, 100, 40, 100));
+
+        // Adiciona sempre os 4 botões principais
         centerPanel.add(comprarBilheteButton);
         centerPanel.add(comprarItensButton);
         centerPanel.add(consultarSessoesPorDiaButton);
         centerPanel.add(verMenusButton);
+
+        // Só adiciona os extra se for admin
+        if (usuarioLogado != null && usuarioLogado.isAdministrador()) {
+            centerPanel.add(consultarStockBarButton);
+            centerPanel.add(consultarRelatoriosButton);
+        }
 
         // Adicionar action listeners aos botões
         comprarBilheteButton.addActionListener(e -> mostrarJanelaSelecaoFilme());
         comprarItensButton.addActionListener(e -> mostrarJanelaSelecaoItensBar());
         consultarSessoesPorDiaButton.addActionListener(e -> consultarSessoesPorDia());
         verMenusButton.addActionListener(e -> mostrarJanelaVerMenus());
+        consultarStockBarButton.addActionListener(e -> mostrarJanelaConsultarStockBar());
+        consultarRelatoriosButton.addActionListener(e -> mostrarJanelaConsultarRelatorios());
 
         painelPrincipal.add(centerPanel, BorderLayout.CENTER);
 
@@ -240,6 +256,16 @@ public class JanelaPrincipal extends JFrame {
         footerPanel.add(footerLabel, BorderLayout.CENTER);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         painelPrincipal.add(footerPanel, BorderLayout.SOUTH);
+    }
+
+    private void mostrarJanelaConsultarRelatorios() {
+        JanelaRelatorioVendas janelaRelatorio = new JanelaRelatorioVendas(this);
+        janelaRelatorio.setVisible(true);
+    }
+
+    private void mostrarJanelaConsultarStockBar() {
+        JanelaArmazem armazem = new JanelaArmazem(this);
+        armazem.setVisible(true);
     }
 
     private void mostrarJanelaSelecaoFilme() {
@@ -673,6 +699,14 @@ public class JanelaPrincipal extends JFrame {
             }              if (usuarioAutenticado != null) {
                 // Autenticação bem-sucedida
                 usuarioLogado = usuarioAutenticado;
+
+                if (usuarioLogado.isAdministrador()) {
+                    getContentPane().removeAll();
+                    criarPainelPrincipal();
+                    revalidate();
+                    repaint();
+                }
+
                 // Atualizar botão de login para mostrar apenas "Logout"
                 loginButton.setText("Logout");
 
@@ -969,6 +1003,12 @@ public class JanelaPrincipal extends JFrame {
      */    private void realizarLogout() {
         // Limpar o usuário logado
         usuarioLogado = null;
+
+        // Limpar o conteúdo atual e recriar o painel principal
+        getContentPane().removeAll();
+        criarPainelPrincipal();
+        revalidate();
+        repaint();
 
         // Atualizar o botão para mostrar "Login" novamente
         loginButton.setText("Login");

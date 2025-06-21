@@ -1,34 +1,69 @@
 [
   {
+    "id": 1,
     "nome": "Combo Econômico",
     "descricao": "Uma opção simples para matar a fome durante o filme.",
-    "itens": ["Pipoca Pequena", "Refrigerante 300ml"],
-    "preco": 5.50,
+    "itens": [
+      "Pipoca Pequena",
+      "Refrigerante 300ml"
+    ],
+    "preco": 13.5,
     "filme": "Matrix",
     "isAtivo": true
   },
   {
+    "id": 2,
     "nome": "Refeição Completa",
     "descricao": "Inclui comida, bebida e sobremesa para uma experiência completa.",
-    "itens": ["Hot Dog", "Refrigerante 500ml", "Chocolate"],
-    "preco": 11.50,
+    "itens": [
+      "Hot Dog",
+      "Refrigerante 500ml",
+      "Chocolate"
+    ],
+    "preco": 11.5,
     "filme": "Interestelar",
     "isAtivo": true
   },
   {
+    "id": 3,
     "nome": "Menu Kids",
     "descricao": "Leve, divertido e pensado para os mais pequenos.",
-    "itens": ["Pipoca Pequena", "Água Mineral 500ml", "Chocolate"],
-    "preco": 8.00,
+    "itens": [
+      "Pipoca Pequena",
+      "Água Mineral 500ml",
+      "Chocolate"
+    ],
+    "preco": 8.0,
     "filme": "O Rei Leão",
     "isAtivo": false
   },
   {
+    "id": 4,
     "nome": "Menu Caramelo",
     "descricao": "Para quem adora pipoca doce com um toque especial.",
-    "itens": ["Pipoca Caramelizada", "Refrigerante 300ml"],
-    "preco": 8.00,
+    "itens": [
+      "Pipoca Caramelizada",
+      "Refrigerante 300ml"
+    ],
+    "preco": 8.0,
     "filme": "La La Land",
+    "isAtivo": true
+  },
+  {
+    "id": 5,
+    "nome": "Menu teste",
+    "descricao": "Teste",
+    "itens": [
+      "Pipoca Pequena",
+      "Pipoca Pequena",
+      "Pipoca Pequena",
+      "Chocolate",
+      "Chocolate",
+      "Chocolate",
+      "Chocolate"
+    ],
+    "preco": 33.5,
+    "filme": "O Auto da Compadecida",
     "isAtivo": true
   }
 ]

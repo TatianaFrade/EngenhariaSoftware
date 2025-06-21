@@ -1,0 +1,56 @@
+[
+  {
+    "item": "Pipoca Pequena",
+    "quantidade": 25,
+    "dataValidade": "Aug 10, 2025, 2:00:00 PM",
+    "fornecedor": "Snacks do Norte"
+  },
+  {
+    "item": "Pipoca Média",
+    "quantidade": 40,
+    "dataValidade": "Aug 15, 2025, 11:42:11 PM",
+    "fornecedor": "Snack Solutions Lda"
+  },
+  {
+    "item": "Refrigerante 300ml",
+    "quantidade": 60,
+    "dataValidade": "Sep 1, 2025, 2:00:00 PM",
+    "fornecedor": "Bebidas Max"
+  },
+  {
+    "item": "Água Mineral 500ml",
+    "quantidade": 100,
+    "dataValidade": "Jan 20, 2026, 2:00:00 PM",
+    "fornecedor": "Águas Serra Azul"
+  },
+  {
+    "item": "Combo 1",
+    "quantidade": 15,
+    "dataValidade": "Jul 25, 2025, 2:00:00 PM",
+    "fornecedor": "Combo Express"
+  },
+  {
+    "item": "Nachos com Queijo",
+    "quantidade": 10,
+    "dataValidade": "Jul 10, 2025, 2:00:00 PM",
+    "fornecedor": "Taco Supply Co"
+  },
+  {
+    "item": "Chocolate",
+    "quantidade": 35,
+    "dataValidade": "Dec 15, 2025, 2:00:00 PM",
+    "fornecedor": "Sweet & Co"
+  },
+  {
+    "item": "Hot Dog",
+    "quantidade": 20,
+    "dataValidade": "Jul 5, 2025, 2:00:00 PM",
+    "fornecedor": "EuroCine Snacks"
+  },
+  {
+    "item": "Pipoca Caramelizada",
+    "quantidade": 18,
+    "dataValidade": "Sep 12, 2025, 2:00:00 PM",
+    "fornecedor": "Doces Dourados"
+  }
+]

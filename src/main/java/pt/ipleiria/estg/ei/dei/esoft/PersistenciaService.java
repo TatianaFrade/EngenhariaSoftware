@@ -24,6 +24,7 @@ public class PersistenciaService {
     private static final String ARQUIVO_COMPRAS = DIRETORIO_DADOS + "compras.json";
     private static final String ARQUIVO_ITENS = DIRETORIO_DADOS + "itens.json";
     private static final String ARQUIVO_MENUS = DIRETORIO_DADOS + "menus.json";
+    private static final String ARQUIVO_STOCKS = DIRETORIO_DADOS + "stocks.json";
 
     // Configurar o Gson com adaptadores para tipos especiais como LocalDateTime
     private static Gson gson = new GsonBuilder()
@@ -357,6 +358,7 @@ public class PersistenciaService {
         return sessoesNaData;
     }
 
+    // Métodos para Menus
     public static List<Menu> carregarMenus() {
         try {
             File arquivo = new File(ARQUIVO_MENUS);
@@ -421,5 +423,41 @@ public class PersistenciaService {
             }
         }
         System.out.println("Menu não encontrado para atualizar: ID " + menuAtualizado.getId());
+    }
+
+    //metodos para stocks
+    public static List<Stock> carregarStocks() {
+        try {
+            File arquivo = new File(ARQUIVO_STOCKS);
+            if (!arquivo.exists()) {
+                return new ArrayList<>();
+            }
+
+            try (Reader reader = new FileReader(arquivo)) {
+                Type tipoLista = new TypeToken<List<Stock>>() {}.getType();
+                List<Stock> stocks = gson.fromJson(reader, tipoLista);
+                return stocks != null ? stocks : new ArrayList<>();
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar stocks: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public static void salvarStocks(List<Stock> stocks) {
+        try {
+            File arquivo = new File(ARQUIVO_STOCKS);
+            if (!arquivo.getParentFile().exists()) {
+                arquivo.getParentFile().mkdirs();
+            }
+
+            try (Writer writer = new FileWriter(arquivo)) {
+                gson.toJson(stocks, writer);
+                System.out.println("Stocks salvos com sucesso: " + stocks.size());
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar stocks: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
