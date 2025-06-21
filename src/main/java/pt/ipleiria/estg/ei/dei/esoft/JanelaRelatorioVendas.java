@@ -81,7 +81,6 @@ public class JanelaRelatorioVendas extends JDialog {
                 Sessao sessao = sessoesPorId.get(b.getIdSessao());
                 if (sessao != null && sessao.getFilme() != null) {
                     String nomeFilme = sessao.getFilme().getNome();
-                    System.out.println("🎞️ Filme vendido: " + nomeFilme);
 
                     bilhetesPorFilme.put(nomeFilme, bilhetesPorFilme.getOrDefault(nomeFilme, 0) + 1);
                 }
@@ -161,7 +160,7 @@ public class JanelaRelatorioVendas extends JDialog {
         }
 
         JFreeChart chart = ChartFactory.createLineChart(
-                "💰 Total de Vendas por Dia",
+                "Total de Vendas por Dia",
                 "Data",
                 "Montante (€)",
                 dataset
@@ -250,23 +249,23 @@ public class JanelaRelatorioVendas extends JDialog {
 
         // Mostrar numa área formatada
         String html = """
-<html>
-    <body style='font-family: Consolas, monospace; text-align: center; background-color: #f5f5f5; padding: 20px'>
-        <h1>📊 Estatísticas de Vendas</h1>
-
-        <h2>🎬 Top 3 Filmes Mais Vendidos</h2>
-        %s
-
-        <h2>🍿 Top 3 Produtos do Bar</h2>
-        %s
-
-        <h2>📅 Desempenho por Dia da Semana</h2>
-        <b>🟢 Dias com mais vendas:</b><br/>%s
-        <br/><br/>
-        <b>🔴 Dias com menos vendas:</b><br/>%s
-    </body>
-</html>
-""";
+                <html>
+                    <body style='font-family: Consolas, monospace; text-align: center; background-color: #f5f5f5; padding: 20px'>
+                        <h1>📊 Estatísticas de Vendas</h1>
+                
+                        <h2>🎬 Top 3 Filmes Mais Vendidos</h2>
+                        %s
+                
+                        <h2>🍿 Top 3 Produtos do Bar</h2>
+                        %s
+                
+                        <h2>📅 Desempenho por Dia da Semana</h2>
+                        <b>🟢 Dias com mais vendas:</b><br/>%s
+                        <br/><br/>
+                        <b>🔴 Dias com menos vendas:</b><br/>%s
+                    </body>
+                </html>
+                """;
 
         String filmesHtml = topFilmes.stream()
                 .map(e -> e.getKey() + ": " + e.getValue() + " bilhetes")

@@ -27,6 +27,8 @@ public class Filme implements Serializable {
     @Override
     public String toString() {
         return nome;
+    }
+
     public void atualizar(String nome, boolean legendado, String dataLancamento, double rate, String imagemPath) {
         this.nome = nome;
         this.legendado = legendado;

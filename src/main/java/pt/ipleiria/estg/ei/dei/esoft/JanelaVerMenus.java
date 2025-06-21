@@ -501,7 +501,7 @@ class JanelaPagamentoFinal extends JDialog {
         painel.add(numero);
         painel.add(new JLabel("Nome Titular:"));
         painel.add(nome);
-        painel.add(new JLabel("Expiração (MM/AA):"));
+        painel.add(new JLabel("Validade (MM/AA):"));
         painel.add(data);
         painel.add(new JLabel("CVV:"));
         painel.add(cvv);
