@@ -3,6 +3,8 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Janela final após seleção do lugar, com opções para adicionar itens ou finalizar a compra
@@ -14,7 +16,7 @@ public class JanelaOpcoesFinal extends JPanel {
     private JButton btnCancelar;
 
     private Sessao sessao;
-    private Lugar lugarSelecionado;
+    private List<Lugar> lugaresSelecionados;
     private double precoTotal;
 
     /**
@@ -25,6 +27,16 @@ public class JanelaOpcoesFinal extends JPanel {
      */
     public JanelaOpcoesFinal(Sessao sessao, Lugar lugar, double preco) {
         this(sessao, lugar, preco, null, null);
+    }
+    
+    /**
+     * Construtor da janela de opções final
+     * @param sessao Sessão selecionada
+     * @param lugares Lista de lugares selecionados
+     * @param preco Preço total atual (incluindo lugares VIP se aplicável)
+     */
+    public JanelaOpcoesFinal(Sessao sessao, List<Lugar> lugares, double preco) {
+        this(sessao, lugares, preco, null, null);
     }
 
     /**
@@ -39,8 +51,34 @@ public class JanelaOpcoesFinal extends JPanel {
                              ActionListener actionListenerVoltar,
                              ActionListener actionListenerCancelar) {
         this.sessao = sessao;
-        this.lugarSelecionado = lugar;
+        this.lugaresSelecionados = new ArrayList<>();
+        if (lugar != null) {
+            this.lugaresSelecionados.add(lugar);
+        }
         this.precoTotal = preco;
+        
+        initialize(actionListenerVoltar, actionListenerCancelar);
+    }
+    
+    /**
+     * Construtor da janela de opções final com listeners para os botões
+     * @param sessao Sessão selecionada
+     * @param lugares Lista de lugares selecionados
+     * @param preco Preço total atual (incluindo lugares VIP se aplicável)
+     * @param actionListenerVoltar Listener para o botão voltar
+     * @param actionListenerCancelar Listener para o botão cancelar
+     */
+    public JanelaOpcoesFinal(Sessao sessao, List<Lugar> lugares, double preco,
+                             ActionListener actionListenerVoltar,
+                             ActionListener actionListenerCancelar) {
+        this.sessao = sessao;
+        this.lugaresSelecionados = lugares != null ? new ArrayList<>(lugares) : new ArrayList<>();
+        this.precoTotal = preco;
+        
+        initialize(actionListenerVoltar, actionListenerCancelar);
+    }
+    
+    private void initialize(ActionListener actionListenerVoltar, ActionListener actionListenerCancelar) {
 
         setLayout(new BorderLayout(10, 10));
 
@@ -77,8 +115,15 @@ public class JanelaOpcoesFinal extends JPanel {
         labelSessao.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelSessao);
 
-        // Informações do lugar
-        JLabel labelLugar = new JLabel("Lugar: " + lugarSelecionado.getIdentificacao());
+        // Informações dos lugares
+        StringBuilder lugaresStr = new StringBuilder("Lugares: ");
+        for (int i = 0; i < lugaresSelecionados.size(); i++) {
+            lugaresStr.append(lugaresSelecionados.get(i).getIdentificacao());
+            if (i < lugaresSelecionados.size() - 1) {
+                lugaresStr.append(", ");
+            }
+        }
+        JLabel labelLugar = new JLabel(lugaresStr.toString());
         labelLugar.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelLugar);
 
@@ -198,5 +243,13 @@ public class JanelaOpcoesFinal extends JPanel {
      */
     public JButton getBtnCancelar() {
         return btnCancelar;
+    }
+    
+    /**
+     * Obtém a lista de lugares selecionados
+     * @return Lista de lugares selecionados
+     */
+    public List<Lugar> getLugaresSelecionados() {
+        return new ArrayList<>(lugaresSelecionados);
     }
 }

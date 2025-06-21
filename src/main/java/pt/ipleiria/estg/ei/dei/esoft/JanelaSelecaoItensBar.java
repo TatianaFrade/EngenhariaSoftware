@@ -5,7 +5,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Janela para seleção de itens do bar
@@ -108,9 +110,11 @@ public class JanelaSelecaoItensBar extends JPanel {
         // Adicionar cartões para cada item
         for (Item item : itens) {
             if (item.isDisponivel()) {
-                JPanel cartao = criarCartaoItem(item);
-                itensPanel.add(cartao);
-                cartoes.add(cartao);
+                if (item.getQuantidade() > 0 || item.getCategoria().equals("Combo")) {
+                    JPanel cartao = criarCartaoItem(item);
+                    itensPanel.add(cartao);
+                    cartoes.add(cartao);
+                }
             }
         }
 

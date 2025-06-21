@@ -3,7 +3,9 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JanelaSelecaoLugar extends JPanel {
@@ -11,8 +13,13 @@ public class JanelaSelecaoLugar extends JPanel {
     private JButton btnVoltar;
     private JButton btnCancelar;
     private Sessao sessao;
-    private JPanel painelLugarSelecionado;
-    private Lugar lugarSelecionado;
+    // Substituído o único lugar selecionado por uma lista e um mapa de painéis selecionados
+    private List<Lugar> lugaresSelecionados;
+    private Map<Lugar, JPanel> mapLugarPainel;
+    // Painel de informações sobre a seleção atual
+    private JPanel painelInfoSelecao;
+    private JLabel labelLugaresSelecionados;
+    private JLabel labelPrecoTotal;
 
     // Constantes para a aparência dos lugares
     private static final Color BORDA_NORMAL = Color.GRAY;
@@ -27,6 +34,8 @@ public class JanelaSelecaoLugar extends JPanel {
     public JanelaSelecaoLugar(Sessao sessao, ActionListener onVoltar, ActionListener onProximo, ActionListener onCancelar) {
         this.sessao = sessao;
         this.mapaPainelLugar = new HashMap<>();
+        this.lugaresSelecionados = new ArrayList<>();
+        this.mapLugarPainel = new HashMap<>();
         setLayout(new BorderLayout(10, 10));
 
         // Configurar título e informações da sessão
@@ -34,6 +43,9 @@ public class JanelaSelecaoLugar extends JPanel {
 
         // Configurar painel central com lugares e legenda
         configurarPainelCentral();
+        
+        // Configurar painel de informações sobre a seleção
+        configurarPainelInfoSelecao();
 
         // Configurar botões de navegação
         configurarBotoes(onVoltar, onProximo, onCancelar);
@@ -43,7 +55,7 @@ public class JanelaSelecaoLugar extends JPanel {
         JPanel painelTitulo = new JPanel();
         painelTitulo.setLayout(new BoxLayout(painelTitulo, BoxLayout.Y_AXIS));
 
-        JLabel labelTitulo = new JLabel("Selecione um lugar para " + sessao.getFilme().getNome());
+        JLabel labelTitulo = new JLabel("Selecione lugares para " + sessao.getFilme().getNome());
         labelTitulo.setFont(new Font(labelTitulo.getFont().getName(), Font.BOLD, 16));
         labelTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTitulo.add(labelTitulo);
@@ -79,6 +91,27 @@ public class JanelaSelecaoLugar extends JPanel {
         painelCentral.add(criarPainelLegenda(), BorderLayout.SOUTH);
         add(painelCentral, BorderLayout.CENTER);
     }
+    
+    private void configurarPainelInfoSelecao() {
+        painelInfoSelecao = new JPanel();
+        painelInfoSelecao.setLayout(new BoxLayout(painelInfoSelecao, BoxLayout.Y_AXIS));
+        painelInfoSelecao.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+        
+        labelLugaresSelecionados = new JLabel("Lugares selecionados: 0");
+        labelLugaresSelecionados.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelLugaresSelecionados.setFont(new Font(labelLugaresSelecionados.getFont().getName(), Font.BOLD, 12));
+        
+        labelPrecoTotal = new JLabel("Preço total: 0.00 €");
+        labelPrecoTotal.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelPrecoTotal.setFont(new Font(labelPrecoTotal.getFont().getName(), Font.BOLD, 12));
+        
+        painelInfoSelecao.add(labelLugaresSelecionados);
+        painelInfoSelecao.add(Box.createRigidArea(new Dimension(0, 5))); // Espaçamento
+        painelInfoSelecao.add(labelPrecoTotal);
+        
+        add(painelInfoSelecao, BorderLayout.EAST);
+    }
+
     private JPanel criarPainelLugares() {
         // Painel principal com borderlayout
         JPanel painelPrincipal = new JPanel(new BorderLayout(0, 10));
@@ -209,14 +242,14 @@ public class JanelaSelecaoLugar extends JPanel {
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    if (painelLugarSelecionado != painelLugar) {
+                    if (!lugaresSelecionados.contains(mapaPainelLugar.get(painelLugar))) {
                         painelLugar.setBorder(BorderFactory.createLineBorder(BORDA_HOVER, LARGURA_BORDA_HOVER));
                     }
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    if (painelLugarSelecionado != painelLugar) {
+                    if (!lugaresSelecionados.contains(mapaPainelLugar.get(painelLugar))) {
                         painelLugar.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
                     }
                 }
@@ -225,6 +258,7 @@ public class JanelaSelecaoLugar extends JPanel {
 
         // Associar o componente visual ao objeto de modelo
         mapaPainelLugar.put(painelLugar, lugar);
+        mapLugarPainel.put(lugar, painelLugar);
 
         return painelLugar;
     }
@@ -300,27 +334,41 @@ public class JanelaSelecaoLugar extends JPanel {
     }
 
     private void selecionarLugar(JPanel painel) {
-        setLugarSelecionado(mapaPainelLugar.get(painel));
-        atualizarSelecao(painel);
-    }
+        Lugar lugar = mapaPainelLugar.get(painel);
 
-    private void atualizarSelecao(JPanel painelSelecionado) {
-        // Restaurar borda do lugar anteriormente selecionado
-        if (painelLugarSelecionado != null && painelLugarSelecionado != painelSelecionado) {
-            painelLugarSelecionado.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
+        // Alternar seleção do lugar
+        if (lugaresSelecionados.contains(lugar)) {
+            lugaresSelecionados.remove(lugar);
+            painel.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
+        } else {
+            lugaresSelecionados.add(lugar);
+            painel.setBorder(BorderFactory.createLineBorder(BORDA_SELECIONADO, LARGURA_BORDA_SELECIONADO));
         }
 
-        // Atualizar seleção
-        painelLugarSelecionado = painelSelecionado;
-        if (painelSelecionado != null) {
-            painelSelecionado.setBorder(BorderFactory.createLineBorder(BORDA_SELECIONADO, LARGURA_BORDA_SELECIONADO));
-        }
+        // Atualizar informações da seleção
+        atualizarInfoSelecao();
     }
 
-    public void setLugarSelecionado(Lugar lugar) {
-        this.lugarSelecionado = lugar;
-        btnProximo.setEnabled(lugar != null);
+    private void atualizarInfoSelecao() {
+        // Atualizar texto com lugares selecionados
+        StringBuilder sb = new StringBuilder("<html>Lugares selecionados:<br>");
+        for (Lugar lugar : lugaresSelecionados) {
+            sb.append(lugar.getIdentificacao()).append("<br>");
+        }
+        sb.append("</html>");
+        labelLugaresSelecionados.setText(sb.toString());
+
+        // Atualizar preço total
+        double precoTotal = 0;
+        for (Lugar lugar : lugaresSelecionados) {
+            precoTotal += lugar.calcularPreco(sessao.getPreco());
+        }
+        labelPrecoTotal.setText(String.format("Preço total: %.2f €", precoTotal));
+
+        // Habilitar ou desabilitar botão Próximo
+        btnProximo.setEnabled(!lugaresSelecionados.isEmpty());
     }
+    
     // Getters
     public JButton getBtnProximo() { return btnProximo; }
     public JButton getBtnVoltar() { return btnVoltar; }
@@ -328,17 +376,47 @@ public class JanelaSelecaoLugar extends JPanel {
     public Sessao getSessao() { return sessao; }
 
     public String getLugarSelecionado() {
-        if (lugarSelecionado == null) return null;
-        return lugarSelecionado.getIdentificacao();
+        if (lugaresSelecionados.isEmpty()) return null;
+        
+        // Se houver apenas um lugar, retorna seu identificador
+        if (lugaresSelecionados.size() == 1) {
+            return lugaresSelecionados.get(0).getIdentificacao();
+        }
+        
+        // Se houver múltiplos lugares, retorna uma lista separada por vírgulas
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lugaresSelecionados.size(); i++) {
+            sb.append(lugaresSelecionados.get(i).getIdentificacao());
+            if (i < lugaresSelecionados.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
     }
 
     public double getPrecoTotal() {
-        if (lugarSelecionado == null) return sessao.getPreco();
-        return lugarSelecionado.calcularPreco(sessao.getPreco());
+        if (lugaresSelecionados.isEmpty()) return 0;
+        
+        double total = 0;
+        for (Lugar lugar : lugaresSelecionados) {
+            total += lugar.calcularPreco(sessao.getPreco());
+        }
+        return total;
     }
 
-    // Getter para o objeto Lugar selecionado
+    // Getter para o objeto Lugar selecionado (para compatibilidade)
     public Lugar getLugarSelecionadoObjeto() {
-        return lugarSelecionado;
+        if (lugaresSelecionados.isEmpty()) return null;
+        return lugaresSelecionados.get(0); // Retorna o primeiro lugar selecionado
+    }
+
+    // Getter para a lista de lugares selecionados
+    public List<Lugar> getLugaresSelecionados() {
+        return new ArrayList<>(lugaresSelecionados);
+    }
+    
+    // Método adicional para compatibilidade com JanelaPrincipal
+    public List<Lugar> getLugaresSelecionadosObjetos() {
+        return getLugaresSelecionados();
     }
 }

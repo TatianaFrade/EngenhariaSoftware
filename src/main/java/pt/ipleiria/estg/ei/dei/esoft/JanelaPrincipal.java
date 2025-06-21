@@ -619,6 +619,17 @@ public class JanelaPrincipal extends JFrame {
                     "Agradecemos a preferência!";
         }
 
+        // Cancelar o processamento caso nao haja stock suficiente para algum combo
+        for (Item item : itensSelecionados) {
+            if (item.getCategoria().equals("Combo")) {
+                item.atualizarComboDisponibilidade();
+                if (!item.isDisponivel()) {
+                    System.out.println("[DEBUG] Não tinha stock suficiente para os itens do combo. Abortando processo.");
+                    pagamentoOK = false;
+                }
+            }
+        }
+
         // Só salvamos a compra se o pagamento foi processado com sucesso
         if (pagamentoOK) {
             System.out.println("[DEBUG] Pagamento processado com sucesso. Salvando compra...");            // Criar compra com informações do usuário logado, se disponível
@@ -658,6 +669,11 @@ public class JanelaPrincipal extends JFrame {
                 }
             }
             PersistenciaService.salvarSessoes(sessoes);
+
+            // Retirar os itens do stock
+            for (Item itemSelecionado : itensSelecionados) {
+                itemSelecionado.mudarQuantidade(-1);
+            }
 
             // Exibir mensagem de confirmação
             JOptionPane.showMessageDialog(

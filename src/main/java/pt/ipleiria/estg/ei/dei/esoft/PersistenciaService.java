@@ -25,6 +25,7 @@ public class PersistenciaService {
     private static final String ARQUIVO_ITENS = DIRETORIO_DADOS + "itens.json";
     private static final String ARQUIVO_MENUS = DIRETORIO_DADOS + "menus.json";
     private static final String ARQUIVO_STOCKS = DIRETORIO_DADOS + "stocks.json";
+    private static final String ARQUIVO_ENCOMENDAS = DIRETORIO_DADOS + "encomendas.json";
 
     // Configurar o Gson com adaptadores para tipos especiais como LocalDateTime
     private static Gson gson = new GsonBuilder()
@@ -231,10 +232,54 @@ public class PersistenciaService {
             try (Reader reader = new FileReader(arquivo)) {
                 Type tipoLista = new TypeToken<ArrayList<Item>>(){}.getType();
                 ArrayList<Item> itens = gson.fromJson(reader, tipoLista);
+                // Interligar os Combos às suas dependências
+                for (Item item : itens) {
+                    item.atualizarDependencias(itens);
+                }
                 return itens != null ? itens : new ArrayList<>();
             }
         } catch (IOException e) {
             System.err.println("Erro ao carregar itens: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public static void salvarEncomendas(List<Encomenda> encomendas) {
+        try {
+            // Criar diretório se não existir
+            File diretorio = new File(DIRETORIO_DADOS);
+            if (!diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+
+            // Salvar encomendas no arquivo JSON
+            File arquivo = new File(ARQUIVO_ENCOMENDAS);
+            try (Writer writer = new FileWriter(arquivo)) {
+                gson.toJson(encomendas, writer);
+            }
+            System.out.println("Encomendas salvas com sucesso!");
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar encomendas: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static List<Encomenda> carregarEncomendas() {
+        try {
+            File arquivo = new File(ARQUIVO_ENCOMENDAS);            if (!arquivo.exists()) {
+                System.out.println("Arquivo de encomendas não encontrado. Devolver lista vazia.");
+                List<Encomenda> listaVaziaEncomendas = new ArrayList<>();
+                salvarEncomendas(listaVaziaEncomendas); // Salva a lista vazia para uso futuro.
+                return listaVaziaEncomendas;
+            }
+            try (Reader reader = new FileReader(arquivo)) {
+                Type tipoLista = new TypeToken<ArrayList<Encomenda>>(){}.getType();
+                ArrayList<Encomenda> encomendas = gson.fromJson(reader, tipoLista);
+                return encomendas != null ? encomendas : new ArrayList<>();
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar encomendas: " + e.getMessage());
             e.printStackTrace();
             return new ArrayList<>();
         }

@@ -2,85 +2,175 @@
   {
     "nome": "Pipoca Pequena",
     "descricao": "Pipoca salgada tamanho pequeno",
-    "preco": 3.50,
+    "preco": 3.5,
     "categoria": "Comida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 10,
+    "precoFornecedor": 0.0
   },
   {
     "nome": "Pipoca Média",
     "descricao": "Pipoca salgada tamanho médio",
-    "preco": 4.50,
+    "preco": 4.5,
     "categoria": "Comida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 8,
+    "dependencias": [],
+    "fornecedor": "",
+    "precoFornecedor": 0.0
   },
   {
     "nome": "Pipoca Grande",
     "descricao": "Pipoca salgada tamanho grande",
-    "preco": 5.50,
+    "preco": 5.5,
     "categoria": "Comida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 10,
+    "dependencias": [],
+    "fornecedor": "",
+    "precoFornecedor": 0.0
   },
   {
     "nome": "Pipoca Caramelizada",
     "descricao": "Pipoca doce com caramelo",
-    "preco": 6.00,
+    "preco": 6.0,
     "categoria": "Comida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 10,
+    "precoFornecedor": 0.0
   },
   {
     "nome": "Chocolate",
     "descricao": "Barra de chocolate 80g",
-    "preco": 4.00,
+    "preco": 4.0,
     "categoria": "Comida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 10,
+    "dependencias": [],
+    "fornecedor": "Chocoli Ltd.",
+    "precoFornecedor": 2.0
   },
   {
     "nome": "Nachos com Queijo",
     "descricao": "Porção de nachos com molho de queijo",
-    "preco": 7.50,
+    "preco": 7.5,
     "categoria": "Comida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 10,
+    "dependencias": [],
+    "fornecedor": "Nachitos Ltd.",
+    "precoFornecedor": 4.0
   },
   {
     "nome": "Hot Dog",
     "descricao": "Hot dog tradicional",
-    "preco": 6.00,
+    "preco": 6.0,
     "categoria": "Comida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 18,
+    "dependencias": [],
+    "fornecedor": "HotisDogs",
+    "precoFornecedor": 3.0
   },
   {
     "nome": "Refrigerante 300ml",
     "descricao": "Refrigerante em lata",
-    "preco": 3.00,
+    "preco": 3.0,
     "categoria": "Bebida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 10,
+    "precoFornecedor": 0.0
   },
   {
     "nome": "Refrigerante 500ml",
     "descricao": "Refrigerante em garrafa",
-    "preco": 4.00,
+    "preco": 4.0,
     "categoria": "Bebida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 8,
+    "precoFornecedor": 0.0
   },
   {
     "nome": "Água Mineral 500ml",
     "descricao": "Água mineral sem gás",
-    "preco": 2.50,
+    "preco": 2.5,
     "categoria": "Bebida",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 10,
+    "precoFornecedor": 0.0
   },
   {
     "nome": "Combo 1",
     "descricao": "Pipoca média + Refrigerante 300ml",
-    "preco": 6.50,
+    "preco": 6.5,
     "categoria": "Combo",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 0,
+    "dependencias": [
+      {
+        "item": {
+          "nome": "Pipoca Média",
+          "descricao": "Pipoca salgada tamanho médio",
+          "preco": 4.5,
+          "categoria": "Comida",
+          "disponivel": true,
+          "quantidade": 8,
+          "dependencias": [],
+          "fornecedor": "",
+          "precoFornecedor": 0.0
+        },
+        "quantidade": 1
+      },
+      {
+        "item": {
+          "nome": "Refrigerante 300ml",
+          "descricao": "Refrigerante em lata",
+          "preco": 3.0,
+          "categoria": "Bebida",
+          "disponivel": true,
+          "quantidade": 10,
+          "precoFornecedor": 0.0
+        },
+        "quantidade": 1
+      }
+    ],
+    "precoFornecedor": 0.0
   },
   {
     "nome": "Combo 2",
     "descricao": "Pipoca grande + 2 Refrigerantes 300ml",
-    "preco": 10.00,
+    "preco": 10.0,
     "categoria": "Combo",
-    "disponivel": true
+    "disponivel": true,
+    "quantidade": 0,
+    "dependencias": [
+      {
+        "item": {
+          "nome": "Pipoca Grande",
+          "descricao": "Pipoca salgada tamanho grande",
+          "preco": 5.5,
+          "categoria": "Comida",
+          "disponivel": true,
+          "quantidade": 10,
+          "dependencias": [],
+          "fornecedor": "",
+          "precoFornecedor": 0.0
+        },
+        "quantidade": 1
+      },
+      {
+        "item": {
+          "nome": "Refrigerante 300ml",
+          "descricao": "Refrigerante em lata",
+          "preco": 3.0,
+          "categoria": "Bebida",
+          "disponivel": true,
+          "quantidade": 10,
+          "precoFornecedor": 0.0
+        },
+        "quantidade": 2
+      }
+    ],
+    "precoFornecedor": 0.0
   }
 ]
