@@ -19,8 +19,6 @@ public class JanelaInicialFuncionario extends JFrame {
     private JButton btnGerirSessoes;
     private JButton btnGerirMenus;
     private JButton btnGerirSalas;
-    private JButton btnCriarRelatorioCinema;
-    private JButton btnCriarRelatorioProdutos;
     private JButton loginButton;
     private List<Item> itens;
     private List<Encomenda> encomendas;
@@ -28,7 +26,7 @@ public class JanelaInicialFuncionario extends JFrame {
     private List<Sessao> sessoes;
     private RepositorioFilmes repositorioFilmes;
     private JFrame menuPrincipal;
-    private List<Sala> listaSalas = new ArrayList<>();
+    private List<Sala> listaSalas;
     public JanelaInicialFuncionario(String title, JFrame menuPrincipal) {
         super(title);
         repositorioFilmes = new RepositorioFilmes();
@@ -54,6 +52,7 @@ public class JanelaInicialFuncionario extends JFrame {
         try {
             itens = PersistenciaService.carregarItens();
             encomendas = PersistenciaService.carregarEncomendas();
+            listaSalas = PersistenciaService.carregarSalas();
             filmes = new ArrayList<>();
             repositorioFilmes = new RepositorioFilmes();
 
@@ -155,8 +154,6 @@ public class JanelaInicialFuncionario extends JFrame {
         btnGerirSessoes = createStyledButton("Gerir Sessões", null);
         btnGerirMenus = createStyledButton("Gerir Menus", null);
         btnGerirSalas = createStyledButton("Gerir Salas", null);
-        btnCriarRelatorioCinema = createStyledButton("Criar Relatório de vendas cinema", null);
-        btnCriarRelatorioProdutos = createStyledButton("Criar Relatório de vendas produtos", null);
 
         // Painel central com os botões principais dispostos em grid
         JPanel centerPanel = new JPanel(new GridLayout(4, 2, 20, 20));
@@ -166,8 +163,6 @@ public class JanelaInicialFuncionario extends JFrame {
         centerPanel.add(btnGerirSessoes);
         centerPanel.add(btnGerirMenus);
         centerPanel.add(btnGerirSalas);
-        centerPanel.add(btnCriarRelatorioCinema);
-        centerPanel.add(btnCriarRelatorioProdutos);
 
         // Adiciona espaçamento ao redor do painel central
         JPanel paddedCenterPanel = new JPanel(new BorderLayout());
@@ -301,12 +296,14 @@ public class JanelaInicialFuncionario extends JFrame {
             int index = listaSalas.indexOf(original);
             listaSalas.set(index, nova);
         }
+        PersistenciaService.salvarSalas(listaSalas);
         mostrarJanelaGerirSalas();
     }
 
     private void eliminarSala(Sala sala) {
         if (sala != null) {
             listaSalas.remove(sala);
+            PersistenciaService.salvarSalas(listaSalas);
         }
         mostrarJanelaGerirSalas();
     }
@@ -336,6 +333,7 @@ public class JanelaInicialFuncionario extends JFrame {
         if (confirm == JOptionPane.YES_OPTION) {
             boolean removed = filmes.remove(filme);
             if (removed) {
+                PersistenciaService.salvarFilmes(filmes);
                 JOptionPane.showMessageDialog(null, "Filme eliminado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 mostrarJanelaGerirFilmes(); // Atualiza a interface
             } else {
