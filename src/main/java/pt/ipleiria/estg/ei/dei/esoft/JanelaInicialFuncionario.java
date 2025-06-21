@@ -22,6 +22,8 @@ public class JanelaInicialFuncionario extends JFrame {
     private JButton btnCriarRelatorioCinema;
     private JButton btnCriarRelatorioProdutos;
     private JButton loginButton;
+    private List<Item> itens;
+    private List<Encomenda> encomendas;
     private List<Filme> filmes;
     private List<Sessao> sessoes;
     private RepositorioFilmes repositorioFilmes;
@@ -47,6 +49,8 @@ public class JanelaInicialFuncionario extends JFrame {
      */
     private void inicializarDados() {
         try {
+            itens = PersistenciaService.carregarItens();
+            encomendas = PersistenciaService.carregarEncomendas();
             filmes = new ArrayList<>();
             repositorioFilmes = new RepositorioFilmes();
 
@@ -175,6 +179,17 @@ public class JanelaInicialFuncionario extends JFrame {
         painelInicialFuncionario.add(footerPanel, BorderLayout.SOUTH);
 
         btnGerirFilmes.addActionListener(e -> mostrarJanelaGerirFilmes());
+        btnStock.addActionListener(e -> mostrarJanelaStock());
+    }
+
+    private void mostrarJanelaStock() {
+        // Criar o painel de seleção de filme
+        JanelaStock painelStock = new JanelaStock(itens, encomendas);
+
+        // Adicionar listener para o botão Voltar
+        painelStock.getBtnVoltar().addActionListener(e -> voltarParaPainelPrincipal());
+
+        trocarPainel(painelStock.getPanelPrincipal());
     }
 
     private void mostrarJanelaGerirFilmes() {

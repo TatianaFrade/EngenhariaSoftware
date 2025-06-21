@@ -19,7 +19,7 @@ public class JanelaStock extends JFrame {
 
     JScrollPane scrollPane;
 
-    private List<ItemCartao> itemCartoes;
+    private final List<ItemCartao> itemCartoes;
     private Item itemSelecionado;
 
     public JanelaStock(List<Item> itens, List<Encomenda> encomendas) {
@@ -153,7 +153,7 @@ public class JanelaStock extends JFrame {
             scrollPane.getViewport().repaint();
         }
 
-        atualizarSelecao();
+        if (itemSelecionado != null) setItemSelecionado(itemSelecionado);
     }
 
     public Item getItemSelecionado() {
@@ -239,7 +239,11 @@ public class JanelaStock extends JFrame {
         panelDetalhesProduto.repaint();
     }
 
-    public static void main(String[] args) {
-        new JanelaStock(PersistenciaService.carregarItens(), PersistenciaService.carregarEncomendas()).setVisible(true);
+    public JButton getBtnVoltar() {
+        return buttonVoltar;
+    }
+
+    public JPanel getPanelPrincipal() {
+        return panelStock;
     }
 }
