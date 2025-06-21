@@ -3,6 +3,8 @@ package pt.ipleiria.estg.ei.dei.esoft.unit;
 import org.junit.jupiter.api.Test;
 import pt.ipleiria.estg.ei.dei.esoft.Item;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TestItem {
@@ -15,7 +17,7 @@ class TestItem {
         String categoria = "Comida";
         boolean disponivel = true;
         
-        Item item = new Item(nome, descricao, preco, categoria, disponivel);
+        Item item = new Item(nome, descricao, preco, categoria, disponivel, 0, new ArrayList<>(), "", 0);
         
         assertEquals(nome, item.getNome());
         assertEquals(descricao, item.getDescricao());
@@ -26,7 +28,7 @@ class TestItem {
     
     @Test
     void testSetters() {
-        Item item = new Item("Test", "Test Desc", 1.0, "Test Cat", true);
+        Item item = new Item("Test", "Test Desc", 1.0, "Test Cat", true, 0, new ArrayList<>(), "", 0);
         
         item.setNome("New Name");
         item.setDescricao("New Description");
@@ -41,8 +43,8 @@ class TestItem {
     
     @Test
     void testToString() {
-        Item item = new Item("Coca-Cola", "Refrigerante 500ml", 3.50, "Bebida", true);
-        String expected = "Coca-Cola - 3.50 €";
+        Item item = new Item("Coca-Cola", "Refrigerante 500ml", 3.50, "Bebida", true, 0, new ArrayList<>(), "", 0);
+        String expected = "Coca-Cola - 3,50 €";
         assertEquals(expected, item.toString());
     }
     
@@ -53,7 +55,7 @@ class TestItem {
     
     @Test
     void testSerializable() {
-        Item item = new Item("Test", "Test", 1.0, "Test", true);
+        Item item = new Item("Test", "Test", 1.0, "Test", true, 0, new ArrayList<>(), "", 0);
         assertTrue(item instanceof java.io.Serializable);
     }
 }

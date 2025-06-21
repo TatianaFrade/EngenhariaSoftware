@@ -31,8 +31,8 @@ class TestCompra {
         bilhete = new Bilhete(sessao, lugar);
         
         // Create bar items
-        item1 = new Item("Pipoca", "Pipoca grande", 5.0, "Comida", true);
-        item2 = new Item("Refrigerante", "Coca-Cola 500ml", 3.0, "Bebida", true);
+        item1 = new Item("Pipoca", "Pipoca grande", 5.0, "Comida", true, 0, new ArrayList<>(), "", 0);
+        item2 = new Item("Refrigerante", "Coca-Cola 500ml", 3.0, "Bebida", true, 0, new ArrayList<>(), "", 0);
         
         idUsuario = "user123";
     }
