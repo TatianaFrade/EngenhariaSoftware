@@ -25,6 +25,7 @@ public class JanelaVerMenus extends JDialog {
         for (Menu menu : menus) {
             if (isAdministrador || menu.isAtivo()) {
                 JPanel painelMenu = new JPanel();
+                painelMenu.setToolTipText("Clica com o botão direito para opções");
                 painelMenu.setLayout(new BoxLayout(painelMenu, BoxLayout.Y_AXIS));
                 painelMenu.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(Color.LIGHT_GRAY),
@@ -152,8 +153,9 @@ class JanelaOpcoesBilhete extends JDialog {
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout(10, 10));
 
-        // 🎬 Botão mostra sessão
+        // Botão mostra sessão
         btnSelecionarSessao = new JButton("🎬 Sessão: ❌ nenhuma");
+        btnSelecionarLugar = new JButton("🪑 Lugar: ❌ nenhum");
         btnSelecionarSessao.addActionListener(e -> {
             JanelaEscolherSessaoDialog dialog = new JanelaEscolherSessaoDialog(parent, filme);
             dialog.setVisible(true);
@@ -161,11 +163,14 @@ class JanelaOpcoesBilhete extends JDialog {
             if (selecionada != null) {
                 sessaoSelecionada = selecionada;
                 btnSelecionarSessao.setText("🎬 " + selecionada.getDataHoraFormatada() + " - Sala " + selecionada.getNomeSala());
+
+                // Limpa lugar anterior
+                lugarSelecionado = null;
+                btnSelecionarLugar.setText("🪑 Lugar: ❌ nenhum");
             }
         });
 
-        // 🪑 Botão mostra lugar
-        btnSelecionarLugar = new JButton("🪑 Lugar: ❌ nenhum");
+        // Botão mostra lugar
         btnSelecionarLugar.addActionListener(e -> {
             if (sessaoSelecionada == null) {
                 JOptionPane.showMessageDialog(this, "Seleciona uma sessão primeiro.");
@@ -182,25 +187,32 @@ class JanelaOpcoesBilhete extends JDialog {
             }
         });
 
-
-        // 📦 Itens do menu (como texto simples)
+        // Itens do menu (como texto simples)
         String textoItens = menu.getItens().isEmpty()
                 ? "Itens do Menu: (nenhum)"
                 : "Itens do Menu: " + String.join(", ", menu.getItens());
         JLabel lblItens = new JLabel("🍿 " + textoItens);
         lblItens.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // 💳 Botão de pagamento
+        // Botão de pagamento
         JButton btnPagamento = new JButton("💳 Método de Pagamento");
         btnPagamento.addActionListener(e -> {
-            Bilhete bilhete = new Bilhete(sessaoSelecionada, lugarSelecionado); // ou com menu + método depois
+            if (sessaoSelecionada == null || lugarSelecionado == null) {
+                JOptionPane.showMessageDialog(this, "Seleciona a sessão e o lugar antes de continuar.");
+                return;
+            }
+
+            Bilhete bilhete = new Bilhete(sessaoSelecionada, lugarSelecionado);
             JanelaPagamentoFinal janela = new JanelaPagamentoFinal(parent, bilhete, menu, user);
             janela.setVisible(true);
 
+            // Fechar esta janela se a compra foi concluída
+            if (janela.isCompraConcluida()) {
+                dispose();
+            }
         });
 
-
-        // 👉 Organização
+        // Organização visual
         JPanel painelTopo = new JPanel(new GridLayout(3, 1, 10, 10));
         painelTopo.setBorder(BorderFactory.createEmptyBorder(15, 20, 0, 20));
         painelTopo.add(btnSelecionarSessao);
@@ -243,7 +255,7 @@ class JanelaEscolherSessaoDialog extends JDialog {
                 Component comp = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Sessao sessao) {
                     setText(sessao.getDataHoraFormatada() + " - Sala " + sessao.getNomeSala());
-                    setHorizontalAlignment(SwingConstants.CENTER); // 👈 isto centraliza o texto
+                    setHorizontalAlignment(SwingConstants.CENTER);
                 }
                 return comp;
             }
@@ -395,6 +407,11 @@ class JanelaPagamentoFinal extends JDialog {
     private final Bilhete bilhete;
     private final Menu menu;
     private MetodoPagamento metodoSelecionado;
+    private boolean compraConcluida = false;
+
+    public boolean isCompraConcluida() {
+        return compraConcluida;
+    }
 
     public JanelaPagamentoFinal(JFrame parent, Bilhete bilhete, Menu menu, Usuario user) {
         super(parent, "Finalizar Pagamento", true);
@@ -405,7 +422,7 @@ class JanelaPagamentoFinal extends JDialog {
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout(10, 10));
 
-        // Resumo
+        // Resumo da compra
         JPanel info = new JPanel();
         info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
         info.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
@@ -448,33 +465,24 @@ class JanelaPagamentoFinal extends JDialog {
                 return;
             }
 
-// Se for cartão, validar dados
             if (metodoSelecionado.getNome().equalsIgnoreCase("Cartão de Crédito")) {
                 Map<String, String> dadosCartao = coletarDadosCartao();
-                if (dadosCartao == null) return; // cancelado
+                if (dadosCartao == null) return;
             }
 
+            // atualiza sala
+            PersistenciaService.atualizarSalaSessao(lugar, sessao.getId());
 
-            // Criação da compra
             List<Bilhete> bilhetes = List.of(bilhete);
             List<Item> itensBar = UtilitariosMenu.obterItensPorNomes(menu.getItens());
             String idUsuario = (user != null) ? user.getNomeUsuario() : "";
 
+            Compra compra = new Compra(bilhetes, itensBar, metodoSelecionado.getNome(), idUsuario);
+            PersistenciaService.salvarCompra(compra);
 
-            Compra compra = new Compra(
-                    bilhetes,
-                    itensBar,
-                    metodoSelecionado.getNome(), // → String
-                    idUsuario
-            );
-
-            // Guardar ou processar como precisares
-            PersistenciaService.salvarCompra(compra); // exemplo
             JOptionPane.showMessageDialog(this, "✅ Compra realizada com sucesso!");
-
+            compraConcluida = true;
             dispose();
-
-
         });
 
         botoes.add(cancelar);
@@ -509,7 +517,7 @@ class JanelaPagamentoFinal extends JDialog {
 
         if (erros.length() > 0) {
             JOptionPane.showMessageDialog(this, "Corrige os erros:\n" + erros, "Erro", JOptionPane.ERROR_MESSAGE);
-            return coletarDadosCartao(); // Tentar de novo
+            return coletarDadosCartao(); // Repetir até estar correto
         }
 
         Map<String, String> dados = new HashMap<>();

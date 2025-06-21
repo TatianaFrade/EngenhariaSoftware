@@ -140,7 +140,9 @@ public class JanelaEditarMenu extends JDialog {
         });
 
         add(painelCampos, BorderLayout.NORTH);
-        add(new JScrollPane(painelItens), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(painelItens);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        add(scrollPane, BorderLayout.CENTER);
         add(btnGuardar, BorderLayout.SOUTH);
     }
 

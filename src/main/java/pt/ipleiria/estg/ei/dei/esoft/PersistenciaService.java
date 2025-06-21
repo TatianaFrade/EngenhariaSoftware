@@ -147,6 +147,26 @@ public class PersistenciaService {
         }
     }
 
+    public static void atualizarSalaSessao(Lugar lugar, String idSessao) {
+        List<Sessao> sessoes = carregarSessoes();
+
+        boolean atualizada = false;
+        for (Sessao sessao : sessoes) {
+            if (sessao.getId().equals(idSessao)) {
+                sessao.getSala().ocuparLugar(lugar.getFila(), lugar.getColuna());
+                atualizada = true;
+                break;
+            }
+        }
+
+        if (atualizada) {
+            salvarSessoes(sessoes);
+            System.out.println("Sala atualizada para a sessão ID: " + idSessao);
+        } else {
+            System.out.println("⚠️ Sessão com ID " + idSessao + " não encontrada.");
+        }
+    }
+
     public static List<Sessao> carregarSessoes() {
         try {
             File arquivo = new File(ARQUIVO_SESSOES);
