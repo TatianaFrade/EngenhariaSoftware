@@ -20,7 +20,6 @@ public class ItemCartao extends Cartao {
         JLabel imgLabel = new JLabel();
         imgLabel.setPreferredSize(new Dimension(100, 140));
         imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        // Exemplo: imgLabel.setIcon(new ImageIcon(item.getImagemPath()));
         imgLabel.setText("[Imagem]");
         this.add(imgLabel, BorderLayout.WEST);
 
@@ -28,16 +27,34 @@ public class ItemCartao extends Cartao {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        infoPanel.setOpaque(false);
 
-        JLabel nomeLabel = new JLabel("Nome: " + item.getNome());
-        nomeLabel.setFont(new Font(nomeLabel.getFont().getName(), Font.BOLD, 14));
+        Font fonte = new Font("Arial", Font.PLAIN, 13);
+        int larguraMax = 250; // largura limite para a descrição
+
+        JLabel nomeLabel = new JLabel(item.getNome());
+        nomeLabel.setFont(new Font("Arial", Font.BOLD, 14));
         infoPanel.add(nomeLabel);
 
         JLabel tipoLabel = new JLabel("Categoria: " + item.getCategoria());
+        tipoLabel.setFont(fonte);
         infoPanel.add(tipoLabel);
 
         JLabel precoLabel = new JLabel("Preço: €" + item.getPreco());
+        precoLabel.setFont(fonte);
         infoPanel.add(precoLabel);
+
+        JLabel quantidadeLabel = new JLabel("Quantidade: " + item.getQuantidade());
+        quantidadeLabel.setFont(fonte);
+        infoPanel.add(quantidadeLabel);
+
+        String desc = item.getDescricao();
+        if (desc == null || desc.isBlank()) desc = "(sem descrição)";
+
+        // Usar HTML para forçar quebra de linha
+        JLabel descricaoLabel = new JLabel("<html><body style='width:" + larguraMax + "px'>Descrição: " + desc + "</body></html>");
+        descricaoLabel.setFont(fonte);
+        infoPanel.add(descricaoLabel);
 
         this.add(infoPanel, BorderLayout.CENTER);
     }
