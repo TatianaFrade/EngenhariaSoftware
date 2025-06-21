@@ -493,5 +493,208 @@
     "metodoPagamento": "Multibanco",
     "confirmada": false,
     "idUsuario": "tati"
+  },
+  {
+    "id": "1ebf42cf-7682-4ab5-8d80-d0ab3c2608aa",
+    "dataHora": "Jun 21, 2025, 4:02:47 AM",
+    "bilhetes": [
+      {
+        "id": "91086f21-d4fc-4e19-86c8-2bafece5bf8b",
+        "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+        "idLugar": "B8",
+        "preco": 7.5
+      }
+    ],
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Chocolate",
+        "descricao": "Barra de chocolate 80g",
+        "preco": 4.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 16.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "68e4e14e-49dc-4629-b8ac-bba457cb3779",
+    "dataHora": "Jun 21, 2025, 4:06:43 AM",
+    "bilhetes": [
+      {
+        "id": "9b16d4e6-2daa-47df-928c-3e14538f41fb",
+        "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+        "idLugar": "D10",
+        "preco": 7.5
+      }
+    ],
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 17.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
+  },
+  {
+    "id": "69507044-f91c-40c0-bda2-7310d3c59d36",
+    "dataHora": "Jun 21, 2025, 4:23:12 AM",
+    "bilhetes": [
+      {
+        "id": "7625fde8-a41b-4817-a716-4c25bb7c1b5f",
+        "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+        "idLugar": "H9",
+        "preco": 7.5
+      }
+    ],
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Chocolate",
+        "descricao": "Barra de chocolate 80g",
+        "preco": 4.0,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Refrigerante 300ml",
+        "descricao": "Refrigerante em lata",
+        "preco": 3.0,
+        "categoria": "Bebida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 19.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "446b960f-8d93-4be9-80e7-5596870daa96",
+    "dataHora": "Jun 21, 2025, 4:23:24 AM",
+    "bilhetes": [],
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Chocolate",
+        "descricao": "Barra de chocolate 80g",
+        "preco": 4.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 8.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "d56baf31-dc7b-4015-a341-1a13964f9d8a",
+    "dataHora": "Jun 21, 2025, 4:43:03 AM",
+    "bilhetes": [
+      {
+        "id": "b7053712-1834-46c9-b798-06d6eadd26b8",
+        "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+        "idLugar": "E9",
+        "preco": 7.5
+      }
+    ],
+    "itensBar": [
+      {
+        "nome": "Pipoca Média",
+        "descricao": "Pipoca salgada tamanho médio",
+        "preco": 4.5,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Chocolate",
+        "descricao": "Barra de chocolate 80g",
+        "preco": 4.0,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Nachos com Queijo",
+        "descricao": "Porção de nachos com molho de queijo",
+        "preco": 7.5,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 23.5,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false,
+    "idUsuario": "tati"
+  },
+  {
+    "id": "3249afbb-310e-4b07-90f3-3492192c4216",
+    "dataHora": "Jun 21, 2025, 4:47:15 AM",
+    "bilhetes": [
+      {
+        "id": "76dd0d5c-a50f-4714-8d53-a5935fed74d1",
+        "idSessao": "7f6a9255-4978-4c16-8944-5539489854af",
+        "idLugar": "A2",
+        "preco": 7.5
+      }
+    ],
+    "itensBar": [
+      {
+        "nome": "Pipoca Pequena",
+        "descricao": "Pipoca salgada tamanho pequeno",
+        "preco": 3.5,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Pipoca Caramelizada",
+        "descricao": "Pipoca doce com caramelo",
+        "preco": 6.0,
+        "categoria": "Comida",
+        "disponivel": true
+      },
+      {
+        "nome": "Chocolate",
+        "descricao": "Barra de chocolate 80g",
+        "preco": 4.0,
+        "categoria": "Comida",
+        "disponivel": true
+      }
+    ],
+    "precoTotal": 21.0,
+    "metodoPagamento": "Multibanco",
+    "confirmada": false
   }
 ]

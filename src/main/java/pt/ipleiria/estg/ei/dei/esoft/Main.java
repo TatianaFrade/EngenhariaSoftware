@@ -3,6 +3,7 @@ package pt.ipleiria.estg.ei.dei.esoft;
 import java.io.File;
 import javax.swing.SwingUtilities;
 
+//testes
 /**
  * Classe principal que inicia a aplicação do Cinema e Bar.
  */
