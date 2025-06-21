@@ -55,7 +55,7 @@ class TestBilhete {
         String str = bilhete.toString();
         assertTrue(str.contains("Test Movie"));
         assertTrue(str.contains("B2 (VIP)"));
-        assertTrue(str.contains("12.00€")); // Base price 10.0 + 2.0 for VIP
+        assertTrue(str.contains("12,00€")); // Base price 10.0 + 2.0 for VIP
     }
 
     @Test
