@@ -27,9 +27,11 @@ public class JanelaInicialFuncionario extends JFrame {
     private List<Filme> filmes;
     private List<Sessao> sessoes;
     private RepositorioFilmes repositorioFilmes;
-    public JanelaInicialFuncionario(String title) {
+    private JFrame menuPrincipal;
+    public JanelaInicialFuncionario(String title, JFrame menuPrincipal) {
         super(title);
         repositorioFilmes = new RepositorioFilmes();
+        this.menuPrincipal = menuPrincipal != null ? menuPrincipal : new JanelaPrincipal(title);
 
         inicializarDados();
         criarPainelInicialFuncionario();
@@ -184,8 +186,7 @@ public class JanelaInicialFuncionario extends JFrame {
     }
 
     private void abrirMenuPrincipal() {
-        JanelaPrincipal janelaPrincipal = new JanelaPrincipal("Cinema e Bar");
-        janelaPrincipal.setVisible(true);
+        menuPrincipal.setVisible(true);
         dispose();
     }
 
@@ -349,7 +350,7 @@ public class JanelaInicialFuncionario extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new JanelaInicialFuncionario("Cinema e Bar").setVisible(true);
+            new JanelaInicialFuncionario("Cinema e Bar", null).setVisible(true);
         });
     }
 }

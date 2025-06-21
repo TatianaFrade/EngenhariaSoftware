@@ -1018,9 +1018,9 @@ public class JanelaPrincipal extends JFrame {
     }
 
     private void abrirMenuFuncionarios() {
-         JanelaInicialFuncionario janelaInicialFuncionario = new JanelaInicialFuncionario("Cinema e Bar");
+         JanelaInicialFuncionario janelaInicialFuncionario = new JanelaInicialFuncionario("Cinema e Bar", this);
          janelaInicialFuncionario.setVisible(true);
-         dispose();
+         this.setVisible(false);
     }
 
     public static void main(String[] args) {
