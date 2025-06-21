@@ -136,6 +136,7 @@ public class JanelaInicialFuncionario extends JFrame {
         // Botão de login com estilo neutro
         loginButton = new JButton("Log out");
         loginButton.setPreferredSize(new Dimension(100, 30));
+        loginButton.addActionListener(e -> abrirMenuPrincipal());
         JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         loginPanel.add(loginButton);
 
@@ -180,6 +181,12 @@ public class JanelaInicialFuncionario extends JFrame {
 
         btnGerirFilmes.addActionListener(e -> mostrarJanelaGerirFilmes());
         btnStock.addActionListener(e -> mostrarJanelaStock());
+    }
+
+    private void abrirMenuPrincipal() {
+        JanelaPrincipal janelaPrincipal = new JanelaPrincipal("Cinema e Bar");
+        janelaPrincipal.setVisible(true);
+        dispose();
     }
 
     private void mostrarJanelaStock() {

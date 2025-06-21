@@ -20,6 +20,7 @@ public class JanelaPrincipal extends JFrame {
     private JButton consultarSessoesPorDiaButton;
     private JButton loginButton;
     private JButton perfilButton;
+    private JButton abrirMenuFuncionariosButton;
     private JLabel usuarioLabel; // Rótulo para mostrar o nome do usuário
     private Usuario usuarioLogado; // Usuário atualmente logado
 
@@ -185,8 +186,14 @@ public class JanelaPrincipal extends JFrame {
         perfilButton.setVisible(false);
         perfilButton.addActionListener(e -> mostrarJanelaEditarPerfil());
 
+        abrirMenuFuncionariosButton = new JButton("Menu Funcionários");
+        abrirMenuFuncionariosButton.setPreferredSize(new Dimension(150, 30));
+        abrirMenuFuncionariosButton.setVisible(false);
+        abrirMenuFuncionariosButton.addActionListener(e -> abrirMenuFuncionarios());
+
         JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         loginPanel.add(usuarioLabel);
+        loginPanel.add(abrirMenuFuncionariosButton);
         loginPanel.add(perfilButton);
         loginPanel.add(loginButton);
 
@@ -697,6 +704,9 @@ public class JanelaPrincipal extends JFrame {
                 // Mostrar botão de perfil
                 perfilButton.setVisible(true);
 
+                // Se for admin, então mostra o botão de menu funcionários
+                if (usuarioLogado.isAdministrador()) abrirMenuFuncionariosButton.setVisible(true);
+
                 // Atualizar título da janela
                 atualizarTituloJanela();
 
@@ -971,6 +981,12 @@ public class JanelaPrincipal extends JFrame {
         trocarPainel(painelEditarPerfil);
     }
 
+    private void abrirMenuFuncionarios() {
+         JanelaInicialFuncionario janelaInicialFuncionario = new JanelaInicialFuncionario("Cinema e Bar");
+         janelaInicialFuncionario.setVisible(true);
+         dispose();
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new JanelaPrincipal("Cinema e Bar").setVisible(true);
@@ -993,6 +1009,9 @@ public class JanelaPrincipal extends JFrame {
 
         // Esconder botão de perfil
         perfilButton.setVisible(false);
+
+        // Esconder botão menu de funcionários
+        abrirMenuFuncionariosButton.setVisible(false);
 
         // Atualizar título da janela
         atualizarTituloJanela();
