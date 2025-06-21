@@ -28,6 +28,7 @@ public class JanelaInicialFuncionario extends JFrame {
     private List<Sessao> sessoes;
     private RepositorioFilmes repositorioFilmes;
     private JFrame menuPrincipal;
+    private List<Sala> listaSalas = new ArrayList<>();
     public JanelaInicialFuncionario(String title, JFrame menuPrincipal) {
         super(title);
         repositorioFilmes = new RepositorioFilmes();
@@ -182,6 +183,8 @@ public class JanelaInicialFuncionario extends JFrame {
         painelInicialFuncionario.add(footerPanel, BorderLayout.SOUTH);
 
         btnGerirFilmes.addActionListener(e -> mostrarJanelaGerirFilmes());
+        btnGerirSalas.addActionListener(e -> mostrarJanelaGerirSalas());
+        btnGerirSessoes.addActionListener(e -> mostrarJanelaGerirSessoes());
         btnStock.addActionListener(e -> mostrarJanelaStock());
     }
 
@@ -201,18 +204,111 @@ public class JanelaInicialFuncionario extends JFrame {
     }
 
     private void mostrarJanelaGerirFilmes() {
-        // Criar o painel de seleção de filme
         JanelaGerirFilmes painelFilmes = new JanelaGerirFilmes(filmes, null, null, this::mostrarJanelaAdicionarEditarEliminarFilme);
 
-        // Adicionar listener para o botão Voltar
         painelFilmes.getBtnVoltar().addActionListener(e -> voltarParaPainelPrincipal());
 
-        // Adicionar listener para o botão Próximo
         painelFilmes.getBtnAdicionarFilme().addActionListener(e -> {
             mostrarJanelaAdicionarEditarEliminarFilme(null);
         });
 
         trocarPainel(painelFilmes);
+    }
+
+
+    public void mostrarJanelaGerirSalas() {
+        JanelaGerirSalas painelSalas = new JanelaGerirSalas(listaSalas, null, null, this::mostrarJanelaAdicionarEditarEliminarSala);
+
+        painelSalas.getBtnVoltar().addActionListener(e -> voltarParaPainelPrincipal());
+
+        painelSalas.getBtnAdicionarSala().addActionListener(e -> {
+            mostrarJanelaAdicionarEditarEliminarSala(null);
+        });
+
+        trocarPainel(painelSalas);
+    }
+
+    private void mostrarJanelaGerirSessoes() {
+        JanelaGerirSessoes painelSessoes = new JanelaGerirSessoes(sessoes, null, null, this::mostrarJanelaAdicionarEditarEliminarSessao);
+
+        painelSessoes.getBtnVoltar().addActionListener(e -> voltarParaPainelPrincipal());
+
+        painelSessoes.getBtnAdicionarSessao().addActionListener(e -> {
+            mostrarJanelaAdicionarEditarEliminarSessao(null);
+        });
+
+        trocarPainel(painelSessoes);
+    }
+
+    private void mostrarJanelaAdicionarEditarEliminarSessao(Sessao sessao) {
+        JanelaAdicionarEditarEliminarSessao painel = new JanelaAdicionarEditarEliminarSessao(
+                sessao,
+                filmes,
+                listaSalas,
+                (sessaoOriginal, novaSessao) -> salvarOuAtualizarSessao(sessaoOriginal, novaSessao),
+                e -> mostrarJanelaGerirSessoes(),
+                e -> eliminarSessao(sessao)
+        );
+
+        trocarPainel(painel);
+    }
+
+    private void salvarOuAtualizarSessao(Sessao original, Sessao nova) {
+        if (original == null) {
+            sessoes.add(nova);
+        } else {
+            int index = sessoes.indexOf(original);
+            sessoes.set(index, nova);
+        }
+        PersistenciaService.salvarSessoes(sessoes);
+        mostrarJanelaGerirSessoes();
+    }
+
+    private void eliminarSessao(Sessao sessao) {
+        if (sessao == null) {
+            JOptionPane.showMessageDialog(null, "Sessão inválida para eliminar!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "Tem certeza que deseja eliminar a sessão de: " + sessao.getFilme().getNome() + " em " + sessao.getDataHora().toString() + "?",
+                "Confirmar Eliminação",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            sessoes.remove(sessao);
+            PersistenciaService.salvarSessoes(sessoes);
+            JOptionPane.showMessageDialog(null, "Sessão eliminada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            mostrarJanelaGerirSessoes();
+        }
+    }
+
+    private void mostrarJanelaAdicionarEditarEliminarSala(Sala sala) {
+        JanelaAdicionarEditarEliminarSala painel = new JanelaAdicionarEditarEliminarSala(
+                sala,
+                (salaOriginal, novaSala) -> salvarOuAtualizarSala(salaOriginal, novaSala),
+                e -> mostrarJanelaGerirSalas(),
+                e -> eliminarSala(sala)
+        );
+
+        trocarPainel(painel); // igual ao que já fazes para os filmes
+    }
+
+    private void salvarOuAtualizarSala(Sala original, Sala nova) {
+        if (original == null) {
+            listaSalas.add(nova);
+        } else {
+            int index = listaSalas.indexOf(original);
+            listaSalas.set(index, nova);
+        }
+        mostrarJanelaGerirSalas();
+    }
+
+    private void eliminarSala(Sala sala) {
+        if (sala != null) {
+            listaSalas.remove(sala);
+        }
+        mostrarJanelaGerirSalas();
     }
 
     private void mostrarJanelaAdicionarEditarEliminarFilme(Filme filme) {

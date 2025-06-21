@@ -1018,8 +1018,7 @@ public class JanelaPrincipal extends JFrame {
     }
 
     private void abrirMenuFuncionarios() {
-         JanelaInicialFuncionario janelaInicialFuncionario = new JanelaInicialFuncionario("Cinema e Bar", this);
-         janelaInicialFuncionario.setVisible(true);
+         new JanelaInicialFuncionario("Cinema e Bar", this).setVisible(true);
          this.setVisible(false);
     }
 

@@ -2,15 +2,17 @@ package pt.ipleiria.estg.ei.dei.esoft;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-public class JanelaGerirFilmes extends JPanel {
-    private JButton btnAdicionarFilme;
+public class JanelaGerirSalas extends JPanel {
+    private JButton btnAdicionarSala;
     private JButton btnVoltar;
-    private JPanel filmesPanel;
+    private JPanel salasPanel;
 
     // Constantes para a aparência dos cartões
     private static final Color BORDA_NORMAL = Color.GRAY;
@@ -20,47 +22,46 @@ public class JanelaGerirFilmes extends JPanel {
     private static final int LARGURA_BORDA_HOVER = 2;
     private static final int LARGURA_BORDA_SELECIONADO = 3;
 
-    public JButton getBtnAdicionarFilme() {
-        return btnAdicionarFilme;
+    public JButton getBtnAdicionarSala() {
+        return btnAdicionarSala;
     }
 
     public JButton getBtnVoltar() {
         return btnVoltar;
     }
 
-    public JanelaGerirFilmes(List<Filme> filmes, ActionListener onVoltar, ActionListener onProximo, Consumer<Filme> onAdicionarEditarFilme) {
+    public JanelaGerirSalas(List<Sala> listaSalas, ActionListener onVoltar, ActionListener onProximo, Consumer<Sala> onAdicionarEditarSala) {
         setLayout(new BorderLayout());
 
-        configurarPainelFilmes(filmes, onAdicionarEditarFilme);
+        configurarPainelSalas(listaSalas, onAdicionarEditarSala);
 
         configurarBotoes(onVoltar, onProximo);
     }
 
-    private void configurarPainelFilmes(List<Filme> filmes, Consumer<Filme> onAdicionarEditarFilme) {
-        filmesPanel = new JPanel();
+    private void configurarPainelSalas(List<Sala> salas, Consumer<Sala> onAdicionarEditarSala) {
+        salasPanel = new JPanel();
 
         // Usar GridLayout com fileiras dinâmicas e 3 colunas
-        int rows = (int) Math.ceil(filmes.size() / 3.0);
-        filmesPanel.setLayout(new GridLayout(rows, 3, 20, 20));
+        int rows = (int) Math.ceil(salas.size() / 3.0);
+        salasPanel.setLayout(new GridLayout(rows, 3, 20, 20));
 
-        // Adicionar cartões para cada filme
-        for (Filme filme : filmes) {
-            JPanel cartao = criarCartaoFilme(filme);
+        for (Sala sala : salas) {
+            JPanel cartao = criarCartaoSala(sala);
 
             // Adiciona o evento de clique ao cartão
             cartao.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    onAdicionarEditarFilme.accept(filme);
+                    onAdicionarEditarSala.accept(sala);
                 }
             });
 
-            filmesPanel.add(cartao);
+            salasPanel.add(cartao);
         }
 
         // Configurar painel com padding e scroll
         JPanel paddingPanel = new JPanel(new BorderLayout());
-        paddingPanel.add(filmesPanel, BorderLayout.CENTER);
+        paddingPanel.add(salasPanel, BorderLayout.CENTER);
         paddingPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JScrollPane scrollPane = new JScrollPane(paddingPanel);
@@ -69,42 +70,25 @@ public class JanelaGerirFilmes extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    /**
-     * Cria um painel que representa visualmente um filme como um cartão
-     */
-    private JPanel criarCartaoFilme(Filme filme) {
+    private JPanel criarCartaoSala(Sala sala) {
         JPanel cartao = new JPanel();
-        // Armazenar o filme associado como uma propriedade do cartão
-        cartao.putClientProperty("filme", filme);
+        cartao.putClientProperty("sala", sala);
 
         cartao.setPreferredSize(new Dimension(250, 180));
         cartao.setBorder(BorderFactory.createLineBorder(BORDA_NORMAL, LARGURA_BORDA_NORMAL));
         cartao.setLayout(new BorderLayout(5, 5));
         cartao.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Muda o cursor para indicar que é clicável
 
-        // Área da imagem do filme
-        JLabel imgLabel = new JLabel();
-        imgLabel.setPreferredSize(new Dimension(100, 140));
-        imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        // Exemplo: imgLabel.setIcon(new ImageIcon(filme.getImagemPath()));
-        imgLabel.setText("[Imagem]");
-        cartao.add(imgLabel, BorderLayout.WEST);
-
-        // Área de informações do filme
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
-        JLabel nomeLabel = new JLabel("Nome: " + filme.getNome());
+        JLabel nomeLabel = new JLabel("Nome: " + sala.getNome());
         nomeLabel.setFont(new Font(nomeLabel.getFont().getName(), Font.BOLD, 14));
         infoPanel.add(nomeLabel);
 
-        JLabel tipoLabel = new JLabel("Tipo: " + (filme.isLegendado() ? "Legendado" : "Dublado"));
-        infoPanel.add(tipoLabel);
-        infoPanel.add(new JLabel("Lançamento: " + filme.getDataLancamento()));
-
-        JLabel rateLabel = new JLabel("Rate: " + filme.getRate() + "/10");
-        rateLabel.setForeground(filme.getRate() >= 7.0 ? new Color(0, 128, 0) : Color.BLACK);
-        infoPanel.add(rateLabel);
+        JLabel acessibilidadeLabel = new JLabel("Acessibilidade: " + sala.getAcessibilidade());
+        infoPanel.add(acessibilidadeLabel);
+        infoPanel.add(new JLabel("Total Lugares: " + sala.getTotalLugares()));
 
         infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         cartao.add(infoPanel, BorderLayout.CENTER);
@@ -115,14 +99,14 @@ public class JanelaGerirFilmes extends JPanel {
     private void configurarBotoes(ActionListener onVoltar, ActionListener onProximo) {
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnVoltar = new JButton("Voltar");
-        btnAdicionarFilme = new JButton("Adicionar Filme");
+        btnAdicionarSala = new JButton("Adicionar Sala");
 
         // Adicionar listeners
         btnVoltar.addActionListener(onVoltar != null ? onVoltar : e -> {});
-        btnAdicionarFilme.addActionListener(onProximo != null ? onProximo : e -> {});
+        btnAdicionarSala.addActionListener(onProximo != null ? onProximo : e -> {});
 
         bottomPanel.add(btnVoltar);
-        bottomPanel.add(btnAdicionarFilme);
+        bottomPanel.add(btnAdicionarSala);
         add(bottomPanel, BorderLayout.SOUTH);
     }
 }
