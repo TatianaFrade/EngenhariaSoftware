@@ -23,7 +23,7 @@
           "fila": 0,
           "coluna": 1,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 0,
@@ -119,16 +119,16 @@
           "fila": 1,
           "coluna": 7,
           "vip": false,
-          "ocupado": false
-        },
-        {
-          "fila": 1,
-          "coluna": 8,
-          "vip": false,
           "ocupado": true
         },
         {
           "fila": 1,
+          "coluna": 8,
+          "vip": false,
+          "ocupado": true
+        },
+        {
+          "fila": 1,
           "coluna": 9,
           "vip": false,
           "ocupado": false
@@ -251,7 +251,7 @@
           "fila": 3,
           "coluna": 9,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -305,7 +305,7 @@
           "fila": 4,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 4,
@@ -485,7 +485,7 @@
           "fila": 7,
           "coluna": 8,
           "vip": false,
-          "ocupado": false
+          "ocupado": true
         },
         {
           "fila": 7,
@@ -494,7 +494,7 @@
           "ocupado": true
         }
       ],
-      "lugaresOcupados": 19
+      "lugaresOcupados": 24
     },
     "preco": 7.5
   },
